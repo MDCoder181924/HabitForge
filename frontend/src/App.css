@@ -1,1 +1,262 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 @import "tailwindcss";
+
+@theme {
+  --color-background: #000000;
+  --color-surface-dim: #000000;
+  --color-surface-bright: #1c1c1e;
+  --color-surface-lowest: #050505;
+  --color-surface-low: #0a0a0a;
+  --color-surface: #121212;
+  --color-surface-high: #1c1c1e;
+  --color-surface-highest: #262626;
+  
+  --color-on-surface: #ffffff;
+  --color-on-surface-variant: #a3a3a3;
+  
+  --color-primary: #4be277;
+  --color-primary-container: #22c55e;
+  --color-on-primary: #003915;
+  --color-on-primary-container: #004b1e;
+  
+  --color-secondary: #e2e8f0;
+  --color-secondary-container: #334155;
+  --color-on-secondary: #000000;
+  --color-on-secondary-container: #e2e8f0;
+  
+  --color-tertiary: #a3a3a3;
+  --color-tertiary-container: #262626;
+  --color-on-tertiary: #000000;
+  --color-on-tertiary-container: #a3a3a3;
+  
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Inter', system-ui, sans-serif;
+  --font-mono: 'Geist', monospace;
+  
+  --animate-orb-float: orb-float 20s infinite alternate ease-in-out;
+  --animate-scroll: scroll 40s linear infinite;
+  
+  @keyframes orb-float {
+    from { transform: translate(0, 0) scale(1); }
+    to { transform: translate(50px, 30px) scale(1.1); }
+  }
+  @keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+}
+
+@font-face {
+  font-family: 'Geist';
+  src: url('https://cdn.jsdelivr.net/npm/geist-font@1.1.0/fonts/geist-sans/Geist-Regular.woff2') format('woff2');
+}
+
+html, body {
+  background-color: #000000;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Glass Card styling */
+/* Enhance contrast and transparency of glass cards on pure black */
+.glass-card {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-style: preserve-3d;
+}
+
+.glass-card:hover {
+  border-color: rgba(75, 226, 119, 0.25);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(75, 226, 119, 0.05);
+}
+
+/* Glass Card Stroke */
+.glass-card-stroke {
+  position: relative;
+}
+.glass-card-stroke::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.01) 50%, rgba(75, 226, 119, 0.15) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Noise overlay */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  opacity: 0.02;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #030303;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* Premium scroll-triggered reveal animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  will-change: transform, opacity, filter;
+  transition: all 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 1. Fade Up (standard) */
+.reveal-fade-up {
+  transform: translateY(40px) scale(0.98);
+}
+.reveal-fade-up.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* 2. Scale In (for cards and 3D frames) */
+.reveal-scale-in {
+  transform: scale(0.94) translateY(20px);
+  filter: blur(6px);
+}
+.reveal-scale-in.active {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  filter: blur(0);
+}
+
+/* 3. Slide Left (for text grids) */
+.reveal-slide-left {
+  transform: translateX(-40px);
+}
+.reveal-slide-left.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* 4. Slide Right (for media frames) */
+.reveal-slide-right {
+  transform: translateX(40px);
+}
+.reveal-slide-right.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Ambient floating animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0) translateZ(40px); }
+  50% { transform: translateY(-12px) translateZ(60px); }
+}
+
+.floating-element {
+  animation: float 6s infinite ease-in-out;
+}
+
+.floating-element-delay-1 {
+  animation: float 8s infinite ease-in-out;
+  animation-delay: -2s;
+}
+
+.floating-element-delay-2 {
+  animation: float 7s infinite ease-in-out;
+  animation-delay: -4s;
+}
+
+/* Premium Startup Loader Progress */
+@keyframes loader-progress {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-loader-progress {
+  animation: loader-progress 1.8s linear infinite;
+}
+
+/* Page Transition Fades */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98) translateY(10px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Custom Corner Brackets (Unique Box Design) */
+.tech-corners {
+  position: relative;
+}
+
+.tech-corner-tl, .tech-corner-tr, .tech-corner-bl, .tech-corner-br {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: #4be277;
+  pointer-events: none;
+  opacity: 0.25;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tech-corners:hover .tech-corner-tl,
+.tech-corners:hover .tech-corner-tr,
+.tech-corners:hover .tech-corner-bl,
+.tech-corners:hover .tech-corner-br {
+  opacity: 0.9;
+  width: 14px;
+  height: 14px;
+}
+
+.tech-corner-tl { top: 6px; left: 6px; border-top: 1.5px solid; border-left: 1.5px solid; }
+.tech-corner-tr { top: 6px; right: 6px; border-top: 1.5px solid; border-right: 1.5px solid; }
+.tech-corner-bl { bottom: 6px; left: 6px; border-bottom: 1.5px solid; border-left: 1.5px solid; }
+.tech-corner-br { bottom: 6px; right: 6px; border-bottom: 1.5px solid; border-right: 1.5px solid; }
+
+/* Cybernetic high-tech background overlays */
+.tech-grid {
+  background-image: 
+    linear-gradient(to right, rgba(75, 226, 119, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(75, 226, 119, 0.015) 1px, transparent 1px);
+  background-size: 60px 60px;
+  background-position: center top;
+}
+
+.tech-dots {
+  background-image: radial-gradient(rgba(75, 226, 119, 0.03) 1px, transparent 1px);
+  background-size: 30px 30px;
+  background-position: center top;
+}

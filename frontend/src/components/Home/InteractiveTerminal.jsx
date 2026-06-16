@@ -1,139 +1,181 @@
 import React, { useState } from 'react';
 
-export default function InteractiveTerminal() {
-  const [history, setHistory] = useState([
-    { type: 'input', text: 'habitforge list' },
-    { type: 'output', text: 'Active Habits:\n  • run   [Morning Run]  - Streak: 14 days [Completed]\n  • read  [Read 20 mins] - Streak: 5 days  [Pending]\n  • code  [Commit Code]  - Streak: 21 days [Pending]' }
-  ]);
-  const [inputValue, setInputValue] = useState('');
+export default function InteractiveDashboard() {
+  const initialHabits = [
+    { id: 1, name: 'Morning Cardio', category: 'Health', current: 0, target: 1, unit: 'Session', streak: 12, icon: '🏃', color: 'text-primary border-primary/20 bg-primary/5' },
+    { id: 2, name: 'Read 15 Pages', category: 'Mind', current: 8, target: 15, unit: 'Pages', streak: 8, icon: '📚', color: 'text-blue-400 border-blue-400/20 bg-blue-400/5' },
+    { id: 3, name: 'Drink Water', category: 'Health', current: 2, target: 3, unit: 'Liters', streak: 21, icon: '💧', color: 'text-cyan-400 border-cyan-400/20 bg-cyan-400/5' },
+  ];
 
-  const handleCommand = (cmdText) => {
-    const trimmed = cmdText.trim().toLowerCase();
-    if (!trimmed) return;
+  const [habits, setHabits] = useState(initialHabits);
 
-    let response = '';
-    if (trimmed === 'help') {
-      response = 'Available commands:\n  • list                - Show all habits\n  • check <habit-name>  - Complete a habit\n  • streak              - View active streaks\n  • clear               - Clear terminal screen';
-    } else if (trimmed === 'list') {
-      response = 'Active Habits:\n  • run   [Morning Run]  - Streak: 14 days [Completed]\n  • read  [Read 20 mins] - Streak: 5 days  [Pending]\n  • code  [Commit Code]  - Streak: 21 days [Pending]';
-    } else if (trimmed.startsWith('check ')) {
-      const habit = trimmed.replace('check ', '').trim();
-      if (habit === 'run') {
-        response = '[Success] \'Morning Run\' already completed for today.';
-      } else if (habit === 'read') {
-        response = '🚀 [Success] \'Read 20 mins\' completed! Streak extended to 6 days. Great job.';
-      } else if (habit === 'code') {
-        response = '💻 [Success] \'Commit Code\' completed! Streak extended to 22 days. Keep shipping.';
-      } else {
-        response = `[Error] Habit '${habit}' not found. Type 'list' to see active codes.`;
+  const presets = [
+    { name: 'Meditate 10m', category: 'Mind', target: 10, unit: 'Mins', icon: '🧘', color: 'text-purple-400 border-purple-400/20 bg-purple-400/5' },
+    { name: 'Write Journal', category: 'Mind', target: 1, unit: 'Entry', icon: '📓', color: 'text-amber-400 border-amber-400/20 bg-amber-400/5' },
+    { name: 'Bed by 10 PM', category: 'Sleep', target: 1, unit: 'Times', icon: '🌙', color: 'text-indigo-400 border-indigo-400/20 bg-indigo-400/5' }
+  ];
+
+  const incrementProgress = (id) => {
+    setHabits(prev => prev.map(habit => {
+      if (habit.id === id) {
+        const nextVal = Math.min(habit.current + 1, habit.target);
+        const streakAdded = nextVal === habit.target && habit.current < habit.target;
+        return {
+          ...habit,
+          current: nextVal,
+          streak: streakAdded ? habit.streak + 1 : habit.streak
+        };
       }
-    } else if (trimmed === 'streak') {
-      response = 'Streaks Log:\n  • Commit Code: 21 days (Longest)\n  • Morning Run: 14 days\n  • Read 20 mins: 5 days';
-    } else if (trimmed === 'clear') {
-      setHistory([]);
-      setInputValue('');
-      return;
-    } else {
-      response = `sh: command not found: ${trimmed}. Type 'help' for instructions.`;
-    }
-
-    setHistory(prev => [
-      ...prev,
-      { type: 'input', text: cmdText },
-      { type: 'output', text: response }
-    ]);
-    setInputValue('');
+      return habit;
+    }));
   };
+
+  const addPreset = (preset) => {
+    if (habits.some(h => h.name === preset.name)) return;
+    setHabits(prev => [
+      ...prev,
+      {
+        id: Date.now(),
+        ...preset,
+        current: 0,
+        streak: 0
+      }
+    ]);
+  };
+
+  const resetHabits = () => {
+    setHabits(initialHabits);
+  };
+
+  const completedCount = habits.filter(h => h.current === h.target).length;
+  const isAllCompleted = habits.length > 0 && completedCount === habits.length;
 
   return (
     <section className="py-24 px-8 max-w-5xl mx-auto w-full border-t border-white/5">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         
-        {/* Left Side: Terminal Graphic */}
+        {/* Left Side: Interactive Dashboard Mockup */}
         <div className="lg:col-span-7 flex justify-center w-full">
-          <div className="w-full bg-[#030303] border border-white/10 rounded-xl overflow-hidden font-mono text-xs text-neutral-400 flex flex-col shadow-2xl h-72 tech-corners">
+          <div className="w-full glass-card p-6 rounded-2xl flex flex-col shadow-2xl glass-card-stroke relative tech-corners">
             <div className="tech-corner-tl"></div>
             <div className="tech-corner-tr"></div>
             <div className="tech-corner-bl"></div>
             <div className="tech-corner-br"></div>
             
-            {/* Terminal Top bar */}
-            <div className="bg-[#0c0c0c] border-b border-white/5 px-4 py-3 flex items-center gap-2 shrink-0">
-              <div className="w-2.5 h-2.5 rounded-full bg-neutral-800"></div>
-              <div className="w-2.5 h-2.5 rounded-full bg-neutral-800"></div>
-              <div className="w-2.5 h-2.5 rounded-full bg-neutral-800"></div>
-              <span className="text-[10px] text-neutral-600 ml-4 font-semibold">habitforge-sh — zsh</span>
+            {/* Dashboard Header */}
+            <div className="flex justify-between items-center border-b border-white/5 pb-4 mb-6 shrink-0">
+              <div>
+                <h3 className="text-xs font-bold text-on-surface font-mono uppercase tracking-wider">Daily Habits</h3>
+                <p className="text-[10px] text-on-surface-variant font-mono">
+                  {isAllCompleted ? '🎉 All goals checked off today!' : `${completedCount} of ${habits.length} completed`}
+                </p>
+              </div>
+              <button 
+                onClick={resetHabits}
+                className="text-[9px] font-mono font-bold uppercase text-neutral-500 hover:text-primary transition-colors cursor-pointer border border-white/5 bg-white/2 hover:bg-white/5 px-2.5 py-1 rounded"
+              >
+                Reset
+              </button>
             </div>
 
-            {/* Terminal Body */}
-            <div className="p-4 flex-grow overflow-y-auto space-y-3 flex flex-col text-left">
-              {history.map((item, idx) => (
-                <div key={idx} className="whitespace-pre-wrap leading-relaxed">
-                  {item.type === 'input' ? (
-                    <span className="text-white">
-                      <span className="text-neutral-600">$ </span>
-                      {item.text}
-                    </span>
-                  ) : (
-                    <span className="text-neutral-500 font-semibold">{item.text}</span>
-                  )}
+            {/* Habit Stack List */}
+            <div className="space-y-4 max-h-96 overflow-y-auto pr-1">
+              {habits.map((habit) => {
+                const isCompleted = habit.current === habit.target;
+                const percent = Math.round((habit.current / habit.target) * 100);
+
+                return (
+                  <div 
+                    key={habit.id}
+                    className="bg-[#070707] border border-white/5 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all hover:border-white/10"
+                  >
+                    {/* Habit Info & Icon */}
+                    <div className="flex items-center gap-3">
+                      <div className={`w-10 h-10 rounded-lg border flex items-center justify-center text-lg ${habit.color}`}>
+                        {habit.icon}
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-on-surface">{habit.name}</h4>
+                        <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-wide">
+                          {habit.category} • {habit.current}/{habit.target} {habit.unit}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Progress Bar & Actions */}
+                    <div className="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto">
+                      {/* Progress bar */}
+                      <div className="flex items-center gap-2">
+                        <div className="w-20 bg-neutral-900 h-1 rounded-full overflow-hidden">
+                          <div 
+                            className="bg-primary h-full transition-all duration-300"
+                            style={{ width: `${percent}%` }}
+                          />
+                        </div>
+                        <span className="text-[9px] font-mono text-neutral-500">{percent}%</span>
+                      </div>
+
+                      {/* Streak Badge */}
+                      <div className="flex items-center gap-1 text-[11px] font-mono text-neutral-400">
+                        <span>🔥</span>
+                        <span>{habit.streak}d</span>
+                      </div>
+
+                      {/* Complete/Plus Trigger Button */}
+                      {isCompleted ? (
+                        <span className="bg-primary/15 text-primary border border-primary/25 text-[10px] font-bold font-mono px-3 py-1.5 rounded-lg select-none">
+                          ✓ Done
+                        </span>
+                      ) : (
+                        <button
+                          onClick={() => incrementProgress(habit.id)}
+                          className="bg-neutral-900 border border-white/10 hover:border-primary/50 hover:text-primary transition-all duration-200 text-[10px] font-bold font-mono px-3.5 py-1.5 rounded-lg cursor-pointer"
+                        >
+                          + Add
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+
+              {habits.length === 0 && (
+                <div className="text-center py-8 text-neutral-500 font-mono text-xs">
+                  No habits added. Select a preset on the right to start tracking.
                 </div>
-              ))}
+              )}
             </div>
-
-            {/* Input Bar */}
-            <form 
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleCommand(inputValue);
-              }}
-              className="bg-[#070707] border-t border-white/5 p-3 flex items-center gap-2 shrink-0"
-            >
-              <span className="text-neutral-600 font-bold">$</span>
-              <input
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                className="bg-transparent border-none outline-none text-white w-full text-xs font-mono placeholder-neutral-700 focus:ring-0 focus:border-none p-0"
-                placeholder="Type 'help' or check a habit..."
-              />
-            </form>
 
           </div>
         </div>
 
-        {/* Right Side: Copy & Quick Actions */}
+        {/* Right Side: Copy & Quick Presets */}
         <div className="lg:col-span-5 space-y-6 text-left">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10">
             <span className="font-mono text-[9px] font-bold text-on-surface-variant tracking-widest uppercase">
-              Developer-First Speed
+              Frictionless Routine Stacking
             </span>
           </div>
           
           <h2 className="text-3xl font-black text-on-surface font-display tracking-tight">
-            Log habits right <span className="text-primary underline decoration-white/20">from the CLI.</span>
+            Build habits that <span className="text-primary underline decoration-white/20">shape your day.</span>
           </h2>
           
           <p className="text-sm text-on-surface-variant leading-relaxed">
-            Are you tired of clicking around complex menus? HabitForge features a developer command palette. You can review and log your progress without ever taking your hands off the keyboard.
+            HabitForge helps you stay consistent with a calm, clutter-free dashboard. Track daily habits, manage streaks, and build compounding momentum without stressful level-ups or corporate notifications.
           </p>
 
-          {/* Quick command triggers */}
-          <div className="space-y-2 pt-2">
-            <p className="text-[10px] font-mono font-bold uppercase text-neutral-500">Quick Commands to try:</p>
+          {/* Preset buttons */}
+          <div className="space-y-3 pt-2">
+            <p className="text-[10px] font-mono font-bold uppercase text-neutral-500">Quick add habit to test:</p>
             <div className="flex flex-wrap gap-2">
-              {[
-                { cmd: 'help', label: 'Show Help' },
-                { cmd: 'check read', label: '✓ Read Book' },
-                { cmd: 'check code', label: '✓ Commit Code' },
-                { cmd: 'streak', label: 'Show Streaks' }
-              ].map(item => (
+              {presets.map((preset, idx) => (
                 <button
-                  key={item.cmd}
-                  onClick={() => handleCommand(item.cmd)}
+                  key={idx}
+                  onClick={() => addPreset(preset)}
                   className="bg-neutral-900 border border-white/5 text-[11px] font-semibold font-mono text-on-surface hover:border-white/20 px-3 py-1.5 rounded-lg cursor-pointer transition-colors"
                 >
-                  {item.label}
+                  {preset.icon} {preset.name}
                 </button>
               ))}
             </div>

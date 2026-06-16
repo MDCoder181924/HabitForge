@@ -10,7 +10,7 @@ app.use(cors({
 app.use(express.json());
 
 app.use("/" , (req , res)=>{
-    app.send("API Running..")
+    res.send("API Running..")
 })
 
 export default app; 

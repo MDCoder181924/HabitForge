@@ -260,3 +260,9 @@ html, body {
   background-size: 30px 30px;
   background-position: center top;
 }
+
+/* Custom 52-Column Grid for Heatmap */
+.grid-cols-52 {
+  display: grid;
+  grid-template-columns: repeat(52, minmax(0, 1fr));
+}

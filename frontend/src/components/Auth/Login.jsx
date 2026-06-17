@@ -182,12 +182,13 @@ export default function Login() {
               </div>
 
               {/* Submit Button */}
-              <button
+              <Link
+              to="/dashboard"
                 type="submit"
                 className="w-full relative overflow-hidden bg-primary text-on-primary font-bold py-3.5 px-6 rounded-xl transition-all duration-300 shadow-lg shadow-primary/10 hover:shadow-primary/20 active:scale-98 cursor-pointer text-sm font-sans"
               >
                 Access Account
-              </button>
+              </Link>
             </form>
 
             {/* Toggle Footer */}

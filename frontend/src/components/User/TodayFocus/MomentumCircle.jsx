@@ -7,12 +7,7 @@ export default function MomentumCircle({ completedCount, totalCount, percentage 
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
   return (
-    <div className="glass-card glass-card-stroke rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-6 relative overflow-hidden tech-corners h-full">
-      <div className="tech-corner-tl"></div>
-      <div className="tech-corner-tr"></div>
-      <div className="tech-corner-bl"></div>
-      <div className="tech-corner-br"></div>
-
+    <div className="glass-panel inner-glow rounded-xl p-6 flex flex-col sm:flex-row items-center gap-6 relative overflow-hidden h-full">
       <div className="relative w-32 h-32 flex items-center justify-center shrink-0">
         <svg className="w-full h-full -rotate-90">
           <circle 
@@ -25,7 +20,7 @@ export default function MomentumCircle({ completedCount, totalCount, percentage 
             strokeWidth={strokeWidth}
           />
           <circle 
-            className="text-[#4be277] transition-all duration-500" 
+            className="text-primary transition-all duration-500" 
             cx="64" 
             cy="64" 
             fill="transparent" 
@@ -38,23 +33,23 @@ export default function MomentumCircle({ completedCount, totalCount, percentage 
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-2xl font-black text-white font-mono">{percentage}%</span>
+          <span className="text-2xl font-black text-on-surface font-mono">{percentage}%</span>
         </div>
       </div>
       
       <div className="flex-1 space-y-2">
-        <h3 className="text-base font-bold text-white uppercase tracking-wider font-mono">
+        <h3 className="text-base font-bold text-on-surface uppercase tracking-wider">
           Daily Momentum
         </h3>
-        <p className="text-xs text-white/40 font-mono tracking-wider uppercase">
+        <p className="text-xs text-on-surface-variant/70 leading-relaxed">
           Your completion rate is up by 15% compared to last Tuesday. Keep the streak alive!
         </p>
-        <div className="flex gap-1 pt-2">
+        <div className="flex gap-1.5 pt-2">
           {[...Array(totalCount)].map((_, i) => (
             <div 
               key={i} 
               className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
-                i < completedCount ? 'bg-[#4be277] shadow-[0_0_8px_rgba(75,226,119,0.4)]' : 'bg-white/5'
+                i < completedCount ? 'bg-primary shadow-[0_0_8px_rgba(75,226,119,0.4)]' : 'bg-white/5'
               }`}
             />
           ))}

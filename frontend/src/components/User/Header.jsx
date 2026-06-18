@@ -2,51 +2,45 @@ import React from 'react';
 
 export default function Header({ onMenuClick }) {
   return (
-    <header className="h-14 w-full bg-[#050505] border-b border-white/5 flex justify-between items-center px-4 md:px-8 shrink-0 sticky top-0 z-40">
-      {/* Left Search input & Hamburger Menu */}
-      <div className="flex items-center gap-3">
-        {/* Mobile Hamburger menu toggle */}
-        <button 
-          type="button"
-          onClick={onMenuClick}
-          className="md:hidden flex items-center justify-center text-white/60 hover:text-[#4be277] p-1.5 rounded-lg hover:bg-white/5 transition-colors"
-        >
-          <span className="material-symbols-outlined text-xl">
-            menu
-          </span>
-        </button>
-
-        <div className="relative">
-          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-white/30 text-[18px]">
-            search
-          </span>
-          <input 
-            type="text" 
-            placeholder="Search..." 
-            className="bg-[#0c0c0c] border border-white/5 rounded-xl pl-10 pr-4 py-1.5 text-xs font-mono w-32 focus:w-44 sm:w-64 sm:focus:w-72 transition-all duration-300 text-white placeholder:text-white/20 focus:outline-none focus:border-[#4be277]"
-          />
+    <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-outline-variant shrink-0">
+      <div className="flex justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
+        <div className="flex items-center gap-8">
+          {/* Mobile hamburger & title */}
+          <button 
+            onClick={onMenuClick}
+            className="md:hidden text-on-surface-variant hover:text-primary p-1 rounded transition-colors"
+          >
+            <span className="material-symbols-outlined text-[24px]">menu</span>
+          </button>
+          <span className="text-headline-md font-headline-md font-bold text-primary md:hidden">HabitForge</span>
+          
+          <nav className="hidden lg:flex gap-6">
+            <a className="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Features</a>
+            <a className="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">About</a>
+            <a className="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Pricing</a>
+          </nav>
         </div>
-      </div>
 
-      {/* Right Tools/Avatar */}
-      <div className="flex items-center gap-4">
-        <button 
-          type="button"
-          className="text-white/50 hover:text-[#4be277] transition-colors p-1.5 rounded-lg hover:bg-white/[0.02]"
-        >
-          <span className="material-symbols-outlined text-lg">
-            notifications
-          </span>
-        </button>
-        
-        <div className="h-[18px] w-[1px] bg-white/10"></div>
-        
-        <div className="h-8 w-8 rounded-full border border-white/10 overflow-hidden bg-white/5">
-          <img 
-            alt="User Avatar" 
-            className="w-full h-full object-cover" 
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQmp3jlP2ANiS1kDVM3AEhFNM0pYmbcrskYBoUGDssdUOYOVKfTcRD8-KJf5Sf4qP42xv_tnGYaNvfEmY-B3oZtEiOA9Aqhv30qspSZnIxaKs-0KMgLoe6JmM9_on4msYyiVCIpUUu84oKG9_zRsaTKxG4j5YIfIbbGAVFkHNw3T4Zn3Cb1qyAdkrNYp-PZOT_GW3_x-gr4UwHa_nY3HdbnP8n-CGE-c7xITK0foCtKLJFHaabYqypOgCpPm-T_ng3YyRgBZ_j1GI"
-          />
+        <div className="flex items-center gap-4">
+          <div className="relative group hidden sm:block">
+            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+            <input 
+              className="bg-surface-container border border-outline-variant rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-64 text-on-surface placeholder:text-on-surface-variant/40" 
+              placeholder="Search habits..." 
+              type="text"
+            />
+          </div>
+          <div className="flex items-center gap-3 ml-4 border-l border-outline-variant pl-4">
+            <div className="text-right hidden sm:block">
+              <p className="text-sm font-bold text-on-surface">Alex Rivers</p>
+              <p className="text-xs text-primary">Pro Member</p>
+            </div>
+            <img 
+              alt="User Profile" 
+              className="w-10 h-10 rounded-full border-2 border-primary/20 p-0.5" 
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCa2tRz2Qk8Ix8vzw8TgbJRhEAqRTC_UEj9Dslj3ZUj8q2MKHT7zwRL6ZYxkVUHvrXJXyE9FcUPCU3njeQz1qTuC32ZLCo6OTDZkYGM7eFzCDeq4e7BQNJvnN0fne7JBM1QdrA9mPwruE9qsHQYjov9DwMqzIxzEG9Yw1atzTygGPOrKKqKgVbG8DEfn0ulGj15W_PgdF4d-TyE_6qvMe_uR_E6Lz80q3LKAj-nBKOkxKr7CkBggGSJgCbqrhA1mpMhE9_IN8ZObiU"
+            />
+          </div>
         </div>
       </div>
     </header>

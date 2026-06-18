@@ -2,77 +2,53 @@ import React from 'react';
 
 export default function SidebarInsights() {
   return (
-    <div className="flex flex-col gap-6">
-      {/* Weekly Goal Progress Card */}
-      <div className="glass-card glass-card-stroke p-6 rounded-2xl relative tech-corners">
-        <div className="tech-corner-tl"></div>
-        <div className="tech-corner-tr"></div>
-        <div className="tech-corner-bl"></div>
-        <div className="tech-corner-br"></div>
-
-        <h3 className="text-xs font-bold text-white uppercase tracking-wider font-mono mb-4">
-          Weekly Goal
-        </h3>
-
-        <div className="relative pt-1">
-          <div className="flex mb-3 items-center justify-between">
-            <div>
-              <span className="text-[9px] font-bold font-mono py-1 px-2.5 uppercase rounded-full text-[#4be277] bg-[#4be277]/10 border border-[#4be277]/20 tracking-wider">
-                SUCCESS
-              </span>
-            </div>
-            <div className="text-right">
-              <span className="text-xs font-bold font-mono text-[#4be277]">
-                75%
-              </span>
-            </div>
-          </div>
-          
-          <div className="overflow-hidden h-1.5 mb-4 rounded bg-white/5 relative">
-            <div 
-              className="h-full rounded bg-[#4be277] shadow-[0_0_8px_rgba(75,226,119,0.3)] transition-all duration-500" 
-              style={{ width: '75%' }}
-            ></div>
-          </div>
+    <div className="space-y-8">
+      {/* Weekly Completion Rate */}
+      <section className="glass-panel inner-glow p-6 rounded-xl">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-sm font-bold text-on-surface">Weekly Completion Rate</h3>
+          <span className="text-primary font-bold text-sm">84%</span>
         </div>
-
-        <p className="text-xs text-white/50 leading-relaxed font-sans mt-2">
-          32 habits completed this week. You are on track to beat your average of 38.
-        </p>
-      </div>
-
-      {/* AI Forge Insights Card */}
-      <div className="glass-card glass-card-stroke p-6 rounded-2xl relative tech-corners overflow-hidden group">
-        <div className="tech-corner-tl"></div>
-        <div className="tech-corner-tr"></div>
-        <div className="tech-corner-bl"></div>
-        <div className="tech-corner-br"></div>
-
-        {/* Decorative background brain icon */}
-        <div className="absolute top-0 right-0 p-3 opacity-[0.03] group-hover:opacity-[0.06] transition-all duration-300 pointer-events-none">
-          <span className="material-symbols-outlined text-[72px] text-[#4be277] font-bold">
-            psychology
-          </span>
+        
+        {/* Weekly Bar Chart */}
+        <div className="h-32 flex items-end justify-between gap-2 relative">
+          <div className="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-5">
+            <div className="border-t border-outline-variant w-full"></div>
+            <div className="border-t border-outline-variant w-full"></div>
+            <div className="border-t border-outline-variant w-full"></div>
+          </div>
+          <div className="w-full bg-primary/10 rounded-t h-[60%] hover:bg-primary/30 transition-all cursor-pointer relative group">
+            <div className="hidden group-hover:block absolute -top-8 left-1/2 -translate-x-1/2 bg-surface text-[10px] px-2 py-1 rounded border border-outline-variant z-10">Mon</div>
+          </div>
+          <div className="w-full bg-primary/10 rounded-t h-[80%] hover:bg-primary/30 transition-all cursor-pointer"></div>
+          <div className="w-full bg-primary/10 rounded-t h-[40%] hover:bg-primary/30 transition-all cursor-pointer"></div>
+          <div className="w-full bg-primary/20 rounded-t h-[95%] hover:bg-primary/30 transition-all cursor-pointer border-t-2 border-primary"></div>
+          <div className="w-full bg-primary/10 rounded-t h-[70%] hover:bg-primary/30 transition-all cursor-pointer"></div>
+          <div className="w-full bg-primary/10 rounded-t h-[85%] hover:bg-primary/30 transition-all cursor-pointer"></div>
+          <div className="w-full bg-primary/5 rounded-t h-[10%] hover:bg-primary/30 transition-all cursor-pointer"></div>
         </div>
+        <div className="flex justify-between mt-2 text-[10px] text-on-surface-variant font-medium">
+          <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+        </div>
+      </section>
 
-        <h3 className="text-xs font-bold text-white uppercase tracking-wider font-mono mb-3">
-          Forge Insight
-        </h3>
 
-        <p className="text-xs text-white/80 leading-relaxed italic mb-4 font-sans">
-          "Your consistency with 'Deep Work' is 40% higher on Tuesdays. Schedule your most difficult tasks for tomorrow morning."
-        </p>
-
-        <a 
-          href="#/analytics" 
-          className="text-[#4be277] font-mono text-[9px] font-bold uppercase tracking-widest flex items-center gap-1 hover:underline cursor-pointer transition-colors"
-        >
-          View Full Report
-          <span className="material-symbols-outlined text-[12px] font-black">
-            arrow_forward
-          </span>
-        </a>
-      </div>
+      {/* Forge Pro Upsell Card */}
+      <section className="relative rounded-xl overflow-hidden p-6 group h-[180px] flex flex-col justify-end">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/25 to-secondary/25 z-10"></div>
+        <img 
+          className="absolute inset-0 w-full h-full object-cover opacity-30 grayscale group-hover:scale-105 transition-transform duration-700" 
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfn9vnVAgJRdvFDDY_hV1cure7q8x50mESecHigUds2adJch-lLUR-XMZMW0MUCjXhARcIG5i8piAXuCkYDLKLfA7dCSwDd-SMmHhkesNe8G3c19RxBCt0zd8ul9BLyEFCBfj4pC7-gHOajZO7U_g73yJz1XNCa5P5m3z8qDrQUlhhWqr0JPuV1d3S2xMxL7DBulUWlasaMg_TcNxZUC_mgauA2_9alOKm0f9RGZwyk12Vc7YVT5rUI9EfTu8lbp3peBvi5waRflA"
+          alt="Forge Pro Decor"
+        />
+        <div className="relative z-20">
+          <h3 className="text-lg font-black text-on-surface italic uppercase tracking-wider">FORGE PRO</h3>
+          <p className="text-xs text-on-surface mt-1 mb-3">Unlock advanced analytics and habit collaboration features.</p>
+          <button className="bg-primary text-on-primary text-[10px] font-black py-2 px-4 rounded-lg uppercase tracking-widest shadow-lg shadow-primary/20 hover:brightness-110 transition-all cursor-pointer">
+            Upgrade Now
+          </button>
+        </div>
+      </section>
     </div>
   );
 }

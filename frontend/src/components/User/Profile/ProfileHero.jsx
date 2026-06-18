@@ -2,45 +2,36 @@ import React from 'react';
 
 export default function ProfileHero() {
   return (
-    <section className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-      <div className="lg:col-span-2 space-y-4">
-        <div className="flex items-end gap-4">
-          <div className="w-24 h-24 bg-white/5 border border-white/5 rounded-2xl p-2 shrink-0">
-            <img 
-              alt="Profile Avatar" 
-              className="w-full h-full rounded-xl object-cover" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuADaqsibVG1FZWMK__Cu7hjEhP50OL66WmlfG8IdWsuQ_h7mItguD-HcEQg2c28Pej5c4ET5zIuz0XGSvggF4u7fdgmR_KSu9HASna6ZEptIGYX-CTWd5uHAN4VucjfuEwGuPTBKu42l_tfxi320p0L9yUftF2coIEeiU2bEDdMNiEwEf_z7D_hyiXN91P9_NPfUvE8FJEXnnit70_BW1IbRffwdSLS1OAaOA0GTdHUtu24GqeMdk3xt-omX509Ca4x4xs8wMg467c"
-            />
-          </div>
-          <div className="pb-1">
-            <h2 className="text-2xl font-bold tracking-tight text-white font-display">DevZero Rivera</h2>
-            <p className="text-xs font-mono text-[#4be277] flex items-center gap-1.5 mt-1 uppercase tracking-wider">
-              <span className="material-symbols-outlined text-sm">terminal</span>
-              Senior Systems Architect
-            </p>
-          </div>
+    <div className="glass-panel inner-glow rounded-xl p-8 flex flex-col md:flex-row gap-8 items-center mb-12">
+      <div className="w-32 h-32 rounded-xl bg-surface-container-highest/10 border border-outline-variant/30 p-2 shrink-0">
+        <img 
+          alt="Elena Rostova Avatar" 
+          className="w-full h-full rounded-lg object-cover" 
+          src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80"
+        />
+      </div>
+      <div className="flex-grow text-center md:text-left">
+        <div className="flex flex-col md:flex-row md:items-center gap-3 justify-center md:justify-start mb-2">
+          <h2 className="text-3xl font-bold tracking-tight text-on-surface font-display">Elena Rostova</h2>
+          <span className="px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 text-[10px] font-bold uppercase tracking-wider">
+            Elite Tier
+          </span>
         </div>
-        <p className="text-xs leading-relaxed text-white/50 font-mono tracking-wider uppercase max-w-xl">
+        <p className="text-sm text-on-surface-variant mb-4">Member since January 2024</p>
+        <p className="text-xs text-on-surface-variant/75 max-w-xl leading-relaxed">
           Optimizing biological runtime through systematic iterative improvement. Focus: Low-latency cognition and high-availability discipline.
         </p>
       </div>
-      
-      {/* Stats Row */}
-      <div className="glass-card glass-card-stroke p-4 grid grid-cols-2 gap-3 rounded-2xl relative tech-corners font-mono">
-        <div className="tech-corner-tl"></div>
-        <div className="tech-corner-tr"></div>
-        <div className="tech-corner-bl"></div>
-        <div className="tech-corner-br"></div>
-        
-        <div className="p-3 bg-white/[0.01] rounded-xl border border-white/5">
-          <p className="text-[9px] font-bold text-white/30 uppercase tracking-widest">CURRENT STREAK</p>
-          <p className="text-lg font-black text-[#4be277] mt-1">124 Days</p>
+      <div className="grid grid-cols-2 gap-4 shrink-0 w-full md:w-auto">
+        <div className="bg-surface-container-highest/20 border border-outline-variant/30 p-4 rounded-xl text-center md:text-left min-w-[120px]">
+          <p className="text-[9px] text-on-surface-variant/50 uppercase tracking-wider font-bold mb-1">Consistency</p>
+          <p className="text-xl font-bold text-primary font-mono">98.2%</p>
         </div>
-        <div className="p-3 bg-white/[0.01] rounded-xl border border-white/5">
-          <p className="text-[9px] font-bold text-white/30 uppercase tracking-widest">COMPLETION</p>
-          <p className="text-lg font-black text-[#4be277] mt-1">98.2%</p>
+        <div className="bg-surface-container-highest/20 border border-outline-variant/30 p-4 rounded-xl text-center md:text-left min-w-[120px]">
+          <p className="text-[9px] text-on-surface-variant/50 uppercase tracking-wider font-bold mb-1">Active Streak</p>
+          <p className="text-xl font-bold text-primary font-mono">124 Days</p>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

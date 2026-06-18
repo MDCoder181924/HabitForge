@@ -14,158 +14,117 @@ export default function CreateHabitForm({
   const navigate = useNavigate();
 
   const colors = [
-    { value: '#4be277', label: 'Primary Green' },
-    { value: '#ffb47f', label: 'Coral' },
+    { value: '#4be277', label: 'Primary' },
     { value: '#3b82f6', label: 'Blue' },
     { value: '#a855f7', label: 'Purple' },
+    { value: '#f59e0b', label: 'Amber' },
     { value: '#ef4444', label: 'Red' }
   ];
 
   return (
     <form 
       onSubmit={handleSubmit}
-      className="w-full bg-[#050505] border border-white/5 rounded-2xl shadow-2xl overflow-hidden flex flex-col glass-card"
+      className="glass-panel inner-glow w-full rounded-2xl overflow-hidden animate-fade-in"
     >
-      {/* Header */}
-      <header className="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-white/[0.01]">
-        <div className="flex items-center gap-2">
-          <span className="material-symbols-outlined text-[#4be277] text-xl">add_circle</span>
-          <h1 className="text-sm font-bold text-white uppercase tracking-wider font-mono">Create New Habit</h1>
-        </div>
-        <button 
-          type="button"
-          onClick={() => navigate('/habits')}
-          className="p-1 hover:bg-white/5 rounded-lg text-white/40 hover:text-white transition-colors"
-        >
-          <span className="material-symbols-outlined text-base">close</span>
-        </button>
-      </header>
-
-      {/* Form Content */}
-      <div className="p-6 space-y-6">
-        {/* ID/Metadata Section */}
-        <div className="flex items-center justify-between font-mono text-[9px] text-white/30 uppercase tracking-widest">
-          <div className="flex items-center gap-1">
-            <span>HABIT_ID:</span>
-            <span className="text-[#4be277] font-bold">hf-uuid-7734</span>
+      <div className="p-8 space-y-8">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-on-surface mb-1">New Habit</h2>
+            <p className="text-sm text-on-surface-variant">Define your next step toward peak performance.</p>
           </div>
-          <div className="flex items-center gap-1">
-            <span>TIMESTAMP:</span>
-            <span>{new Date().toISOString().slice(0, 16).replace('T', '.')}</span>
-          </div>
+          <button 
+            type="button"
+            onClick={() => navigate('/habits')}
+            className="text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer"
+          >
+            <span className="material-symbols-outlined" data-icon="close">close</span>
+          </button>
         </div>
 
-        {/* Input Group: Habit Name */}
-        <div className="space-y-2">
-          <label htmlFor="habit-name" className="text-[10px] font-bold text-white/45 uppercase tracking-widest font-mono">
-            Habit Name
-          </label>
-          <div className="relative group">
+        <div className="space-y-6">
+          {/* Habit Name */}
+          <div className="space-y-2">
+            <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block">HABIT NAME</label>
             <input 
-              id="habit-name"
-              type="text"
               required
-              placeholder="e.g. Morning Deep Work"
-              className="w-full bg-[#0c0c0c] border border-white/5 p-3.5 focus:border-[#4be277] focus:ring-0 text-white font-mono text-xs transition-all rounded-xl placeholder:text-white/20"
+              className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 transition-all focus:border-primary/50 text-sm" 
+              placeholder="e.g. Morning Meditation" 
+              type="text"
               value={habitName}
               onChange={(e) => setHabitName(e.target.value)}
             />
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-20 group-focus-within:opacity-100 transition-opacity pointer-events-none">
-              <span className="text-[9px] font-mono text-[#4be277] tracking-widest">INPUT_ACTIVE</span>
-            </div>
           </div>
-        </div>
-
-        {/* Input Group: Description */}
-        <div className="space-y-2">
-          <label htmlFor="habit-desc" className="text-[10px] font-bold text-white/45 uppercase tracking-widest font-mono">
-            Description
-          </label>
-          <textarea 
-            id="habit-desc"
-            placeholder="Define the success criteria for this habit sequence..."
-            rows="3"
-            className="w-full bg-[#0c0c0c] border border-white/5 p-3.5 focus:border-[#4be277] focus:ring-0 text-white font-mono text-xs transition-all rounded-xl resize-none placeholder:text-white/20"
-            value={habitDesc}
-            onChange={(e) => setHabitDesc(e.target.value)}
-          />
-        </div>
-
-        {/* Bento Grid Layout for Settings */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* Category Dropdown */}
+ 
+          {/* Description */}
           <div className="space-y-2">
-            <label htmlFor="category" className="text-[10px] font-bold text-white/45 uppercase tracking-widest font-mono">
-              Category
-            </label>
-            <div className="relative">
-              <select 
-                id="category"
-                className="w-full appearance-none bg-[#0c0c0c] border border-white/5 p-3.5 focus:border-[#4be277] focus:ring-0 text-white text-xs transition-all rounded-xl cursor-pointer font-mono"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              >
-                <option>Productivity</option>
-                <option>Health & Fitness</option>
-                <option>Learning</option>
-                <option>Mindfulness</option>
-                <option>Finance</option>
-              </select>
-              <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-white/40">
-                expand_more
-              </span>
+            <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block">DESCRIPTION</label>
+            <textarea 
+              className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 transition-all focus:border-primary/50 resize-none text-sm" 
+              placeholder="Describe the cue and the reward..." 
+              rows="3"
+              value={habitDesc}
+              onChange={(e) => setHabitDesc(e.target.value)}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Category Dropdown */}
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block">CATEGORY</label>
+              <div className="relative">
+                <select 
+                  className="w-full appearance-none bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-on-surface text-sm cursor-pointer transition-all focus:border-primary/50 font-sans"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                >
+                  <option value="Health" className="bg-surface-container text-on-surface">Health & Fitness</option>
+                  <option value="Mindset" className="bg-surface-container text-on-surface">Mindset</option>
+                  <option value="Productivity" className="bg-surface-container text-on-surface">Productivity</option>
+                  <option value="Social" className="bg-surface-container text-on-surface">Social</option>
+                </select>
+                <span className="material-symbols-outlined absolute right-4 top-3 pointer-events-none text-on-surface-variant" data-icon="expand_more">expand_more</span>
+              </div>
+            </div>
+
+            {/* Frequency Toggle */}
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block">FREQUENCY</label>
+              <div className="flex bg-surface-container p-1 rounded-xl border border-outline-variant h-[50px] items-center">
+                <button 
+                  className={`flex-1 rounded-lg text-sm py-1.5 transition-all cursor-pointer ${
+                    frequency === 'DAILY' ? 'bg-surface-lowest text-on-surface font-bold shadow-sm' : 'text-on-surface-variant hover:text-on-surface'
+                  }`}
+                  type="button"
+                  onClick={() => setFrequency('DAILY')}
+                >
+                  Daily
+                </button>
+                <button 
+                  className={`flex-1 rounded-lg text-sm py-1.5 transition-all cursor-pointer ${
+                    frequency === 'WEEKLY' ? 'bg-surface-lowest text-on-surface font-bold shadow-sm' : 'text-on-surface-variant hover:text-on-surface'
+                  }`}
+                  type="button"
+                  onClick={() => setFrequency('WEEKLY')}
+                >
+                  Weekly
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* Frequency */}
+          {/* Color Picker */}
           <div className="space-y-2">
-            <label className="text-[10px] font-bold text-white/45 uppercase tracking-widest font-mono">
-              Frequency
-            </label>
-            <div className="flex bg-[#0c0c0c] border border-white/5 p-1 rounded-xl h-[46px] items-center">
-              <button 
-                type="button"
-                onClick={() => setFrequency('DAILY')}
-                className={`flex-1 text-center font-mono text-[10px] py-1.5 uppercase rounded-lg transition-all ${
-                  frequency === 'DAILY' 
-                    ? 'bg-white/[0.03] border border-white/10 text-[#4be277] font-bold' 
-                    : 'text-white/40 hover:text-white'
-                }`}
-              >
-                DAILY
-              </button>
-              <button 
-                type="button"
-                onClick={() => setFrequency('WEEKLY')}
-                className={`flex-1 text-center font-mono text-[10px] py-1.5 uppercase rounded-lg transition-all ${
-                  frequency === 'WEEKLY' 
-                    ? 'bg-white/[0.03] border border-white/10 text-[#4be277] font-bold' 
-                    : 'text-white/40 hover:text-white'
-                }`}
-              >
-                WEEKLY
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Color Theme Picker */}
-        <div className="space-y-2">
-          <label className="text-[10px] font-bold text-white/45 uppercase tracking-widest font-mono">
-            Visual Identity
-          </label>
-          <div className="bg-[#0c0c0c] border border-white/5 p-4 rounded-xl flex items-center justify-between gap-4">
-            <span className="text-[11px] font-mono text-white/40 uppercase tracking-wide">Select accent color</span>
-            <div className="flex gap-2.5">
+            <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block">COLOR THEME</label>
+            <div className="flex flex-wrap gap-4 p-1">
               {colors.map((color) => (
                 <button
                   key={color.value}
                   type="button"
                   onClick={() => setAccentColor(color.value)}
-                  className={`w-6 h-6 rounded-md border transition-all duration-150 hover:scale-110 active:scale-95 ${
+                  className={`w-8 h-8 rounded-full transition-all cursor-pointer ${
                     accentColor === color.value 
-                      ? 'border-[#4be277] scale-110 shadow-[0_0_8px_rgba(75,226,119,0.3)]' 
-                      : 'border-transparent'
+                      ? 'scale-110 ring-2 ring-primary ring-offset-4 ring-offset-background' 
+                      : 'hover:scale-110'
                   }`}
                   style={{ backgroundColor: color.value }}
                   title={color.label}
@@ -173,68 +132,67 @@ export default function CreateHabitForm({
               ))}
             </div>
           </div>
-        </div>
 
-        {/* Precision Toggles */}
-        <div className="space-y-4 pt-4 border-t border-white/5">
-          <div 
-            onClick={() => setPrecisionReminders(!precisionReminders)}
-            className="flex items-center justify-between group cursor-pointer gap-4"
-          >
-            <div className="flex flex-col">
-              <span className="text-xs font-bold text-white font-mono uppercase tracking-wider">Precision Reminders</span>
-              <span className="text-[11px] text-white/40 mt-0.5">Notify via CLI/Push 5 min before target</span>
-            </div>
-            <div className="relative inline-flex items-center cursor-pointer shrink-0">
-              <div className={`w-9 h-5 bg-white/5 rounded-full relative transition-all ${precisionReminders ? 'bg-[#4be277]/10' : ''}`}>
-                <div className={`absolute top-[3px] w-3.5 h-3.5 rounded-full transition-all ${
-                  precisionReminders 
-                    ? 'right-[3px] bg-[#4be277] shadow-[0_0_6px_rgba(75,226,119,0.3)]' 
-                    : 'left-[3px] bg-white/20'
-                }`} />
+          {/* Toggles */}
+          <div className="space-y-4 pt-4 border-t border-outline-variant">
+            <div 
+              onClick={() => setPrecisionReminders(!precisionReminders)}
+              className="flex items-center justify-between group cursor-pointer gap-4"
+            >
+              <div className="flex flex-col">
+                <span className="text-xs font-bold text-on-surface uppercase tracking-wider">Precision Reminders</span>
+                <span className="text-[11px] text-on-surface-variant mt-0.5">Notify via CLI/Push 5 min before target</span>
               </div>
+              <label className="relative inline-flex items-center cursor-pointer shrink-0 pointer-events-none">
+                <input 
+                  type="checkbox" 
+                  checked={precisionReminders} 
+                  onChange={() => {}}
+                  className="sr-only peer"
+                />
+                <div className="w-12 h-6 bg-outline-variant/30 rounded-full peer peer-checked:after:translate-x-6 after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-outline after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary peer-checked:after:bg-on-primary" />
+              </label>
+            </div>
+            
+            <div 
+              onClick={() => setPublicApi(!publicApi)}
+              className="flex items-center justify-between group cursor-pointer gap-4"
+            >
+              <div className="flex flex-col">
+                <span className="text-xs font-bold text-on-surface uppercase tracking-wider">Public API Access</span>
+                <span className="text-[11px] text-on-surface-variant mt-0.5">Expose progress to habit-bridge integrations</span>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer shrink-0 pointer-events-none">
+                <input 
+                  type="checkbox" 
+                  checked={publicApi} 
+                  onChange={() => {}}
+                  className="sr-only peer"
+                />
+                <div className="w-12 h-6 bg-outline-variant/30 rounded-full peer peer-checked:after:translate-x-6 after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-outline after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary peer-checked:after:bg-on-primary" />
+              </label>
             </div>
           </div>
-          
-          <div 
-            onClick={() => setPublicApi(!publicApi)}
-            className={`flex items-center justify-between group cursor-pointer gap-4 transition-opacity ${!publicApi ? 'opacity-60 hover:opacity-100' : ''}`}
-          >
-            <div className="flex flex-col">
-              <span className="text-xs font-bold text-white font-mono uppercase tracking-wider">Public API Access</span>
-              <span className="text-[11px] text-white/40 mt-0.5">Expose progress to habit-bridge integrations</span>
-            </div>
-            <div className="relative inline-flex items-center cursor-pointer shrink-0">
-              <div className={`w-9 h-5 bg-white/5 rounded-full relative transition-all ${publicApi ? 'bg-[#4be277]/10' : ''}`}>
-                <div className={`absolute top-[3px] w-3.5 h-3.5 rounded-full transition-all ${
-                  publicApi 
-                    ? 'right-[3px] bg-[#4be277] shadow-[0_0_6px_rgba(75,226,119,0.3)]' 
-                    : 'left-[3px] bg-white/20'
-                }`} />
-              </div>
-            </div>
+
+          {/* Action Buttons */}
+          <div className="pt-4 flex items-center gap-4">
+            <button 
+              className="flex-1 px-6 py-4 rounded-xl border border-outline-variant text-on-surface font-bold hover:bg-surface-container transition-all cursor-pointer text-sm" 
+              type="button"
+              onClick={() => navigate('/habits')}
+            >
+              Cancel
+            </button>
+            <button 
+              className="flex-[2] px-6 py-4 rounded-xl bg-primary text-on-primary font-bold hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer text-sm" 
+              type="submit"
+            >
+              <span className="material-symbols-outlined" data-icon="check_circle" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+              Create Habit
+            </button>
           </div>
         </div>
       </div>
-
-      {/* Footer Actions */}
-      <footer className="px-6 py-4 border-t border-white/5 bg-white/[0.01] flex items-center justify-between">
-        <button 
-          type="button"
-          onClick={() => navigate('/habits')}
-          className="font-mono text-[9px] tracking-widest uppercase text-white/40 hover:text-white transition-colors flex items-center gap-1.5"
-        >
-          <span className="material-symbols-outlined text-sm">keyboard_backspace</span>
-          DISCARD
-        </button>
-        <button 
-          type="submit"
-          className="bg-[#4be277] text-black font-bold font-mono text-[10px] tracking-wider uppercase px-5 py-2.5 rounded-xl hover:opacity-90 active:scale-95 transition-all flex items-center gap-1.5"
-        >
-          INITIALIZE_HABIT
-          <span className="material-symbols-outlined text-sm">terminal</span>
-        </button>
-      </footer>
     </form>
   );
 }

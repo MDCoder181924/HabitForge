@@ -1,35 +1,29 @@
 import React from 'react';
 
 export default function AnalyticsHeader({ timeframe, setTimeframe }) {
+  const tabs = ['7 Days', '30 Days', '90 Days', '1 Year'];
+
   return (
-    <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/5 pb-4">
+    <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
       <div>
-        <h2 className="text-2xl font-bold tracking-tight text-white font-display">Performance Insights</h2>
-        <p className="text-xs text-white/40 font-mono tracking-wider mt-1 uppercase">
-          Analyze your behavioral patterns and consistency metrics.
-        </p>
+        <h2 className="text-3xl font-bold tracking-tight text-on-surface font-display mb-2">Performance Analytics</h2>
+        <p className="text-base text-on-surface-variant">Deep insights into your behavioral patterns and consistency metrics.</p>
       </div>
-      <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end shrink-0">
-        <div className="flex bg-[#0a0a0a] rounded-xl p-1 border border-white/5 font-mono">
-          {['7 Days', '30 Days', 'Year'].map((t) => (
-            <button
-              key={t}
-              onClick={() => setTimeframe(t)}
-              className={`px-4 py-1.5 text-[10px] tracking-wider uppercase rounded-lg transition-all ${
-                timeframe === t 
-                  ? 'bg-white/[0.03] border border-white/10 text-[#4be277]' 
-                  : 'text-white/40 hover:text-white'
-              }`}
-            >
-              {t}
-            </button>
-          ))}
-        </div>
-        <button className="bg-[#0a0a0a] border border-white/5 text-white/80 p-2.5 rounded-xl hover:bg-white/5 transition-all flex items-center gap-1.5 text-xs font-mono tracking-wider uppercase">
-          <span className="material-symbols-outlined text-base">ios_share</span>
-          EXPORT
-        </button>
+      <div className="flex flex-wrap gap-2 shrink-0">
+        {tabs.map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setTimeframe(tab)}
+            className={`px-4 py-2 rounded-lg text-xs font-semibold tracking-wider transition-all cursor-pointer ${
+              timeframe === tab
+                ? 'bg-primary text-on-primary'
+                : 'bg-surface-container text-on-surface hover:bg-surface-variant'
+            }`}
+          >
+            {tab}
+          </button>
+        ))}
       </div>
-    </div>
+    </header>
   );
 }

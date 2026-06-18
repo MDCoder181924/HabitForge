@@ -3,20 +3,20 @@ import React from 'react';
 export default function MonthlyGrid({ viewMode, days, selectedDay, setSelectedDay }) {
   if (viewMode === 'Grid') {
     return (
-      <div className="grid grid-cols-7 gap-px bg-white/5 border border-white/5 rounded-2xl overflow-hidden">
+      <div className="grid grid-cols-7 gap-[1px] bg-outline-variant/30 rounded-xl overflow-hidden mb-12">
         {/* Day Headers */}
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
-          <div key={d} className="bg-[#050505] py-3 text-center border-b border-white/5">
-            <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest font-mono">
+          <div key={d} className="bg-surface-container-low py-4 text-center">
+            <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">
               {d}
             </span>
           </div>
         ))}
         
-        {/* Empty start slots */}
+        {/* Empty start slots for offset */}
         {[25, 26, 27, 28, 29, 30, 31].map((prevDay) => (
-          <div key={`prev-${prevDay}`} className="bg-black/40 p-4 min-h-[90px] opacity-10 font-mono text-xs">
-            {prevDay}
+          <div key={`prev-${prevDay}`} className="p-4 bg-surface-container-lowest min-h-[120px] flex flex-col justify-between opacity-30">
+            <span className="text-xs text-on-surface-variant font-mono">{prevDay}</span>
           </div>
         ))}
 
@@ -24,41 +24,43 @@ export default function MonthlyGrid({ viewMode, days, selectedDay, setSelectedDa
         {days.map((d) => {
           const isSelected = d.day === selectedDay;
           const completedAll = d.completed === d.total && d.total > 0;
+          const percentage = d.total > 0 ? Math.round((d.completed / d.total) * 100) : 0;
+          
           return (
             <div 
               key={d.day}
               onClick={() => setSelectedDay(d.day)}
-              className={`p-4 min-h-[95px] flex flex-col justify-between transition-all duration-150 cursor-pointer group relative ${
+              className={`p-4 min-h-[120px] flex flex-col justify-between transition-colors cursor-pointer relative ${
                 isSelected 
-                  ? 'bg-white/[0.03] border border-[#4be277]/50 z-10' 
-                  : 'bg-[#050505]/40 hover:bg-white/[0.01]'
+                  ? 'bg-surface-container border-2 border-primary z-10' 
+                  : 'bg-surface-container-lowest hover:bg-surface-container-low'
               }`}
             >
-              <span className={`font-mono text-xs font-bold transition-all ${
-                isSelected 
-                  ? 'text-[#4be277]' 
-                  : 'text-white/40 group-hover:text-[#4be277]'
+              <span className={`text-xs font-mono font-bold ${
+                isSelected ? 'text-primary' : 'text-on-surface'
               }`}>
                 {d.day < 10 ? `0${d.day}` : d.day}
               </span>
               
-              <div className="flex flex-wrap gap-1 mt-4">
-                {[...Array(d.total)].map((_, idx) => (
-                  <div 
-                    key={idx}
-                    className={`w-2 h-2 rounded-full ${
-                      idx < d.completed 
-                        ? 'bg-[#4be277] shadow-[0_0_6px_rgba(75,226,119,0.3)]' 
-                        : 'bg-white/5'
-                    }`}
-                  />
-                ))}
-              </div>
-
-              {completedAll && (
-                <div className="absolute bottom-2 right-2 text-[#4be277]/60">
-                  <span className="material-symbols-outlined text-[14px]">check_circle</span>
+              {d.total > 0 ? (
+                <div className="flex flex-col gap-1.5 mt-4">
+                  <div className={`flex items-center justify-between text-[10px] font-bold uppercase tracking-wider ${
+                    completedAll ? 'text-primary' : 'text-on-surface-variant/80'
+                  }`}>
+                    <span>{d.completed}/{d.total} Done</span>
+                    {completedAll && (
+                      <span className="material-symbols-outlined text-[14px]" data-icon="check">check</span>
+                    )}
+                  </div>
+                  <div className="w-full bg-outline-variant/30 h-1 rounded-full overflow-hidden">
+                    <div 
+                      className={`h-full transition-all duration-300 ${completedAll ? 'bg-primary' : 'bg-primary/50'}`}
+                      style={{ width: `${percentage}%` }}
+                    />
+                  </div>
                 </div>
+              ) : (
+                <span className="text-[10px] text-on-surface-variant/30 uppercase font-mono mt-auto block">Rest</span>
               )}
             </div>
           );
@@ -67,38 +69,39 @@ export default function MonthlyGrid({ viewMode, days, selectedDay, setSelectedDa
     );
   }
 
+  // List view mode
   return (
-    <div className="space-y-2">
-      {days.map((d) => (
-        <div 
-          key={d.day}
-          onClick={() => setSelectedDay(d.day)}
-          className={`p-4 rounded-xl border flex justify-between items-center cursor-pointer transition-all ${
-            d.day === selectedDay 
-              ? 'bg-white/[0.03] border-[#4be277]/40' 
-              : 'bg-[#050505] border-white/5 hover:border-white/10'
-          }`}
-        >
-          <div className="flex items-center gap-4">
-            <span className="font-mono text-sm font-bold text-[#4be277]">
-              Day {d.day < 10 ? `0${d.day}` : d.day}
-            </span>
-            <span className="text-xs text-white/55">
-              {d.completed} of {d.total} habits completed
-            </span>
-          </div>
-          <div className="flex gap-1">
-            {[...Array(d.total)].map((_, idx) => (
+    <div className="space-y-3 mb-12">
+      {days.map((d) => {
+        const isSelected = d.day === selectedDay;
+        const percentage = d.total > 0 ? Math.round((d.completed / d.total) * 100) : 0;
+        return (
+          <div 
+            key={d.day}
+            onClick={() => setSelectedDay(d.day)}
+            className={`p-4 rounded-xl border flex justify-between items-center cursor-pointer transition-all ${
+              isSelected 
+                ? 'bg-surface-container border-primary' 
+                : 'bg-surface-container-lowest border-outline-variant/30 hover:border-outline-variant'
+            }`}
+          >
+            <div className="flex items-center gap-4">
+              <span className="font-mono text-sm font-bold text-primary">
+                Day {d.day < 10 ? `0${d.day}` : d.day}
+              </span>
+              <span className="text-xs text-on-surface-variant">
+                {d.completed} of {d.total} habits completed ({percentage}%)
+              </span>
+            </div>
+            <div className="h-1.5 w-24 bg-outline-variant/30 rounded-full overflow-hidden">
               <div 
-                key={idx}
-                className={`w-1.5 h-1.5 rounded-full ${
-                  idx < d.completed ? 'bg-[#4be277]' : 'bg-white/5'
-                }`}
+                className="bg-primary h-full transition-all" 
+                style={{ width: `${percentage}%` }}
               />
-            ))}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

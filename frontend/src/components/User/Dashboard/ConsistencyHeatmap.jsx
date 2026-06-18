@@ -4,24 +4,22 @@ export default function ConsistencyHeatmap() {
   const weeks = 52;
   const daysPerWeek = 7;
   
-  // Generate a mock dataset that looks realistic with some streak structures
   const columns = Array.from({ length: weeks }, (_, wIndex) => {
     return Array.from({ length: daysPerWeek }, (_, dIndex) => {
-      // Use trigonometric functions mixed with pseudo-randomness for organic-looking streaks
       const seed = Math.sin(wIndex * 0.15) * Math.cos(dIndex * 0.3) + Math.sin((wIndex + dIndex) * 0.05);
       const intensity = Math.abs(seed) * 0.8 + Math.random() * 0.2;
       
-      let bgClass = 'bg-[#333333]'; // default empty
+      let bgClass = 'bg-surface-container-highest';
       let titleMsg = 'No habits completed';
       
       if (intensity > 0.75) {
-        bgClass = 'bg-[#4be277]';
+        bgClass = 'bg-primary';
         titleMsg = '100% completed';
       } else if (intensity > 0.45) {
-        bgClass = 'bg-[#4be277] opacity-70';
+        bgClass = 'bg-primary/70';
         titleMsg = '70% completed';
       } else if (intensity > 0.25) {
-        bgClass = 'bg-[#4be277] opacity-40';
+        bgClass = 'bg-primary/30';
         titleMsg = '30% completed';
       }
       
@@ -29,7 +27,6 @@ export default function ConsistencyHeatmap() {
     });
   });
 
-  // Calculate month names matching the first week of their respective month
   const monthLabels = Array.from({ length: weeks }, (_, i) => {
     if (i === 1) return 'Jan';
     if (i === 5) return 'Feb';
@@ -47,40 +44,32 @@ export default function ConsistencyHeatmap() {
   });
 
   return (
-    <div className="glass-card glass-card-stroke p-6 rounded-2xl relative tech-corners w-full">
-      <div className="tech-corner-tl"></div>
-      <div className="tech-corner-tr"></div>
-      <div className="tech-corner-bl"></div>
-      <div className="tech-corner-br"></div>
-
-      {/* Header and Legend */}
+    <div className="glass-panel inner-glow p-6 rounded-xl relative w-full">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-        <h3 className="text-xs font-bold text-white uppercase tracking-wider font-mono">
-          Weekly Consistency
+        <h3 className="text-sm font-bold text-on-surface">
+          Consistency Heatmap
         </h3>
         
         {/* Heatmap Legend */}
-        <div className="flex gap-2 items-center text-white/40 font-mono text-[9px] uppercase tracking-widest">
+        <div className="flex gap-2 items-center text-on-surface-variant/50 font-label-caps text-[10px] uppercase tracking-wider">
           <span>Less</span>
-          <div className="w-2.5 h-2.5 rounded-[2px] bg-[#333333]" title="No activity"></div>
-          <div className="w-2.5 h-2.5 rounded-[2px] bg-[#4be277] opacity-40" title="Low activity"></div>
-          <div className="w-2.5 h-2.5 rounded-[2px] bg-[#4be277] opacity-70" title="Medium activity"></div>
-          <div className="w-2.5 h-2.5 rounded-[2px] bg-[#4be277]" title="High activity"></div>
+          <div className="w-3 h-3 rounded-sm bg-surface-container-highest" title="No activity"></div>
+          <div className="w-3 h-3 rounded-sm bg-primary/30" title="Low activity"></div>
+          <div className="w-3 h-3 rounded-sm bg-primary/70" title="Medium activity"></div>
+          <div className="w-3 h-3 rounded-sm bg-primary" title="High activity"></div>
           <span>More</span>
         </div>
       </div>
 
-      {/* Grid Container & Labels Wrapper */}
       <div className="overflow-x-auto hide-scrollbar pb-2">
         <div className="flex flex-col gap-3 w-full min-w-[760px]">
-          {/* Grid columns using custom 52-column grid styling */}
-          <div className="grid grid-cols-52 gap-[3px] md:gap-[4px] w-full">
+          <div className="grid grid-cols-52 gap-[4px] w-full">
             {columns.map((week, wIdx) => (
-              <div key={wIdx} className="flex flex-col gap-[3px] md:gap-[4px] w-full">
+              <div key={wIdx} className="flex flex-col gap-[4px] w-full">
                 {week.map((day, dIdx) => (
                   <div
                     key={dIdx}
-                    className={`aspect-square w-full rounded-[2px] cursor-pointer transition-all duration-150 hover:scale-125 hover:shadow-[0_0_8px_rgba(75,226,119,0.5)] ${day.bgClass}`}
+                    className={`aspect-square w-full rounded-[2px] cursor-pointer transition-all duration-150 hover:scale-125 ${day.bgClass}`}
                     title={`Week ${wIdx + 1}, Day ${dIdx + 1}: ${day.titleMsg}`}
                   />
                 ))}
@@ -88,8 +77,7 @@ export default function ConsistencyHeatmap() {
             ))}
           </div>
 
-          {/* Month Labels aligned to the grid-cols-52 layout */}
-          <div className="grid grid-cols-52 gap-[3px] md:gap-[4px] text-white/30 font-mono text-[9px] uppercase tracking-widest pointer-events-none select-none">
+          <div className="grid grid-cols-52 gap-[4px] text-on-surface-variant opacity-40 font-label-caps text-[10px] uppercase tracking-wider pointer-events-none select-none">
             {monthLabels.map((label, idx) => (
               <span key={idx} className="text-left overflow-visible whitespace-nowrap">
                 {label}
@@ -98,6 +86,10 @@ export default function ConsistencyHeatmap() {
           </div>
         </div>
       </div>
+      
+      <p className="text-[11px] text-on-surface-variant mt-4 leading-relaxed">
+        Your consistency has improved by 12% since last month. Keep it up!
+      </p>
     </div>
   );
 }

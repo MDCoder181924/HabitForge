@@ -1,215 +1,157 @@
-import React, { useEffect, useRef } from 'react';
-import { Link } from "react-router-dom" 
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Login() {
-  const glowRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleMouseMove = (e) => {
-      if (glowRef.current) {
-        glowRef.current.style.setProperty('--mouse-x', `${e.clientX}px`);
-        glowRef.current.style.setProperty('--mouse-y', `${e.clientY}px`);
-      }
+      const glowPrimary = document.querySelector('.glow-primary');
+      const glowSecondary = document.querySelector('.glow-secondary');
+      if (!glowPrimary || !glowSecondary) return;
+      
+      const x = e.clientX;
+      const y = e.clientY;
+      
+      const moveX_p = (x - window.innerWidth / 2) / 25;
+      const moveY_p = (y - window.innerHeight / 2) / 25;
+      
+      const moveX_s = (x - window.innerWidth / 2) / -35;
+      const moveY_s = (y - window.innerHeight / 2) / -35;
+      
+      glowPrimary.style.transform = `translate(${moveX_p}px, ${moveY_p}px)`;
+      glowSecondary.style.transform = `translate(${moveX_s}px, ${moveY_s}px)`;
     };
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate('/dashboard');
+  };
+
   return (
-    <div className="bg-background text-on-background min-h-screen flex flex-col font-sans selection:bg-primary/30 relative overflow-hidden">
+    <div className="flex items-center justify-center min-h-screen p-6 font-body-lg text-on-background bg-background relative overflow-hidden w-full">
+      <div className="glow-spot glow-primary"></div>
+      <div className="glow-spot glow-secondary"></div>
       
-      {/* Dynamic interactive mouse follow glow */}
-      <div 
-        ref={glowRef}
-        className="pointer-events-none fixed inset-0 z-0 transition-opacity duration-300"
-        style={{
-          background: `radial-gradient(600px circle at var(--mouse-x, 50vw) var(--mouse-y, 50vh), rgba(75, 226, 119, 0.05), transparent 80%)`
-        }}
-      />
-
-      {/* Repeating fine tech grid lines and dots */}
-      <div className="absolute inset-0 tech-grid pointer-events-none -z-20 opacity-70"></div>
-      <div className="absolute inset-0 tech-dots pointer-events-none -z-20 opacity-80"></div>
-
-      {/* Ambient glowing orbs */}
-      <div className="absolute top-[10%] left-[-15%] w-[500px] h-[500px] bg-primary/4 blur-[120px] rounded-full pointer-events-none -z-10 animate-orb-float"></div>
-      <div className="absolute bottom-[10%] right-[-15%] w-[500px] h-[500px] bg-primary/3 blur-[120px] rounded-full pointer-events-none -z-10 animate-orb-float" style={{ animationDelay: '-6s' }}></div>
-
-      {/* Top Navbar */}
-      <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/5 w-full">
-        <nav className="flex justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
-          <a 
-            href="#"
-            className="text-xl font-bold text-primary font-display flex items-center gap-2 cursor-pointer focus:outline-none"
-          >
-            <span className="w-3.5 h-3.5 bg-primary rounded-full inline-block animate-pulse"></span>
+      <div className="w-full max-w-md glass-card rounded-xl p-8 md:p-12 relative overflow-hidden rim-light">
+        <div className="mb-10 text-center">
+          <Link to="/" className="font-headline-lg text-headline-lg text-primary mb-2 block hover:opacity-90">
             HabitForge
-          </a>
-          
-          <Link
-            className="flex items-center gap-2 text-xs font-mono tracking-widest text-on-surface-variant hover:text-primary uppercase transition-colors duration-300 cursor-pointer"
-          >
-            <span className="material-symbols-outlined text-sm">arrow_back</span>
-            Back to Home
           </Link>
-        </nav>
-      </header>
-
-      {/* Main Content Area */}
-      <main className="flex-grow flex items-center justify-center px-6 py-12 z-10">
-        <div className="w-full max-w-md animate-fade-in">
-          
-          {/* Glass Card Container */}
-          <div className="glass-card rounded-3xl p-8 relative overflow-hidden glass-card-stroke tech-corners">
-            {/* Tech Corner Brackets */}
-            <div className="tech-corner-tl"></div>
-            <div className="tech-corner-tr"></div>
-            <div className="tech-corner-bl"></div>
-            <div className="tech-corner-br"></div>
-
-            {/* Header */}
-            <div className="mb-8 text-center sm:text-left">
-              <h2 className="text-3xl font-black text-on-surface font-display tracking-tight">
-                Welcome Back
-              </h2>
-              <p className="text-sm text-on-surface-variant mt-2">
-                Enter your credentials to access your HabitForge command center.
-              </p>
-            </div>
-
-            {/* Social Authentication */}
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <button
-                type="button"
-                className="flex items-center justify-center gap-3 bg-white/[0.02] border border-white/10 hover:border-white/20 text-on-surface text-sm font-semibold py-3 px-4 rounded-xl transition-all duration-300 hover:bg-white/[0.05] active:scale-98 cursor-pointer"
-              >
-                {/* Google SVG */}
-                <svg className="w-4 h-4" viewBox="0 0 24 24">
-                  <path
-                    fill="#EA4335"
-                    d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-5.137 4.114-3.707 0-6.712-3.005-6.712-6.712s3.005-6.712 6.712-6.712c1.714 0 3.278.643 4.464 1.705l3.142-3.142C19.062 1.34 15.82 0 12.24 0 5.48 0 0 5.48 0 12.24s5.48 12.24 12.24 12.24c6.82 0 12.24-5.42 12.24-12.24 0-.783-.07-1.543-.2-2.285H12.24z"
-                  />
-                </svg>
-                Google
-              </button>
-
-              <button
-                type="button"
-                className="flex items-center justify-center gap-3 bg-white/[0.02] border border-white/10 hover:border-white/20 text-on-surface text-sm font-semibold py-3 px-4 rounded-xl transition-all duration-300 hover:bg-white/[0.05] active:scale-98 cursor-pointer"
-              >
-                {/* GitHub SVG */}
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                  <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.137 20.164 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
-                </svg>
-                GitHub
-              </button>
-            </div>
-
-            {/* Divider */}
-            <div className="flex items-center my-6">
-              <div className="flex-grow border-t border-white/5"></div>
-              <span className="mx-4 font-mono text-[9px] font-bold text-on-surface-variant/60 tracking-wider">
-                OR CONTINUE WITH EMAIL
+          <p className="font-body-sm text-body-sm text-on-surface-variant">Stay disciplined, track your progress.</p>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-2">
+            <label className="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider block" htmlFor="email">
+              Email Address
+            </label>
+            <div className="relative group">
+              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">
+                mail
               </span>
-              <div className="flex-grow border-t border-white/5"></div>
-            </div>
-
-            {/* Credentials Form */}
-            <form className="space-y-5">
-              {/* Email Input */}
-              <div className="space-y-2">
-                <label className="block font-mono text-[10px] font-bold text-on-surface-variant tracking-wider uppercase">
-                  Email Address
-                </label>
-                <div className="relative">
-                  <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-base pointer-events-none select-none">
-                    mail
-                  </span>
-                  <input
-                    type="email"
-                    placeholder="name@company.com"
-                    className="w-full bg-black/30 border border-white/10 rounded-xl py-3.5 pl-11 pr-4 text-sm text-on-surface placeholder-white/20 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300"
-                  />
-                </div>
-              </div>
-
-              {/* Password Input */}
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <label className="font-mono text-[10px] font-bold text-on-surface-variant tracking-wider uppercase">
-                    Password
-                  </label>
-                  <a
-                    href="#"
-                    className="text-[10px] font-semibold text-primary/80 hover:text-primary transition-colors hover:underline"
-                  >
-                    Forgot password?
-                  </a>
-                </div>
-                <div className="relative">
-                  <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-base pointer-events-none select-none">
-                    lock
-                  </span>
-                  <input
-                    type="password"
-                    placeholder="••••••••"
-                    className="w-full bg-black/30 border border-white/10 rounded-xl py-3.5 pl-11 pr-12 text-sm text-on-surface placeholder-white/20 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-300"
-                  />
-                  <button
-                    type="button"
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer select-none focus:outline-none"
-                  >
-                    <span className="material-symbols-outlined text-base">
-                      visibility
-                    </span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Remember Me Option */}
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  type="checkbox"
-                  className="w-4 h-4 bg-black/30 border border-white/10 rounded accent-primary text-primary focus:ring-0 focus:ring-offset-0 cursor-pointer"
-                />
-                <label
-                  htmlFor="remember-me"
-                  className="ml-2.5 text-xs text-on-surface-variant cursor-pointer select-none"
-                >
-                  Keep me logged in for 30 days
-                </label>
-              </div>
-
-              {/* Submit Button */}
-              <Link
-              to="/dashboard"
-                type="submit"
-                className="w-full relative overflow-hidden bg-primary text-on-primary font-bold py-3.5 px-6 rounded-xl transition-all duration-300 shadow-lg shadow-primary/10 hover:shadow-primary/20 active:scale-98 cursor-pointer text-sm font-sans"
-              >
-                Access Account
-              </Link>
-            </form>
-
-            {/* Toggle Footer */}
-            <div className="mt-8 text-center border-t border-white/5 pt-6">
-              <p className="text-xs text-on-surface-variant">
-                New to HabitForge?{' '}
-                <Link
-                to="/register"
-                  className="font-bold text-primary hover:underline cursor-pointer focus:outline-none"
-                >
-                  Create free account
-                </Link>
-              </p>
+              <input 
+                className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-3 pl-10 pr-4 text-on-surface placeholder:text-on-surface-variant/40 transition-all input-focus-ring" 
+                id="email" 
+                name="email" 
+                placeholder="name@example.com" 
+                required 
+                type="email"
+              />
             </div>
           </div>
+          
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <label className="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider block" htmlFor="password">
+                Password
+              </label>
+              <a className="font-body-sm text-body-sm text-secondary hover:text-primary transition-colors" href="#">
+                Forgot password?
+              </a>
+            </div>
+            <div className="relative group">
+              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">
+                lock
+              </span>
+              <input 
+                className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-3 pl-10 pr-4 text-on-surface placeholder:text-on-surface-variant/40 transition-all input-focus-ring" 
+                id="password" 
+                name="password" 
+                placeholder="••••••••" 
+                required 
+                type="password"
+              />
+            </div>
+          </div>
+          
+          <div className="flex items-center space-x-3">
+            <div className="relative flex items-center">
+              <input 
+                className="w-4 h-4 rounded border-outline-variant bg-surface-container-lowest text-primary focus:ring-primary/20 focus:ring-offset-0 transition-all cursor-pointer" 
+                id="remember" 
+                name="remember" 
+                type="checkbox"
+              />
+            </div>
+            <label className="font-body-sm text-body-sm text-on-surface-variant select-none cursor-pointer" htmlFor="remember">
+              Remember me for 30 days
+            </label>
+          </div>
+          
+          <div className="space-y-4 pt-4">
+            <button 
+              className="w-full bg-primary text-on-primary font-headline-md text-headline-md py-3 rounded-lg hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer" 
+              type="submit"
+            >
+              Login
+              <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
+            </button>
+            
+            <div className="relative flex items-center py-2">
+              <div className="flex-grow border-t border-outline-variant/30"></div>
+              <span className="flex-shrink mx-4 font-label-caps text-label-caps text-on-surface-variant/40 uppercase">
+                Or continue with
+              </span>
+              <div className="flex-grow border-t border-outline-variant/30"></div>
+            </div>
+            
+            <button 
+              className="w-full bg-surface-container-lowest border border-outline-variant text-on-surface font-body-lg text-body-lg py-3 rounded-lg hover:bg-surface-container-low active:scale-[0.98] transition-all flex items-center justify-center gap-3 cursor-pointer" 
+              type="button"
+              onClick={() => navigate('/dashboard')}
+            >
+              <img 
+                alt="Google Logo" 
+                className="w-5 h-5 grayscale opacity-80" 
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_D1WONqvq3P3laPdYfT2jp9NBGIXJcOGp83YsQ4SxwvYDGBS_YkEGANf3PrDLT4RoWe8pCbCR2thKqwZGefo9XtBJpwv9LyBfQFh5z-M0QW25sX2nkykaGo6wiqf5BcBR2k1od3_EeZkFEsDdpx7pCmvCNrsTCoIHv1bfWTkS7nHO84QtrB7UlynSLvrYMmjqjOWzVZgq4VAssnOm37Z980uxlN6Mxj9uuudWfIbn7QCaHc_7u4904958j2bWcLft6YBj0vH-GdE"
+              />
+              Sign in with Google
+            </button>
+          </div>
+        </form>
+        
+        <div className="mt-8 pt-8 border-t border-outline-variant/30 text-center">
+          <p className="font-body-sm text-body-sm text-on-surface-variant">
+            Don't have an account?{' '}
+            <Link className="text-primary font-bold hover:underline transition-all" to="/register">
+              Sign Up
+            </Link>
+          </p>
         </div>
-      </main>
-
-      {/* Footer copyright */}
-      <footer className="py-6 border-t border-white/5 text-center text-[10px] font-mono text-on-surface-variant/40 tracking-widest uppercase">
-        © {new Date().getFullYear()} HabitForge. ALL SYSTEM LOGS STANDBY.
+      </div>
+      
+      <footer className="absolute bottom-8 left-0 w-full flex flex-col items-center gap-4 px-6 md:flex-row md:justify-between md:px-12 pointer-events-none">
+        <p className="font-label-caps text-label-caps text-on-surface-variant/30 uppercase tracking-[0.2em]">
+          © 2024 HabitForge. Built for peak performance.
+        </p>
+        <div className="flex gap-6 pointer-events-auto">
+          <a className="font-label-caps text-label-caps text-on-surface-variant/40 hover:text-primary transition-colors" href="#">Privacy</a>
+          <a className="font-label-caps text-label-caps text-on-surface-variant/40 hover:text-primary transition-colors" href="#">Terms</a>
+        </div>
       </footer>
     </div>
   );

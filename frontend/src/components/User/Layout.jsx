@@ -16,7 +16,7 @@ export default function Layout() {
   };
 
   return (
-    <div className="w-full h-screen flex bg-black text-white overflow-hidden font-sans select-none relative">
+    <div className="w-full h-screen flex bg-background text-on-background overflow-hidden font-sans relative">
       {/* Noise background texture overlay */}
       <div className="noise-overlay"></div>
 
@@ -28,18 +28,18 @@ export default function Layout() {
         />
       )}
       
-      {/* Sidebar Panel (Collapsible Drawer on Mobile, Static on Desktop) */}
+      {/* Sidebar Panel */}
       <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col h-full overflow-hidden relative z-10 bg-black">
+      <div className="flex-1 flex flex-col h-full overflow-hidden relative z-10 bg-background">
         {/* Top Header */}
         <Header onMenuClick={toggleSidebar} />
         
         {/* Scrollable Page Body */}
-        <main className="flex-grow overflow-y-auto custom-scrollbar bg-black flex flex-col">
-          {/* Responsive padding (p-4 on mobile, p-8 on desktop) */}
-          <div className="flex-1 w-full p-4 md:p-8 relative">
+        <main className="flex-grow overflow-y-auto custom-scrollbar flex flex-col">
+          {/* Responsive padding */}
+          <div className="flex-1 w-full p-4 md:p-8 max-w-7xl mx-auto">
             <Outlet />
           </div>
           

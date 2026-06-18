@@ -7,10 +7,10 @@ import FooterVisuals from '../../components/User/TodayFocus/FooterVisuals';
 
 export default function TodayFocusPage() {
   const [habits, setHabits] = useState([
-    { id: 1, name: 'Deep Work Session', category: 'Focus', categoryStyle: 'bg-white/5 text-white/60', details: 'Completed at 9:15 AM', completed: true },
-    { id: 2, name: '15-min Meditation', category: 'Wellness', categoryStyle: 'bg-emerald-500/10 text-emerald-400', details: 'Next reminder in 2 hours', completed: false },
-    { id: 3, name: 'Hydration Goal', category: 'Health', categoryStyle: 'bg-[#4be277]/10 text-[#4be277]', details: 'Target: 2.5 Liters', completed: false, hasProgress: true, progressPct: 45 },
-    { id: 4, name: 'Read 20 Pages', category: 'Growth', categoryStyle: 'bg-blue-500/10 text-blue-400', details: 'Completed at 7:30 AM', completed: true },
+    { id: 1, name: 'Deep Work Session', category: 'Focus', categoryStyle: 'bg-outline-variant/20 text-on-surface-variant', details: 'Completed at 9:15 AM', completed: true },
+    { id: 2, name: '15-min Meditation', category: 'Wellness', categoryStyle: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400', details: 'Next reminder in 2 hours', completed: false },
+    { id: 3, name: 'Hydration Goal', category: 'Health', categoryStyle: 'bg-primary/10 text-primary', details: 'Target: 2.5 Liters', completed: false, hasProgress: true, progressPct: 45 },
+    { id: 4, name: 'Read 20 Pages', category: 'Growth', categoryStyle: 'bg-blue-500/10 text-blue-600 dark:text-blue-400', details: 'Completed at 7:30 AM', completed: true },
   ]);
 
   const toggleHabit = (id) => {

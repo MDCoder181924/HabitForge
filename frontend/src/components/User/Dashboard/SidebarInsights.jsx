@@ -31,24 +31,6 @@ export default function SidebarInsights() {
           <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
         </div>
       </section>
-
-
-      {/* Forge Pro Upsell Card */}
-      <section className="relative rounded-xl overflow-hidden p-6 group h-[180px] flex flex-col justify-end">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/25 to-secondary/25 z-10"></div>
-        <img 
-          className="absolute inset-0 w-full h-full object-cover opacity-30 grayscale group-hover:scale-105 transition-transform duration-700" 
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfn9vnVAgJRdvFDDY_hV1cure7q8x50mESecHigUds2adJch-lLUR-XMZMW0MUCjXhARcIG5i8piAXuCkYDLKLfA7dCSwDd-SMmHhkesNe8G3c19RxBCt0zd8ul9BLyEFCBfj4pC7-gHOajZO7U_g73yJz1XNCa5P5m3z8qDrQUlhhWqr0JPuV1d3S2xMxL7DBulUWlasaMg_TcNxZUC_mgauA2_9alOKm0f9RGZwyk12Vc7YVT5rUI9EfTu8lbp3peBvi5waRflA"
-          alt="Forge Pro Decor"
-        />
-        <div className="relative z-20">
-          <h3 className="text-lg font-black text-on-surface italic uppercase tracking-wider">FORGE PRO</h3>
-          <p className="text-xs text-on-surface mt-1 mb-3">Unlock advanced analytics and habit collaboration features.</p>
-          <button className="bg-primary text-on-primary text-[10px] font-black py-2 px-4 rounded-lg uppercase tracking-widest shadow-lg shadow-primary/20 hover:brightness-110 transition-all cursor-pointer">
-            Upgrade Now
-          </button>
-        </div>
-      </section>
     </div>
   );
 }

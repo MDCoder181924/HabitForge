@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CreateHabitForm from '../../components/User/CreateHabit/CreateHabitForm';
-import QuickDocs from '../../components/User/CreateHabit/QuickDocs';
 
 export default function CreateHabitPage() {
   const navigate = useNavigate();
   const [habitName, setHabitName] = useState('');
   const [habitDesc, setHabitDesc] = useState('');
   const [category, setCategory] = useState('Productivity');
-  const [frequency, setFrequency] = useState('DAILY');
   const [accentColor, setAccentColor] = useState('#4be277');
   const [precisionReminders, setPrecisionReminders] = useState(true);
   const [publicApi, setPublicApi] = useState(false);
+  const [goalDays, setGoalDays] = useState(21);
+  const [reminderTime, setReminderTime] = useState('08:00');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`HABIT SEQUENCE INITIALIZED:\nName: ${habitName}\nCategory: ${category}\nFrequency: ${frequency}`);
+    alert(`HABIT SEQUENCE INITIALIZED:\nName: ${habitName}\nCategory: ${category}\nFrequency: Daily\nGoal Duration: ${goalDays} days\nReminder Time: ${reminderTime}`);
     navigate('/habits');
   };
 
@@ -27,33 +27,27 @@ export default function CreateHabitPage() {
         <div className="absolute bottom-[-10%] left-[-10%] w-[300px] h-[300px] bg-[#f87171] rounded-full blur-[100px] mix-blend-screen opacity-5"></div>
       </div>
 
-      {/* Grid container to hold Form modal & Quick Docs on desktop */}
-      <div className="relative z-10 w-full max-w-4xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Main Form component */}
-        <div className="lg:col-span-8 w-full">
-          <CreateHabitForm 
-            habitName={habitName}
-            setHabitName={setHabitName}
-            habitDesc={habitDesc}
-            setHabitDesc={setHabitDesc}
-            category={category}
-            setCategory={setCategory}
-            frequency={frequency}
-            setFrequency={setFrequency}
-            accentColor={accentColor}
-            setAccentColor={setAccentColor}
-            precisionReminders={precisionReminders}
-            setPrecisionReminders={setPrecisionReminders}
-            publicApi={publicApi}
-            setPublicApi={setPublicApi}
-            handleSubmit={handleSubmit}
-          />
-        </div>
-
-        {/* Aesthetic Sidebar Reference (Quick Docs) */}
-        <div className="lg:col-span-4 w-full">
-          <QuickDocs />
-        </div>
+      {/* Centered Form component */}
+      <div className="relative z-10 w-full max-w-2xl">
+        <CreateHabitForm 
+          habitName={habitName}
+          setHabitName={setHabitName}
+          habitDesc={habitDesc}
+          setHabitDesc={setHabitDesc}
+          category={category}
+          setCategory={setCategory}
+          accentColor={accentColor}
+          setAccentColor={setAccentColor}
+          precisionReminders={precisionReminders}
+          setPrecisionReminders={setPrecisionReminders}
+          publicApi={publicApi}
+          setPublicApi={setPublicApi}
+          goalDays={goalDays}
+          setGoalDays={setGoalDays}
+          reminderTime={reminderTime}
+          setReminderTime={setReminderTime}
+          handleSubmit={handleSubmit}
+        />
       </div>
     </div>
   );

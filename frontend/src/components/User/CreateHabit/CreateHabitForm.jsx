@@ -5,10 +5,11 @@ export default function CreateHabitForm({
   habitName, setHabitName,
   habitDesc, setHabitDesc,
   category, setCategory,
-  frequency, setFrequency,
   accentColor, setAccentColor,
   precisionReminders, setPrecisionReminders,
   publicApi, setPublicApi,
+  goalDays, setGoalDays,
+  reminderTime, setReminderTime,
   handleSubmit
 }) {
   const navigate = useNavigate();
@@ -67,47 +68,90 @@ export default function CreateHabitForm({
             />
           </div>
 
+          {/* Category Dropdown */}
+          <div className="space-y-2">
+            <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block">CATEGORY</label>
+            <div className="relative">
+              <select 
+                className="w-full appearance-none bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-on-surface text-sm cursor-pointer transition-all focus:border-primary/50 font-sans"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                <option value="Health" className="bg-surface-container text-on-surface">Health & Fitness</option>
+                <option value="Mindset" className="bg-surface-container text-on-surface">Mindset</option>
+                <option value="Productivity" className="bg-surface-container text-on-surface">Productivity</option>
+                <option value="Social" className="bg-surface-container text-on-surface">Social</option>
+              </select>
+              <span className="material-symbols-outlined absolute right-4 top-3 pointer-events-none text-on-surface-variant" data-icon="expand_more">expand_more</span>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Category Dropdown */}
+            {/* Goal Duration */}
             <div className="space-y-2">
-              <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block">CATEGORY</label>
-              <div className="relative">
-                <select 
-                  className="w-full appearance-none bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-on-surface text-sm cursor-pointer transition-all focus:border-primary/50 font-sans"
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                >
-                  <option value="Health" className="bg-surface-container text-on-surface">Health & Fitness</option>
-                  <option value="Mindset" className="bg-surface-container text-on-surface">Mindset</option>
-                  <option value="Productivity" className="bg-surface-container text-on-surface">Productivity</option>
-                  <option value="Social" className="bg-surface-container text-on-surface">Social</option>
-                </select>
-                <span className="material-symbols-outlined absolute right-4 top-3 pointer-events-none text-on-surface-variant" data-icon="expand_more">expand_more</span>
+              <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block">GOAL DURATION (DAYS)</label>
+              <div className="flex gap-2">
+                <input 
+                  required
+                  min="1"
+                  max="365"
+                  className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 transition-all focus:border-primary/50 text-sm" 
+                  placeholder="e.g. 21" 
+                  type="number"
+                  value={goalDays}
+                  onChange={(e) => setGoalDays(parseInt(e.target.value) || '')}
+                />
+                <div className="flex bg-surface-container p-1 rounded-xl border border-outline-variant items-center gap-1">
+                  {[21, 30, 60].map((preset) => (
+                    <button
+                      key={preset}
+                      type="button"
+                      onClick={() => setGoalDays(preset)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                        goalDays === preset 
+                          ? 'bg-surface-lowest text-on-surface shadow-sm' 
+                          : 'text-on-surface-variant hover:text-on-surface'
+                      }`}
+                    >
+                      {preset}d
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 
-            {/* Frequency Toggle */}
+            {/* Reminder Time */}
             <div className="space-y-2">
-              <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block">FREQUENCY</label>
-              <div className="flex bg-surface-container p-1 rounded-xl border border-outline-variant h-[50px] items-center">
-                <button 
-                  className={`flex-1 rounded-lg text-sm py-1.5 transition-all cursor-pointer ${
-                    frequency === 'DAILY' ? 'bg-surface-lowest text-on-surface font-bold shadow-sm' : 'text-on-surface-variant hover:text-on-surface'
-                  }`}
-                  type="button"
-                  onClick={() => setFrequency('DAILY')}
-                >
-                  Daily
-                </button>
-                <button 
-                  className={`flex-1 rounded-lg text-sm py-1.5 transition-all cursor-pointer ${
-                    frequency === 'WEEKLY' ? 'bg-surface-lowest text-on-surface font-bold shadow-sm' : 'text-on-surface-variant hover:text-on-surface'
-                  }`}
-                  type="button"
-                  onClick={() => setFrequency('WEEKLY')}
-                >
-                  Weekly
-                </button>
+              <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block">REMINDER TIME</label>
+              <div className="flex gap-2">
+                <div className="flex-1 relative">
+                  <input 
+                    type="time" 
+                    className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-on-surface transition-all focus:border-primary/50 text-sm cursor-pointer"
+                    value={reminderTime}
+                    onChange={(e) => setReminderTime(e.target.value)}
+                  />
+                </div>
+                <div className="flex bg-surface-container p-1 rounded-xl border border-outline-variant items-center gap-1">
+                  {[
+                    { label: '8 AM', value: '08:00' },
+                    { label: '2 PM', value: '14:00' },
+                    { label: '8 PM', value: '20:00' }
+                  ].map((preset) => (
+                    <button
+                      key={preset.value}
+                      type="button"
+                      onClick={() => setReminderTime(preset.value)}
+                      className={`px-2.5 py-1.5 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+                        reminderTime === preset.value 
+                          ? 'bg-surface-lowest text-on-surface shadow-sm' 
+                          : 'text-on-surface-variant hover:text-on-surface'
+                      }`}
+                    >
+                      {preset.label}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

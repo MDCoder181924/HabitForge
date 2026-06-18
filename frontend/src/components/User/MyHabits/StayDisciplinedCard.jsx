@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function StayDisciplinedCard() {
   return (
-    <div className="relative h-44 rounded-xl overflow-hidden border border-outline-variant group">
+    <div className="relative h-full min-h-[176px] rounded-xl overflow-hidden border border-outline-variant group">
       <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent z-10" />
       <img 
         className="absolute inset-0 w-full h-full object-cover mix-blend-luminosity opacity-30 group-hover:scale-105 transition-transform duration-700" 

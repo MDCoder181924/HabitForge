@@ -1,8 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
+import api from '../../api/axios'
 
 export default function Register() {
   const navigate = useNavigate();
+
+  const [userName , setUserName] = useState("");
+  const [userEmail , setUserEmail] = useState("");
+  const [userPassword , setUserPassword] = useState("");
+  const [userConfirmPassord , setUserConfirmPassword] = useState("");
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -21,10 +28,35 @@ export default function Register() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  const handleRegister = (e) => {
+  const handleRegister =async (e) => {
     e.preventDefault();
-    navigate('/login');
+    try{
+      const res = await api.post('/auth/register' , {
+        userName , 
+        userEmail , 
+        userPassword
+      })
+      if(res.data.success){
+        toast.success("Ragister successfully")
+        navigate('/dashboard');
+      }
+      else{
+        toast.error(res.data.message);
+      }
+    }
+    catch(error){
+      toast.error("Failed to Ragister");
+      console.log(error);
+    }
   };
+
+  const HandlePassword = (e) =>{
+    if(userPassword ==  userConfirmPassord){
+      handleRegister(e);
+    }else{
+      toast("Enter Same Password");
+    }
+  }
 
   return (
     <div className="bg-background min-h-screen flex flex-col w-full relative overflow-hidden selection:bg-primary/30 selection:text-primary">
@@ -47,7 +79,7 @@ export default function Register() {
             </div>
 
             {/* Registration Form */}
-            <form className="flex flex-col gap-5" onSubmit={handleRegister}>
+            <form className="flex flex-col gap-5" onSubmit={HandlePassword}>
               {/* Full Name */}
               <div className="flex flex-col gap-2">
                 <label className="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider block" htmlFor="fullname">
@@ -58,6 +90,8 @@ export default function Register() {
                     person
                   </span>
                   <input 
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
                     className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-3 pl-11 pr-4 text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 transition-all font-body-sm text-body-sm input-focus-ring" 
                     id="fullname" 
                     name="fullname" 
@@ -78,6 +112,8 @@ export default function Register() {
                     mail
                   </span>
                   <input 
+                  value={userEmail}
+                  onChange={(e)=> setUserEmail(e.target.value)}
                     className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-3 pl-11 pr-4 text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 transition-all font-body-sm text-body-sm input-focus-ring" 
                     id="email" 
                     name="email" 
@@ -98,6 +134,8 @@ export default function Register() {
                     lock
                   </span>
                   <input 
+                  value={userPassword}
+                  onChange={(e)=> setUserPassword(e.target.value)}
                     className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-3 pl-11 pr-4 text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 transition-all font-body-sm text-body-sm input-focus-ring" 
                     id="password" 
                     name="password" 
@@ -118,6 +156,8 @@ export default function Register() {
                     shield
                   </span>
                   <input 
+                  value={userConfirmPassord}
+                  onChange={(e)=> setUserConfirmPassword(e.target.value)}
                     className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-3 pl-11 pr-4 text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 transition-all font-body-sm text-body-sm input-focus-ring" 
                     id="confirm-password" 
                     name="confirm-password" 
@@ -148,7 +188,6 @@ export default function Register() {
             <button 
               className="w-full bg-surface-container-lowest border border-outline-variant text-on-surface font-body-lg text-body-lg py-3 rounded-lg hover:bg-surface-container-low active:scale-[0.98] transition-all flex items-center justify-center gap-3 cursor-pointer" 
               type="button"
-              onClick={() => navigate('/dashboard')}
             >
               <img 
                 alt="Google Logo" 

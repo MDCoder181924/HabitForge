@@ -1,8 +1,11 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation , useNavigate} from 'react-router-dom';
+import api from '../../api/axios'
+import toast from 'react-hot-toast';
 
 export default function Sidebar({ isOpen, onClose }) {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const menuItems = [
     { name: 'Dashboard', path: '/dashboard', icon: 'dashboard' },
@@ -17,6 +20,21 @@ export default function Sidebar({ isOpen, onClose }) {
   const handleLinkClick = () => {
     if (onClose) {
       onClose();
+    }
+  };
+
+  const handleLogout = async () => {
+    e.preventDefault();
+    try{
+      const res = await api.post ('/auth/logout');
+      if(res.data.success){
+        toast.success("Logout successfully")
+        navigate('/')
+      }else{
+        toast(res.data.message)
+      }
+    }catch(error){
+      console.log(error);
     }
   };
 
@@ -71,7 +89,7 @@ export default function Sidebar({ isOpen, onClose }) {
         
         <Link
           to="/"
-          onClick={handleLinkClick}
+          onClick={handleLogout}
           className="flex items-center gap-3 text-on-surface-variant px-0 py-3 hover:text-error transition-all"
         >
           <span className="material-symbols-outlined">logout</span>

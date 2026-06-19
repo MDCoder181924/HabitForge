@@ -1,8 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
+import api from '../../api/axios.js'
 
 export default function Login() {
   const navigate = useNavigate();
+
+  const [userEmail , setUserEmail] = useState('');
+  const [userPassword , setUserPassword] = useState('');
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -26,9 +31,23 @@ export default function Login() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate('/dashboard');
+    try{
+      const res = await api.post('/auth/login' , {
+        userEmail,
+        userPassword
+      })
+      if(res.data.success){
+        toast.success("Login successfully")
+        navigate('/dashboard')
+      }else{
+        toast(res.data.message);
+      }
+    }catch(error){
+      console.log(error);
+      toast.error("login failed")
+    }
   };
 
   return (
@@ -54,6 +73,8 @@ export default function Login() {
                 mail
               </span>
               <input 
+              value = {userEmail}
+              onChange = {(e) => setUserEmail(e.target.value)}
                 className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-3 pl-10 pr-4 text-on-surface placeholder:text-on-surface-variant/40 transition-all input-focus-ring" 
                 id="email" 
                 name="email" 
@@ -78,6 +99,8 @@ export default function Login() {
                 lock
               </span>
               <input 
+              value = {userPassword}
+              onChange = {(e)=> setUserPassword (e.target.value)}
                 className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-3 pl-10 pr-4 text-on-surface placeholder:text-on-surface-variant/40 transition-all input-focus-ring" 
                 id="password" 
                 name="password" 
@@ -122,7 +145,6 @@ export default function Login() {
             <button 
               className="w-full bg-surface-container-lowest border border-outline-variant text-on-surface font-body-lg text-body-lg py-3 rounded-lg hover:bg-surface-container-low active:scale-[0.98] transition-all flex items-center justify-center gap-3 cursor-pointer" 
               type="button"
-              onClick={() => navigate('/dashboard')}
             >
               <img 
                 alt="Google Logo" 

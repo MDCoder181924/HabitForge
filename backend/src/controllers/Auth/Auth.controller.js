@@ -1,7 +1,7 @@
-import user from '../../models/Auth/user.model';
+import user from '../../models/Auth/user.model.js';
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken"
-import { generateAccessToken, generateRefreshToken } from '../../services/sesstionService'
+import { generateAccessToken, generateRefreshToken } from '../../services/sesstionService.js'
 
 const isProduction = process.env.NODE_ENV === 'production'
 

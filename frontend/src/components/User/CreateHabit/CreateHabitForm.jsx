@@ -7,7 +7,6 @@ export default function CreateHabitForm({
   category, setCategory,
   accentColor, setAccentColor,
   precisionReminders, setPrecisionReminders,
-  publicApi, setPublicApi,
   goalDays, setGoalDays,
   reminderTime, setReminderTime,
   handleSubmit
@@ -77,10 +76,13 @@ export default function CreateHabitForm({
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               >
-                <option value="Health" className="bg-surface-container text-on-surface">Health & Fitness</option>
-                <option value="Mindset" className="bg-surface-container text-on-surface">Mindset</option>
+                <option value="Health" className="bg-surface-container text-on-surface">Health</option>
+                <option value="Fitness" className="bg-surface-container text-on-surface">Fitness</option>
                 <option value="Productivity" className="bg-surface-container text-on-surface">Productivity</option>
-                <option value="Social" className="bg-surface-container text-on-surface">Social</option>
+                <option value="Study" className="bg-surface-container text-on-surface">Study</option>
+                <option value="Finance" className="bg-surface-container text-on-surface">Finance</option>
+                <option value="Personal" className="bg-surface-container text-on-surface">Personal</option>
+                <option value="other" className="bg-surface-container text-on-surface">other</option>
               </select>
               <span className="material-symbols-outlined absolute right-4 top-3 pointer-events-none text-on-surface-variant" data-icon="expand_more">expand_more</span>
             </div>
@@ -184,32 +186,13 @@ export default function CreateHabitForm({
               className="flex items-center justify-between group cursor-pointer gap-4"
             >
               <div className="flex flex-col">
-                <span className="text-xs font-bold text-on-surface uppercase tracking-wider">Precision Reminders</span>
-                <span className="text-[11px] text-on-surface-variant mt-0.5">Notify via CLI/Push 5 min before target</span>
+                <span className="text-xs font-bold text-on-surface uppercase tracking-wider">Enable Reminder</span>
+                <span className="text-[11px] text-on-surface-variant mt-0.5">Receive notification at selected time</span>
               </div>
               <label className="relative inline-flex items-center cursor-pointer shrink-0 pointer-events-none">
                 <input 
                   type="checkbox" 
                   checked={precisionReminders} 
-                  onChange={() => {}}
-                  className="sr-only peer"
-                />
-                <div className="w-12 h-6 bg-outline-variant/30 rounded-full peer peer-checked:after:translate-x-6 after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-outline after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary peer-checked:after:bg-on-primary" />
-              </label>
-            </div>
-            
-            <div 
-              onClick={() => setPublicApi(!publicApi)}
-              className="flex items-center justify-between group cursor-pointer gap-4"
-            >
-              <div className="flex flex-col">
-                <span className="text-xs font-bold text-on-surface uppercase tracking-wider">Public API Access</span>
-                <span className="text-[11px] text-on-surface-variant mt-0.5">Expose progress to habit-bridge integrations</span>
-              </div>
-              <label className="relative inline-flex items-center cursor-pointer shrink-0 pointer-events-none">
-                <input 
-                  type="checkbox" 
-                  checked={publicApi} 
                   onChange={() => {}}
                   className="sr-only peer"
                 />

@@ -1,6 +1,10 @@
 import React from 'react';
+import {useUser} from '../../context/UserContext'
 
 export default function Header({ onMenuClick }) {
+  const {user,loading} = useUser();
+  const FullName = loading ? "Loading..." : (user?.userName );
+  const profilePic = loading ? "https://img.magnific.com/vecteurs-premium/icone-vectorielle-plate-profil-utilisateur-isole-avatar-silhouette-homme-femme-silhouette-noire-fond-blanc-parfait-pour-histoires-messagers-medias-sociaux-votre-adx9xa_719432-803.jpg?semt=ais_hybrid&w=740&q=80" : (user?.userProfilePic || "https://img.magnific.com/vecteurs-premium/icone-vectorielle-plate-profil-utilisateur-isole-avatar-silhouette-homme-femme-silhouette-noire-fond-blanc-parfait-pour-histoires-messagers-medias-sociaux-votre-adx9xa_719432-803.jpg?semt=ais_hybrid&w=740&q=80");
   return (
     <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-outline-variant shrink-0">
       <div className="flex justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
@@ -32,13 +36,13 @@ export default function Header({ onMenuClick }) {
           </div>
           <div className="flex items-center gap-3 ml-4 border-l border-outline-variant pl-4">
             <div className="text-right hidden sm:block">
-              <p className="text-sm font-bold text-on-surface">Alex Rivers</p>
-              <p className="text-xs text-primary">Pro Member</p>
+              <p className="text-sm font-bold text-on-surface">{FullName}</p>
+              <p className="text-xs text-primary">Member</p>
             </div>
             <img 
               alt="User Profile" 
               className="w-10 h-10 rounded-full border-2 border-primary/20 p-0.5" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCa2tRz2Qk8Ix8vzw8TgbJRhEAqRTC_UEj9Dslj3ZUj8q2MKHT7zwRL6ZYxkVUHvrXJXyE9FcUPCU3njeQz1qTuC32ZLCo6OTDZkYGM7eFzCDeq4e7BQNJvnN0fne7JBM1QdrA9mPwruE9qsHQYjov9DwMqzIxzEG9Yw1atzTygGPOrKKqKgVbG8DEfn0ulGj15W_PgdF4d-TyE_6qvMe_uR_E6Lz80q3LKAj-nBKOkxKr7CkBggGSJgCbqrhA1mpMhE9_IN8ZObiU"
+              src={profilePic}
             />
           </div>
         </div>

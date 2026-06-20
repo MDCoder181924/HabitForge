@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function DashboardHeader({ completedCount = 8, totalCount = 12 }) {
+export default function DashboardHeader({ completedCount , totalCount  }) {
   return (
     <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
       <div>

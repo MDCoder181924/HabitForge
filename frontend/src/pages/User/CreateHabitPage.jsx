@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CreateHabitForm from '../../components/User/CreateHabit/CreateHabitForm';
+import api from '../../api/axios';
+import toast from 'react-hot-toast';
 
 export default function CreateHabitPage() {
   const navigate = useNavigate();
@@ -9,14 +11,34 @@ export default function CreateHabitPage() {
   const [category, setCategory] = useState('Productivity');
   const [accentColor, setAccentColor] = useState('#4be277');
   const [precisionReminders, setPrecisionReminders] = useState(true);
-  const [publicApi, setPublicApi] = useState(false);
   const [goalDays, setGoalDays] = useState(21);
   const [reminderTime, setReminderTime] = useState('08:00');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e)  => {
     e.preventDefault();
-    alert(`HABIT SEQUENCE INITIALIZED:\nName: ${habitName}\nCategory: ${category}\nFrequency: Daily\nGoal Duration: ${goalDays} days\nReminder Time: ${reminderTime}`);
-    navigate('/habits');
+    try{
+      const res = await api.post('/habit/create' , {
+        habitName,
+        habitDescription : habitDesc,
+        habitColorTheme : accentColor,
+        habitCategory : category,
+        habitEnableReminder : precisionReminders,
+        habitGoalDuration :goalDays,
+        habitReminderTime : reminderTime
+      })
+
+      if(res.data.success) {
+        toast.success("Habit created");
+      }
+      else{
+        toast.error("Habit not created");
+      }
+      navigate('/habits');
+    }
+    catch(error){
+      toast.error("habit not created");
+      console.log(error);
+    }
   };
 
   return (
@@ -40,8 +62,6 @@ export default function CreateHabitPage() {
           setAccentColor={setAccentColor}
           precisionReminders={precisionReminders}
           setPrecisionReminders={setPrecisionReminders}
-          publicApi={publicApi}
-          setPublicApi={setPublicApi}
           goalDays={goalDays}
           setGoalDays={setGoalDays}
           reminderTime={reminderTime}

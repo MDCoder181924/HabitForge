@@ -17,18 +17,18 @@ export default function DailySequence({ habits, toggleHabit }) {
       </div>
       <div className="space-y-4">
         {habits.map((habit) => {
-          const completed = habit.completed;
+          const completed = habit.habitCompletedToday;
           const borderStyle = completed ? 'border-l-primary' : 'border-l-outline-variant';
-          const accentColorClasses = habit.id === 1 
+          const accentColorClasses = habit._id === 1 
             ? 'bg-primary/10 text-primary' 
-            : habit.id === 2 
+            : habit._id === 2 
               ? 'bg-secondary/10 text-secondary' 
               : 'bg-tertiary/10 text-tertiary';
-          const iconName = habit.id === 1 ? 'directions_run' : habit.id === 2 ? 'menu_book' : 'self_improvement';
+          const iconName = habit._id === 1 ? 'directions_run' : habit._id === 2 ? 'menu_book' : 'self_improvement';
           
           return (
             <div 
-              key={habit.id} 
+              key={habit._id} 
               className={`glass-panel inner-glow p-4 rounded-xl flex items-center justify-between group transition-all hover:bg-surface-container-high border-l-4 ${borderStyle}`}
             >
               <div className="flex items-center gap-4">
@@ -36,8 +36,8 @@ export default function DailySequence({ habits, toggleHabit }) {
                   <span className="material-symbols-outlined">{iconName}</span>
                 </div>
                 <div>
-                  <h4 className="font-bold text-on-surface">{habit.name}</h4>
-                  <p className="text-xs text-on-surface-variant">Daily • {habit.time || 'Any time'}</p>
+                  <h4 className="font-bold text-on-surface">{habit.habitName}</h4>
+                  <p className="text-xs text-on-surface-variant">Daily • {habit.habitReminderTime  || 'Any time'}</p>
                 </div>
               </div>
               <div className="flex items-center gap-4">
@@ -49,7 +49,7 @@ export default function DailySequence({ habits, toggleHabit }) {
                 <button 
                   onClick={(e) => {
                     e.stopPropagation();
-                    toggleHabit(habit.id);
+                    toggleHabit(habit._id);
                   }}
                   className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all cursor-pointer ${
                     completed 

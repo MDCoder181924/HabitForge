@@ -1,18 +1,22 @@
 import React from 'react';
+import { useUser } from '../../../context/UserContext';
 
 export default function ProfileHero() {
+  const {user,loading} = useUser();
+    const FullName = loading ? "Loading..." : (user?.userName );
+    const profilePic = loading ? "https://img.magnific.com/vecteurs-premium/icone-vectorielle-plate-profil-utilisateur-isole-avatar-silhouette-homme-femme-silhouette-noire-fond-blanc-parfait-pour-histoires-messagers-medias-sociaux-votre-adx9xa_719432-803.jpg?semt=ais_hybrid&w=740&q=80" : (user?.userProfilePic || "https://img.magnific.com/vecteurs-premium/icone-vectorielle-plate-profil-utilisateur-isole-avatar-silhouette-homme-femme-silhouette-noire-fond-blanc-parfait-pour-histoires-messagers-medias-sociaux-votre-adx9xa_719432-803.jpg?semt=ais_hybrid&w=740&q=80");
   return (
     <div className="glass-panel inner-glow rounded-xl p-8 flex flex-col md:flex-row gap-8 items-center mb-12">
       <div className="w-32 h-32 rounded-xl bg-surface-container-highest/10 border border-outline-variant/30 p-2 shrink-0">
         <img 
           alt="Elena Rostova Avatar" 
           className="w-full h-full rounded-lg object-cover" 
-          src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80"
+          src={profilePic}
         />
       </div>
       <div className="flex-grow text-center md:text-left">
         <div className="flex flex-col md:flex-row md:items-center gap-3 justify-center md:justify-start mb-2">
-          <h2 className="text-3xl font-bold tracking-tight text-on-surface font-display">Elena Rostova</h2>
+          <h2 className="text-3xl font-bold tracking-tight text-on-surface font-display">{FullName}</h2>
           <span className="px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 text-[10px] font-bold uppercase tracking-wider">
             Elite Tier
           </span>

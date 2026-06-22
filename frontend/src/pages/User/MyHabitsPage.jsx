@@ -62,8 +62,9 @@ export default function MyHabitsPage() {
 
 
   const filteredHabits = habits.filter(h => {
-    if (filter === 'Active') return true;
-    if (filter === 'Archived') return false;
+    const isCompleted = (h.completedDays?.length || 0) >= (h.habitGoalDuration || 21);
+    if (filter === 'Active') return !isCompleted;
+    if (filter === 'Archived') return isCompleted;
     return true;
   });
 
@@ -78,7 +79,7 @@ export default function MyHabitsPage() {
       {/* Bento-style Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-1">
-          <Milestones  habits={filteredHabits}/>
+          <Milestones  habits={habits.filter(h => (h.completedDays?.length || 0) < (h.habitGoalDuration || 21))}/>
         </div>
         <div className="md:col-span-2">
           <StayDisciplinedCard />

@@ -19,8 +19,9 @@ export default function DashboardPage() {
   }, []);
 
   const today = new Date().toISOString().split("T")[0];
-  const completedToday = habits.filter((e) => e.habitCompletedToday == true).length;
-  const todayHabits = habits.filter((e) => e.habitEndDate >= today).length;
+  const activeHabits = habits.filter(h => (h.completedDays?.length || 0) < (h.habitGoalDuration || 21));
+  const completedToday = activeHabits.filter((e) => e.habitCompletedToday == true).length;
+  const todayHabits = activeHabits.length;
 
   const toggleHabit = async (id) => {
     const chanjHabit = habits.find((e) => e._id == id);
@@ -76,7 +77,7 @@ export default function DashboardPage() {
       {/* Bottom Content Area: Habits List & Insights */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div className="col-span-1 lg:col-span-8">
-          <DailySequence habits={habits} toggleHabit={toggleHabit} />
+          <DailySequence habits={activeHabits} toggleHabit={toggleHabit} />
         </div>
         <div className="col-span-1 lg:col-span-4">
           <SidebarInsights />

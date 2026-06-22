@@ -44,13 +44,13 @@ export default function HabitsTable({ habits, toggleHabit }) {
         const theme = getCategoryTheme(habit.habitCategory);
         const completedDays = habit.completedDays.length || 0;
         const totalGoalDays = habit.habitGoalDuration || 21;
-        const daysPassed = Math.floor((today-startDate) / (1000*60*60*24))+1;
-        const missedDays =  Math.max(0,daysPassed-completedDays);
+        const daysPassed = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)) + 1;
+        const missedDays = Math.max(0, daysPassed - completedDays);
         const completionPercentage = Math.min(100, Math.round((completedDays / totalGoalDays) * 100));
 
         return (
-          <div 
-            key={habit._id} 
+          <div
+            key={habit._id}
             className="glass-panel p-6 rounded-xl flex flex-col justify-between group relative overflow-hidden transition-all duration-300 tech-corners"
           >
             {/* Tech glowing corners */}
@@ -65,7 +65,7 @@ export default function HabitsTable({ habits, toggleHabit }) {
                 <div className={`p-3 rounded-lg ${theme.bg} ${theme.text} transition-transform duration-300 group-hover:scale-110`}>
                   <span className="material-symbols-outlined animate-pulse" data-icon={theme.icon}>{theme.icon}</span>
                 </div>
-                
+
                 {/* Actions: Edit & Delete (always semi-visible, fully on hover) */}
                 <div className="flex gap-1 opacity-40 group-hover:opacity-100 transition-opacity duration-300">
                   <button className="p-1.5 hover:bg-surface-container-highest/50 rounded-lg text-on-surface-variant transition-colors cursor-pointer">
@@ -97,12 +97,12 @@ export default function HabitsTable({ habits, toggleHabit }) {
 
                 {/* Glowing Progress Bar */}
                 <div className="w-full bg-surface-container-highest/40 rounded-full h-1.5 mb-4 relative overflow-hidden">
-                  <div 
+                  <div
                     className="h-full rounded-full transition-all duration-500 ease-out"
-                    style={{ 
-                      width: `${completionPercentage}%`, 
+                    style={{
+                      width: `${completionPercentage}%`,
                       backgroundColor: habit.habitColorTheme || '#4be277',
-                      boxShadow: `0 0 8px ${habit.habitColorTheme || '#4be277'}` 
+                      boxShadow: `0 0 8px ${habit.habitColorTheme || '#4be277'}`
                     }}
                   />
                 </div>
@@ -111,34 +111,47 @@ export default function HabitsTable({ habits, toggleHabit }) {
 
             {/* Today's Check-in Action */}
             <div className="mb-4">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleHabit(habit._id);
-                }}
-                className={`w-full py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 text-xs font-bold transition-all duration-300 cursor-pointer shadow-sm ${
-                  habit.habitCompletedToday
-                    ? 'text-black'
-                    : 'bg-surface-container-low border border-outline-variant/30 text-on-surface hover:border-primary/50 hover:bg-surface-container-high'
-                }`}
-                style={habit.habitCompletedToday ? { 
-                  backgroundColor: habit.habitColorTheme || '#4be277',
-                  boxShadow: `0 0 10px ${(habit.habitColorTheme || '#4be277')}60`,
-                  color: '#000000'
-                } : {}}
-              >
-                {habit.habitCompletedToday ? (
-                  <>
-                    <span className="material-symbols-outlined text-[16px] font-bold text-black" data-icon="task_alt">task_alt</span>
-                    Completed for Today
-                  </>
-                ) : (
-                  <>
-                    <span className="material-symbols-outlined text-[16px] text-on-surface-variant/70 animate-pulse" data-icon="radio_button_unchecked">radio_button_unchecked</span>
-                    Mark Today Completed
-                  </>
-                )}
-              </button>
+              {completedDays >= totalGoalDays ? (
+                <div
+                  className="w-full py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 text-xs font-bold bg-primary/10 border border-primary/20 text-primary"
+                  style={{
+                    borderColor: `${habit.habitColorTheme || '#4be277'}30`,
+                    color: habit.habitColorTheme || '#4be277',
+                    backgroundColor: `${habit.habitColorTheme || '#4be277'}10`
+                  }}
+                >
+                  <span className="material-symbols-outlined text-[16px] font-bold" data-icon="emoji_events">emoji_events</span>
+                  Goal Achieved!
+                </div>
+              ) : (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleHabit(habit._id);
+                  }}
+                  className={`w-full py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 text-xs font-bold transition-all duration-300 cursor-pointer shadow-sm ${habit.habitCompletedToday
+                      ? 'text-black'
+                      : 'bg-surface-container-low border border-outline-variant/30 text-on-surface hover:border-primary/50 hover:bg-surface-container-high'
+                    }`}
+                  style={habit.habitCompletedToday ? {
+                    backgroundColor: habit.habitColorTheme || '#4be277',
+                    boxShadow: `0 0 10px ${(habit.habitColorTheme || '#4be277')}60`,
+                    color: '#000000'
+                  } : {}}
+                >
+                  {habit.habitCompletedToday ? (
+                    <>
+                      <span className="material-symbols-outlined text-[16px] font-bold text-black" data-icon="task_alt">task_alt</span>
+                      Completed for Today
+                    </>
+                  ) : (
+                    <>
+                      <span className="material-symbols-outlined text-[16px] text-on-surface-variant/70 animate-pulse" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+                      Mark Today Completed
+                    </>
+                  )}
+                </button>
+              )}
             </div>
 
             {/* Card Footer */}
@@ -149,10 +162,10 @@ export default function HabitsTable({ habits, toggleHabit }) {
                 </span>
                 <div>
                   <p className="text-[9px] font-semibold uppercase tracking-wider text-on-surface-variant/60">Current Streak</p>
-                  <p className="text-sm font-bold text-on-surface">{ completedDays || 0} Days</p>
+                  <p className="text-sm font-bold text-on-surface">{completedDays || 0} Days</p>
                 </div>
               </div>
-              
+
               <div className="text-right">
                 <p className="text-[9px] font-semibold uppercase tracking-wider text-on-surface-variant/60">Missed Days</p>
                 <p className="text-xs font-bold text-red-500 dark:text-red-400">{missedDays} Days</p>
@@ -163,7 +176,7 @@ export default function HabitsTable({ habits, toggleHabit }) {
       })}
 
       {/* Empty State / Add New Placeholder */}
-      <Link 
+      <Link
         to="/create-habit"
         className="border-2 border-dashed border-outline-variant/60 rounded-xl p-6 flex flex-col items-center justify-center text-on-surface-variant hover:border-primary/50 hover:text-primary transition-all group min-h-[250px] cursor-pointer tech-corners"
       >

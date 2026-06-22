@@ -47,12 +47,24 @@ export const habitCreat = async (req, res) => {
 export const getHabit = async (req, res) => {
     try {
         const userId = req.user._id
+        const today = new Date().toISOString().split("T")[0];
 
         const habits = await habit.find({ userId })
 
+        const updatedHabits = [];
+        for (let h of habits) {
+            const hasCompletedToday = h.completedDays.includes(today);
+            if (h.habitCompletedToday !== hasCompletedToday) {
+                h.habitCompletedToday = hasCompletedToday;
+                await h.save();
+            }
+            updatedHabits.push(h);
+        }
+
+
         return res.status(200).json({
             success: true,
-            habits
+            habits: updatedHabits
         })
 
     } catch (error) {
@@ -117,7 +129,8 @@ export const habitComplit = async (req, res) => {
 
         const allHabits = await habit.find({ userId: currentUser._id });
 
-        const isPerfectDay = allHabits.length > 0 && allHabits.every(h => h.habitCompletedToday === true);
+        const activeHabits = allHabits.filter(h => (h.completedDays?.length || 0) < (h.habitGoalDuration || 21));
+        const isPerfectDay = activeHabits.length > 0 && activeHabits.every(h => h.habitCompletedToday === true);
 
         if (isPerfectDay && currentUser.lastPerfectDate !== today) {
             currentUser.perfectDays = (currentUser.perfectDays || 0) + 1;

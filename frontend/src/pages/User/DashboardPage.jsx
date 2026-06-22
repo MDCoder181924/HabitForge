@@ -7,12 +7,15 @@ import SidebarInsights from '../../components/User/Dashboard/SidebarInsights';
 import { useHabit } from '../../context/HabitContext'
 import api from '../../api/axios';
 import toast from 'react-hot-toast'
+import { useUser } from '../../context/UserContext'
 
 export default function DashboardPage() {
   const { habits, setHabits, getHabits } = useHabit();
+  const { user, refreshUser } = useUser();
 
   useEffect(() => {
     getHabits();
+    refreshUser();
   }, []);
 
   const today = new Date().toISOString().split("T")[0];
@@ -30,6 +33,7 @@ export default function DashboardPage() {
         if (res.data.success) {
           toast.success('chanj your habit')
           getHabits();
+          refreshUser();
         }
         else {
           toast.error('not change today habit')
@@ -46,6 +50,7 @@ export default function DashboardPage() {
         if (res.data.success) {
           toast.success('chanj your habit')
           getHabits();
+          refreshUser();
         }
         else {
           toast.error('not change today habit')
@@ -60,10 +65,10 @@ export default function DashboardPage() {
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
       {/* Header */}
-      <DashboardHeader completedCount={completedToday} totalCount={todayHabits} />
+      <DashboardHeader completedCount={completedToday} totalCount={todayHabits} user={user} />
 
       {/* Stats Bento Grid */}
-      <MetricsBento habits={habits} completedCount={completedToday} totalCount={todayHabits} />
+      <MetricsBento habits={habits} completedCount={completedToday} totalCount={todayHabits} user={user}  />
 
       {/* 365-Day Consistency Heatmap */}
       <ConsistencyHeatmap />

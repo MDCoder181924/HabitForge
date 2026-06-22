@@ -98,6 +98,34 @@ export const habitComplit = async (req, res) => {
 
         await newHabit.save();
 
+        const currentUser = req.user;
+
+        if (currentUser.lastActiveDate !== today) {
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayString = yesterday.toISOString().split("T")[0];
+            if (currentUser.lastActiveDate === yesterdayString) {
+                currentUser.activeStreak = (currentUser.activeStreak || 0) + 1;
+            } else {
+                currentUser.activeStreak = 1;
+            }
+            if (currentUser.activeStreak > currentUser.longestStreak) {
+                currentUser.longestStreak = currentUser.activeStreak;
+            }
+            currentUser.lastActiveDate = today;
+        }
+
+        const allHabits = await habit.find({ userId: currentUser._id });
+
+        const isPerfectDay = allHabits.length > 0 && allHabits.every(h => h.habitCompletedToday === true);
+
+        if (isPerfectDay && currentUser.lastPerfectDate !== today) {
+            currentUser.perfectDays = (currentUser.perfectDays || 0) + 1;
+            currentUser.lastPerfectDate = today;
+        }
+
+        await currentUser.save();
+
         return res.status(200).json({
             success: true,
             message: "today habit is Complit"
@@ -138,6 +166,13 @@ export const habitComplitRemove = async (req, res) => {
         newHabit.completedDays = newHabit.completedDays.filter(day => day !== today);
 
         await newHabit.save();
+
+        const currentUser = req.user;
+        if (currentUser.lastPerfectDate === today) {
+            currentUser.perfectDays = Math.max(0, (currentUser.perfectDays || 0) - 1);
+            currentUser.lastPerfectDate = null;
+            await currentUser.save();
+        }
 
         return res.status(200).json({
             success: true,

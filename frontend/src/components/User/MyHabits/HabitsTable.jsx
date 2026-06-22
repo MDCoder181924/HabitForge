@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function HabitsTable({ habits, toggleHabit, toggleTodayCompleted }) {
+export default function HabitsTable({ habits, toggleHabit }) {
   const getCategoryTheme = (category = 'Productivity') => {
     switch (category.toLowerCase()) {
       case 'health':
@@ -38,22 +38,26 @@ export default function HabitsTable({ habits, toggleHabit, toggleTodayCompleted 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {habits.map((habit) => {
-        const theme = getCategoryTheme(habit.category);
-        const completedDays = habit.completedDays || 0;
-        const totalGoalDays = habit.totalGoalDays || 21;
-        const missedDays = habit.missedDays || 0;
+
+        const startDate = new Date(habit.createdAt);
+        const today = new Date();
+        const theme = getCategoryTheme(habit.habitCategory);
+        const completedDays = habit.completedDays.length || 0;
+        const totalGoalDays = habit.habitGoalDuration || 21;
+        const daysPassed = Math.floor((today-startDate) / (1000*60*60*24))+1;
+        const missedDays =  Math.max(0,daysPassed-completedDays);
         const completionPercentage = Math.min(100, Math.round((completedDays / totalGoalDays) * 100));
 
         return (
           <div 
-            key={habit.id} 
+            key={habit._id} 
             className="glass-panel p-6 rounded-xl flex flex-col justify-between group relative overflow-hidden transition-all duration-300 tech-corners"
           >
             {/* Tech glowing corners */}
-            <div className="tech-corner-tl" style={{ borderColor: habit.color || '#4be277' }}></div>
-            <div className="tech-corner-tr" style={{ borderColor: habit.color || '#4be277' }}></div>
-            <div className="tech-corner-bl" style={{ borderColor: habit.color || '#4be277' }}></div>
-            <div className="tech-corner-br" style={{ borderColor: habit.color || '#4be277' }}></div>
+            <div className="tech-corner-tl" style={{ borderColor: habit.habitColorTheme || '#4be277' }}></div>
+            <div className="tech-corner-tr" style={{ borderColor: habit.habitColorTheme || '#4be277' }}></div>
+            <div className="tech-corner-bl" style={{ borderColor: habit.habitColorTheme || '#4be277' }}></div>
+            <div className="tech-corner-br" style={{ borderColor: habit.habitColorTheme || '#4be277' }}></div>
 
             <div>
               {/* Card Top Header */}
@@ -76,17 +80,17 @@ export default function HabitsTable({ habits, toggleHabit, toggleTodayCompleted 
               {/* Title & Desc */}
               <div>
                 <span className={`text-[11px] font-bold uppercase tracking-wider mb-1 block ${theme.text} opacity-80`}>
-                  {habit.category}
+                  {habit.habitCategory}
                 </span>
-                <h3 className="text-xl font-bold text-on-surface mb-1 group-hover:text-primary transition-colors duration-300">{habit.name}</h3>
-                <p className="text-xs text-on-surface-variant/70 mb-4 line-clamp-1">{habit.desc}</p>
+                <h3 className="text-xl font-bold text-on-surface mb-1 group-hover:text-primary transition-colors duration-300">{habit.habitName}</h3>
+                <p className="text-xs text-on-surface-variant/70 mb-4 line-clamp-1">{habit.habitDiscription}</p>
               </div>
 
               {/* Goal Track Progress Details */}
               <div className="mb-4 border-t border-outline-variant/10 pt-4">
                 <div className="flex justify-between items-center text-xs font-semibold mb-2">
                   <span className="text-on-surface-variant/80">Goal Progress</span>
-                  <span className="font-bold" style={{ color: habit.color || '#4be277' }}>
+                  <span className="font-bold" style={{ color: habit.habitColorTheme || '#4be277' }}>
                     {completedDays} of {totalGoalDays} Days ({completionPercentage}%)
                   </span>
                 </div>
@@ -97,8 +101,8 @@ export default function HabitsTable({ habits, toggleHabit, toggleTodayCompleted 
                     className="h-full rounded-full transition-all duration-500 ease-out"
                     style={{ 
                       width: `${completionPercentage}%`, 
-                      backgroundColor: habit.color || '#4be277',
-                      boxShadow: `0 0 8px ${habit.color || '#4be277'}` 
+                      backgroundColor: habit.habitColorTheme || '#4be277',
+                      boxShadow: `0 0 8px ${habit.habitColorTheme || '#4be277'}` 
                     }}
                   />
                 </div>
@@ -110,20 +114,20 @@ export default function HabitsTable({ habits, toggleHabit, toggleTodayCompleted 
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  toggleTodayCompleted(habit.id);
+                  toggleHabit(habit._id);
                 }}
                 className={`w-full py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 text-xs font-bold transition-all duration-300 cursor-pointer shadow-sm ${
-                  habit.todayCompleted
+                  habit.habitCompletedToday
                     ? 'text-black'
                     : 'bg-surface-container-low border border-outline-variant/30 text-on-surface hover:border-primary/50 hover:bg-surface-container-high'
                 }`}
-                style={habit.todayCompleted ? { 
-                  backgroundColor: habit.color || '#4be277',
-                  boxShadow: `0 0 10px ${(habit.color || '#4be277')}60`,
+                style={habit.habitCompletedToday ? { 
+                  backgroundColor: habit.habitColorTheme || '#4be277',
+                  boxShadow: `0 0 10px ${(habit.habitColorTheme || '#4be277')}60`,
                   color: '#000000'
                 } : {}}
               >
-                {habit.todayCompleted ? (
+                {habit.habitCompletedToday ? (
                   <>
                     <span className="material-symbols-outlined text-[16px] font-bold text-black" data-icon="task_alt">task_alt</span>
                     Completed for Today
@@ -145,7 +149,7 @@ export default function HabitsTable({ habits, toggleHabit, toggleTodayCompleted 
                 </span>
                 <div>
                   <p className="text-[9px] font-semibold uppercase tracking-wider text-on-surface-variant/60">Current Streak</p>
-                  <p className="text-sm font-bold text-on-surface">{habit.streak || 0} Days</p>
+                  <p className="text-sm font-bold text-on-surface">{ completedDays || 0} Days</p>
                 </div>
               </div>
               

@@ -26,6 +26,26 @@ const userSchema = new mongoose.Schema({
     },
     userProfilePic:{
         type:String
+    },
+    perfectDays:{
+        type: Number,
+        default: 0
+    },
+    lastPerfectDate: {
+        type: String,
+        default: null
+    },
+    activeStreak: {
+        type: Number,
+        default: 0
+    },
+    longestStreak: {
+        type: Number,
+        default: 0
+    },
+    lastActiveDate: {
+        type: String,
+        default: null
     }
 },{timestamps:true});
 

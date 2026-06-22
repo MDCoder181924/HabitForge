@@ -159,7 +159,7 @@
 
 @font-face {
   font-family: 'Geist';
-  src: url('https://cdn.jsdelivr.net/npm/geist-font@1.1.0/fonts/geist-sans/Geist-Regular.woff2') format('woff2');
+  src: url('https://cdn.jsdelivr.net/npm/geist-sans/dist/Geist-Regular.woff2') format('woff2');
 }
 
 html, body {

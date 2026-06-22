@@ -1,6 +1,12 @@
 import React from 'react';
+import { useUser } from '../../../context/UserContext';
 
-export default function Milestones() {
+export default function Milestones({habits}) {
+  const {user} = useUser();
+
+  const todayHabits = habits.length;
+  const todayCompletedCount = habits.filter((e) => e.habitCompletedToday === true).length;
+
   return (
     <div className="glass-panel inner-glow p-6 rounded-xl flex flex-col justify-between relative h-full">
       <div>
@@ -14,15 +20,15 @@ export default function Milestones() {
         <div className="space-y-3 font-mono text-xs">
           <div className="flex justify-between items-center pb-2 border-b border-outline-variant/30">
             <span className="text-on-surface-variant/70">Completed Today</span>
-            <span className="font-bold text-primary">4 / 6</span>
+            <span className="font-bold text-primary">{todayCompletedCount} / {todayHabits}</span>
           </div>
           <div className="flex justify-between items-center pb-2 border-b border-outline-variant/30">
             <span className="text-on-surface-variant/70">Perfect Days</span>
-            <span className="font-bold text-primary">14</span>
+            <span className="font-bold text-primary">{user?.perfectDays || 0}</span>
           </div>
           <div className="flex justify-between items-center pb-2 border-b border-outline-variant/30">
             <span className="text-on-surface-variant/70">Active Streak</span>
-            <span className="font-bold text-primary">22 Days</span>
+            <span className="font-bold text-primary">{user?.activeStreak || 0} Days</span>
           </div>
         </div>
       </div>

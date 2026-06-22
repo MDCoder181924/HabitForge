@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function MetricsBento({ habits , completedCount , totalCount }) {
+export default function MetricsBento({ habits , completedCount , totalCount , user }) {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -35,7 +35,7 @@ export default function MetricsBento({ habits , completedCount , totalCount }) {
           <span className="material-symbols-outlined text-tertiary">local_fire_department</span>
         </div>
         <div className="mt-4">
-          <span className="text-4xl font-black text-on-surface">15</span>
+          <span className="text-4xl font-black text-on-surface">{user?.activeStreak}</span>
           <span className="text-on-surface-variant text-sm ml-2">Days</span>
         </div>
       </div>
@@ -47,7 +47,7 @@ export default function MetricsBento({ habits , completedCount , totalCount }) {
           <span className="material-symbols-outlined text-secondary">emoji_events</span>
         </div>
         <div className="mt-4">
-          <span className="text-4xl font-black text-on-surface">42</span>
+          <span className="text-4xl font-black text-on-surface">{user?.longestStreak}</span>
           <span className="text-on-surface-variant text-sm ml-2">Days</span>
         </div>
       </div>

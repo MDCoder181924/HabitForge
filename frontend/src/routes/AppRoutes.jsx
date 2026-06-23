@@ -11,6 +11,7 @@ import AnalyticsPage from "../pages/User/AnalyticsPage";
 import ProfilePage from "../pages/User/ProfilePage";
 import SettingsPage from "../pages/User/SettingsPage";
 import CreateHabitPage from "../pages/User/CreateHabitPage";
+import EditHabitPage from "../pages/User/EditHabitPage";
 
 const AppRoutes = () => {
     return (
@@ -28,6 +29,7 @@ const AppRoutes = () => {
                     <Route path='/profile' element={<ProfilePage />} />
                     <Route path='/settings' element={<SettingsPage />} />
                     <Route path='/create-habit' element={<CreateHabitPage />} />
+                    <Route path='/edit-habit/:id' element={<EditHabitPage />} />
                 </Route>
             </Routes>
         </>

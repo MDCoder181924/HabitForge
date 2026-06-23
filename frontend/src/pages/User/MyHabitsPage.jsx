@@ -5,8 +5,8 @@ import Milestones from '../../components/User/MyHabits/Milestones';
 import StayDisciplinedCard from '../../components/User/MyHabits/StayDisciplinedCard';
 import { useHabit } from '../../context/HabitContext'
 import api from '../../api/axios'
-import toast from 'react-hot-toast';
-import {useUser} from '../../context/UserContext'
+import toast, { Toaster } from 'react-hot-toast';
+import { useUser } from '../../context/UserContext'
 
 export default function MyHabitsPage() {
 
@@ -19,6 +19,24 @@ export default function MyHabitsPage() {
     getHabits();
     refreshUser();
   }, []);
+
+  const deleteHabit = async (id) => {
+    try {
+      const res = await api.post('/habit/delete' ,{
+        habitId : id
+      })
+      if(res.data.success){
+        toast.success(res.data.message);
+      }else{
+        toast.error(res.data.message);
+      }
+    } catch (error) {
+      toast.error("habit not delet");
+    } finally {
+      getHabits();
+      refreshUser();
+    }
+  }
 
   const toggleHabit = async (id) => {
     const chanjHabit = habits.find((e) => e._id == id);
@@ -74,12 +92,12 @@ export default function MyHabitsPage() {
       <MyHabitsHeader filter={filter} setFilter={setFilter} />
 
       {/* Habit List Table */}
-      <HabitsTable habits={filteredHabits} toggleHabit={toggleHabit} />
+      <HabitsTable habits={filteredHabits} toggleHabit={toggleHabit} deleteHabit = {deleteHabit} />
 
       {/* Bento-style Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-1">
-          <Milestones  habits={habits.filter(h => (h.completedDays?.length || 0) < (h.habitGoalDuration || 21))}/>
+          <Milestones habits={habits.filter(h => (h.completedDays?.length || 0) < (h.habitGoalDuration || 21))} />
         </div>
         <div className="md:col-span-2">
           <StayDisciplinedCard />

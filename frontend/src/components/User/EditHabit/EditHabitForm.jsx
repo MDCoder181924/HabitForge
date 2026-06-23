@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function CreateHabitForm({
+export default function EditHabitForm({
   habitName, setHabitName,
   habitDesc, setHabitDesc,
   category, setCategory,
@@ -29,8 +29,8 @@ export default function CreateHabitForm({
       <div className="p-8 space-y-8">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-on-surface mb-1">New Habit</h2>
-            <p className="text-sm text-on-surface-variant">Define your next step toward peak performance.</p>
+            <h2 className="text-2xl font-bold text-on-surface mb-1">Edit Habit</h2>
+            <p className="text-sm text-on-surface-variant">Update your routine configurations to stay on track.</p>
           </div>
           <button 
             type="button"
@@ -42,7 +42,6 @@ export default function CreateHabitForm({
         </div>
 
         <div className="space-y-6">
-          {/* Habit Name */}
           <div className="space-y-2">
             <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block">HABIT NAME</label>
             <input 
@@ -55,7 +54,6 @@ export default function CreateHabitForm({
             />
           </div>
  
-          {/* Description */}
           <div className="space-y-2">
             <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block">DESCRIPTION</label>
             <textarea 
@@ -67,7 +65,6 @@ export default function CreateHabitForm({
             />
           </div>
 
-          {/* Category Dropdown */}
           <div className="space-y-2">
             <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block">CATEGORY</label>
             <div className="relative">
@@ -89,7 +86,6 @@ export default function CreateHabitForm({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Goal Duration */}
             <div className="space-y-2">
               <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block">GOAL DURATION (DAYS)</label>
               <div className="flex flex-col lg:flex-row gap-2">
@@ -122,7 +118,6 @@ export default function CreateHabitForm({
               </div>
             </div>
 
-            {/* Reminder Time */}
             <div className="space-y-2">
               <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block">REMINDER TIME</label>
               <div className="flex flex-col lg:flex-row gap-2">
@@ -158,7 +153,6 @@ export default function CreateHabitForm({
             </div>
           </div>
 
-          {/* Color Picker */}
           <div className="space-y-2">
             <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block">COLOR THEME</label>
             <div className="flex flex-wrap gap-4 p-1">
@@ -201,7 +195,6 @@ export default function CreateHabitForm({
             </div>
           </div>
 
-          {/* Action Buttons */}
           <div className="pt-4 flex items-center gap-4">
             <button 
               className="flex-1 px-6 py-4 rounded-xl border border-outline-variant text-on-surface font-bold hover:bg-surface-container transition-all cursor-pointer text-sm" 
@@ -214,8 +207,8 @@ export default function CreateHabitForm({
               className="flex-[2] px-6 py-4 rounded-xl bg-primary text-on-primary font-bold hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer text-sm" 
               type="submit"
             >
-              <span className="material-symbols-outlined" data-icon="check_circle" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
-              Create Habit
+              <span className="material-symbols-outlined" data-icon="save" style={{ fontVariationSettings: "'FILL' 1" }}>save</span>
+              Save Changes
             </button>
           </div>
         </div>

@@ -200,3 +200,79 @@ export const habitComplitRemove = async (req, res) => {
         })
     }
 }
+
+export const habitDelet = async (req, res) => {
+    try {
+        const { habitId } = req.body;
+        if(!habitId){
+            return res.status(400).json({
+                success:false,
+                message:"Enter your id"
+            })
+        }
+
+        const newHabit =await habit.findOne({_id : habitId});
+        if(!newHabit){
+            return res.status(400).json({
+                success:false,
+                message:"not find your habit"
+            })
+        }
+        await habit.deleteOne({_id:habitId});
+        return res.status(200).json({
+            success:true,
+            message:"habit is deleted"
+        })
+    }catch(error){
+        return res.status(500).json({
+            success:false,
+            message:"not delet habit",
+            error:error.message
+        })
+    }
+}
+
+export const habitEdit = async (req , res) =>{
+    try{
+        const { habitId , newHabitName , newHabitDes , newHabitGoalDuration , newHabitReminderTime , newHabitEnableReminder , newHabitCategory  , newHabitColorTheme} = req.body;
+        if(!habitId || !newHabitName || !newHabitDes || !newHabitGoalDuration || !newHabitReminderTime || !newHabitCategory || !newHabitColorTheme){
+            return res.status(400).json({
+                success:false,
+                message:"not fount data",
+            })
+        }
+
+        const foundHabit = await habit.findOne({_id : habitId , userId : req.user._id});
+
+        if(!foundHabit){
+            return res.status(400).json({
+                success:false,
+                message:"not found habit"
+            })
+        }
+
+        await foundHabit.updateOne({
+            habitName : newHabitName,
+            habitDescription : newHabitDes,
+            habitCategory : newHabitCategory,
+            habitGoalDuration : newHabitGoalDuration,
+            habitReminderTime : newHabitReminderTime,
+            habitColorTheme : newHabitColorTheme,
+            habitEnableReminder : newHabitEnableReminder
+        })
+
+        await foundHabit.save();
+
+        return res.status(200).json({
+            success:true,
+            message:"habit is edite"
+        })
+        
+    }catch(error){
+        return res.status(500).json({
+            success:false, 
+            message:"habit not edit",
+            error:error.message
+        })
+    }
+}

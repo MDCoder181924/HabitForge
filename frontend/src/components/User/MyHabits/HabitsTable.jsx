@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function HabitsTable({ habits, toggleHabit }) {
+export default function HabitsTable({ habits, toggleHabit ,  deleteHabit}) {
   const getCategoryTheme = (category = 'Productivity') => {
     switch (category.toLowerCase()) {
       case 'health':
@@ -67,14 +67,20 @@ export default function HabitsTable({ habits, toggleHabit }) {
                 </div>
 
                 {/* Actions: Edit & Delete (always semi-visible, fully on hover) */}
+                {completedDays < totalGoalDays && (
                 <div className="flex gap-1 opacity-40 group-hover:opacity-100 transition-opacity duration-300">
-                  <button className="p-1.5 hover:bg-surface-container-highest/50 rounded-lg text-on-surface-variant transition-colors cursor-pointer">
+                  <Link
+                  to={`/edit-habit/${habit._id}`}
+                   className="p-1.5 hover:bg-surface-container-highest/50 rounded-lg text-on-surface-variant transition-colors cursor-pointer">
                     <span className="material-symbols-outlined text-[16px]" data-icon="edit">edit</span>
-                  </button>
-                  <button className="p-1.5 hover:bg-tertiary/10 rounded-lg text-tertiary transition-colors cursor-pointer">
+                  </Link>
+                  <button 
+                  onClick={(e) => {deleteHabit(habit._id)}}
+                  className="p-1.5 hover:bg-tertiary/10 rounded-lg text-tertiary transition-colors cursor-pointer">
                     <span className="material-symbols-outlined text-[16px]" data-icon="delete">delete</span>
                   </button>
                 </div>
+                )}
               </div>
 
               {/* Title & Desc */}

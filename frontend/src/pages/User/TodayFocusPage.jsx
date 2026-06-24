@@ -1,24 +1,67 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import TodayHeader from '../../components/User/TodayFocus/TodayHeader';
 import MomentumCircle from '../../components/User/TodayFocus/MomentumCircle';
 import InsightCard from '../../components/User/TodayFocus/InsightCard';
 import TodayHabitList from '../../components/User/TodayFocus/TodayHabitList';
 import FooterVisuals from '../../components/User/TodayFocus/FooterVisuals';
+import {useHabit} from '../../context/HabitContext'
+import api from '../../api/axios'
+import toast from 'react-hot-toast';
 
 export default function TodayFocusPage() {
-  const [habits, setHabits] = useState([
-    { id: 1, name: 'Deep Work Session', category: 'Focus', categoryStyle: 'bg-outline-variant/20 text-on-surface-variant', details: 'Completed at 9:15 AM', completed: true },
-    { id: 2, name: '15-min Meditation', category: 'Wellness', categoryStyle: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400', details: 'Next reminder in 2 hours', completed: false },
-    { id: 3, name: 'Hydration Goal', category: 'Health', categoryStyle: 'bg-primary/10 text-primary', details: 'Target: 2.5 Liters', completed: false, hasProgress: true, progressPct: 45 },
-    { id: 4, name: 'Read 20 Pages', category: 'Growth', categoryStyle: 'bg-blue-500/10 text-blue-600 dark:text-blue-400', details: 'Completed at 7:30 AM', completed: true },
-  ]);
+  const {habits , loading , getHabits} = useHabit();
+  const [togglingId, setTogglingId] = useState(null); 
+  useEffect(() => {
+    getHabits();
+  }, []);
 
-  const toggleHabit = (id) => {
-    setHabits(habits.map(h => h.id === id ? { ...h, completed: !h.completed } : h));
-  };
+  const toggleHabit = async (id) => {
+    const chanjHabit = habits.find((e) => e._id == id);
+    setTogglingId(id); 
 
-  const completedCount = habits.filter(h => h.completed).length;
-  const totalCount = habits.length;
+    if (chanjHabit && chanjHabit.habitCompletedToday == true) {
+      try {
+        const res = await api.post('/habit/remove', {
+          habitId: id
+        })
+        if (res.data.success) {
+          toast.success('chanj your habit')
+          await getHabits();
+        }
+        else {
+          toast.error('not change today habit')
+        }
+      } catch (error) {
+        toast.error('not change today habit');
+        console.log(error)
+      }
+      finally{
+        setTogglingId(null);
+      }
+    } else {
+      try {
+        const res = await api.post('/habit/complit', {
+          habitId: id
+        })
+        if (res.data.success) {
+          toast.success('chanj your habit')
+          await getHabits();
+        }
+        else {
+          toast.error('not change today habit')
+        }
+      } catch (error) {
+        toast.error('not change today habit');
+        console.log(error)
+      }
+      finally{
+        setTogglingId(null);
+      }
+    }
+  }
+  const filterHabits = (habits || []).filter(h => (h.completedDays?.length || 0) < (h.habitGoalDuration || 21));
+  const completedCount = filterHabits.filter(h => h.habitCompletedToday===true).length;
+  const totalCount = filterHabits.length;
   const percentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
   return (
@@ -37,7 +80,7 @@ export default function TodayFocusPage() {
       </div>
 
       {/* Interactive Habit List */}
-      <TodayHabitList habits={habits} toggleHabit={toggleHabit} />
+      <TodayHabitList habits={filterHabits} toggleHabit={toggleHabit} togglingId={togglingId}/>
 
       {/* Footer Visual Section */}
       <FooterVisuals />

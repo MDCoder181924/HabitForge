@@ -1,38 +1,64 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function HabitsTable({ habits, toggleHabit ,  deleteHabit}) {
-  const getCategoryTheme = (category = 'Productivity') => {
-    switch (category.toLowerCase()) {
-      case 'health':
-        return {
-          icon: 'water_drop',
-          bg: 'bg-primary/10',
-          text: 'text-primary',
-          border: 'border-primary/20'
-        };
-      case 'learning':
-        return {
-          icon: 'menu_book',
-          bg: 'bg-secondary/10',
-          text: 'text-secondary',
-          border: 'border-secondary/20'
-        };
-      case 'fitness':
-        return {
-          icon: 'fitness_center',
-          bg: 'bg-tertiary/10',
-          text: 'text-tertiary',
-          border: 'border-tertiary/20'
-        };
-      default:
-        return {
-          icon: 'terminal',
-          bg: 'bg-primary/10',
-          text: 'text-primary',
-          border: 'border-primary/20'
-        };
+export default function HabitsTable({ habits, toggleHabit ,  deleteHabit, togglingId}) {
+    const getCategoryTheme = (category = 'Productivity') => {
+    const cat = category.toLowerCase();
+    
+    if (cat === 'health' || cat === 'wellness') {
+      return {
+        icon: cat === 'health' ? 'water_drop' : 'self_improvement',
+        bg: 'bg-primary/10',
+        text: 'text-primary',
+        border: 'border-primary/20'
+      };
     }
+    if (cat === 'fitness' || cat === 'physical') {
+      return {
+        icon: 'fitness_center',
+        bg: 'bg-tertiary/10',
+        text: 'text-tertiary',
+        border: 'border-tertiary/20'
+      };
+    }
+    if (cat === 'productivity') {
+      return {
+        icon: 'bolt',
+        bg: 'bg-amber-500/10',
+        text: 'text-amber-500',
+        border: 'border-amber-500/20'
+      };
+    }
+    if (cat === 'study' || cat === 'learning' || cat === 'growth') {
+      return {
+        icon: 'menu_book',
+        bg: 'bg-secondary/10',
+        text: 'text-secondary',
+        border: 'border-secondary/20'
+      };
+    }
+    if (cat === 'finance') {
+      return {
+        icon: 'payments',
+        bg: 'bg-emerald-500/10',
+        text: 'text-emerald-500',
+        border: 'border-emerald-500/20'
+      };
+    }
+    if (cat === 'personal') {
+      return {
+        icon: 'person',
+        bg: 'bg-indigo-500/10',
+        text: 'text-indigo-500',
+        border: 'border-indigo-500/20'
+      };
+    }
+    return {
+      icon: 'category',
+      bg: 'bg-primary/10',
+      text: 'text-primary',
+      border: 'border-primary/20'
+    };
   };
 
   return (
@@ -62,7 +88,7 @@ export default function HabitsTable({ habits, toggleHabit ,  deleteHabit}) {
             <div>
               {/* Card Top Header */}
               <div className="flex justify-between items-start mb-4">
-                <div className={`p-3 rounded-lg ${theme.bg} ${theme.text} transition-transform duration-300 group-hover:scale-110`}>
+                <div className={`p-3 rounded-lg border ${theme.border} ${theme.bg} ${theme.text} transition-transform duration-300 group-hover:scale-110`}>
                   <span className="material-symbols-outlined animate-pulse" data-icon={theme.icon}>{theme.icon}</span>
                 </div>
 
@@ -133,19 +159,28 @@ export default function HabitsTable({ habits, toggleHabit ,  deleteHabit}) {
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    toggleHabit(habit._id);
+                    !togglingId && toggleHabit(habit._id);
                   }}
-                  className={`w-full py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 text-xs font-bold transition-all duration-300 cursor-pointer shadow-sm ${habit.habitCompletedToday
-                      ? 'text-black'
-                      : 'bg-surface-container-low border border-outline-variant/30 text-on-surface hover:border-primary/50 hover:bg-surface-container-high'
-                    }`}
-                  style={habit.habitCompletedToday ? {
+                  disabled={togglingId === habit._id}
+                  className={`w-full py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 text-xs font-bold transition-all duration-300 cursor-pointer shadow-sm ${
+                    togglingId === habit._id
+                      ? 'bg-outline-variant/30 text-on-surface-variant opacity-50 cursor-not-allowed border border-outline-variant/20'
+                      : habit.habitCompletedToday
+                        ? 'text-black'
+                        : 'bg-surface-container-low border border-outline-variant/30 text-on-surface hover:border-primary/50 hover:bg-surface-container-high'
+                  }`}
+                  style={togglingId !== habit._id && habit.habitCompletedToday ? {
                     backgroundColor: habit.habitColorTheme || '#4be277',
                     boxShadow: `0 0 10px ${(habit.habitColorTheme || '#4be277')}60`,
                     color: '#000000'
                   } : {}}
                 >
-                  {habit.habitCompletedToday ? (
+                  {togglingId === habit._id ? (
+                    <>
+                      <span className="material-symbols-outlined text-[16px] font-bold animate-spin" data-icon="sync">sync</span>
+                      Updating...
+                    </>
+                  ) : habit.habitCompletedToday ? (
                     <>
                       <span className="material-symbols-outlined text-[16px] font-bold text-black" data-icon="task_alt">task_alt</span>
                       Completed for Today

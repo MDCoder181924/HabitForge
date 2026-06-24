@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function DailySequence({ habits, toggleHabit }) {
+export default function DailySequence({ habits, toggleHabit, togglingId }) {
   const navigate = useNavigate();
 
   return (
@@ -49,16 +49,19 @@ export default function DailySequence({ habits, toggleHabit }) {
                 <button 
                   onClick={(e) => {
                     e.stopPropagation();
-                    toggleHabit(habit._id);
+                    !togglingId && toggleHabit(habit._id);
                   }}
+                  disabled={togglingId === habit._id}
                   className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all cursor-pointer ${
-                    completed 
-                      ? 'border-primary text-primary bg-primary/20' 
-                      : 'border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary'
+                    togglingId === habit._id
+                      ? 'border-outline-variant/30 text-on-surface-variant opacity-50 cursor-not-allowed'
+                      : completed 
+                        ? 'border-primary text-primary bg-primary/20' 
+                        : 'border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary'
                   }`}
                 >
-                  <span className="material-symbols-outlined text-sm">
-                    {completed ? 'check' : 'circle'}
+                  <span className={`material-symbols-outlined ${togglingId === habit._id ? 'text-xs animate-spin' : 'text-sm'}`}>
+                    {togglingId === habit._id ? 'sync' : completed ? 'check' : 'circle'}
                   </span>
                 </button>
               </div>

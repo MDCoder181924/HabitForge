@@ -12,6 +12,7 @@ import { useUser } from '../../context/UserContext'
 export default function DashboardPage() {
   const { habits, setHabits, getHabits } = useHabit();
   const { user, refreshUser } = useUser();
+  const [togglingId, setTogglingId] = useState(null);
 
   useEffect(() => {
     getHabits();
@@ -25,6 +26,7 @@ export default function DashboardPage() {
 
   const toggleHabit = async (id) => {
     const chanjHabit = habits.find((e) => e._id == id);
+    setTogglingId(id);
 
     if (chanjHabit && chanjHabit.habitCompletedToday == true) {
       try {
@@ -33,8 +35,8 @@ export default function DashboardPage() {
         })
         if (res.data.success) {
           toast.success('chanj your habit')
-          getHabits();
-          refreshUser();
+          await getHabits();
+          await refreshUser();
         }
         else {
           toast.error('not change today habit')
@@ -42,6 +44,8 @@ export default function DashboardPage() {
       } catch (error) {
         toast.error('not change today habit');
         console.log(error)
+      } finally {
+        setTogglingId(null);
       }
     } else {
       try {
@@ -50,8 +54,8 @@ export default function DashboardPage() {
         })
         if (res.data.success) {
           toast.success('chanj your habit')
-          getHabits();
-          refreshUser();
+          await getHabits();
+          await refreshUser();
         }
         else {
           toast.error('not change today habit')
@@ -59,6 +63,8 @@ export default function DashboardPage() {
       } catch (error) {
         toast.error('not change today habit');
         console.log(error)
+      } finally {
+        setTogglingId(null);
       }
     }
   }
@@ -77,7 +83,7 @@ export default function DashboardPage() {
       {/* Bottom Content Area: Habits List & Insights */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div className="col-span-1 lg:col-span-8">
-          <DailySequence habits={activeHabits} toggleHabit={toggleHabit} />
+          <DailySequence habits={activeHabits} toggleHabit={toggleHabit} togglingId={togglingId} />
         </div>
         <div className="col-span-1 lg:col-span-4">
           <SidebarInsights />

@@ -14,6 +14,7 @@ export default function MyHabitsPage() {
   const { refreshUser } = useUser();
 
   const [filter, setFilter] = useState('All');
+  const [togglingId, setTogglingId] = useState(null);
 
   useEffect(() => {
     getHabits();
@@ -40,6 +41,7 @@ export default function MyHabitsPage() {
 
   const toggleHabit = async (id) => {
     const chanjHabit = habits.find((e) => e._id == id);
+    setTogglingId(id);
 
     if (chanjHabit && chanjHabit.habitCompletedToday == true) {
       try {
@@ -48,8 +50,8 @@ export default function MyHabitsPage() {
         })
         if (res.data.success) {
           toast.success('chanj your habit')
-          getHabits();
-          refreshUser();
+          await getHabits();
+          await refreshUser();
         }
         else {
           toast.error('not change today habit')
@@ -57,6 +59,8 @@ export default function MyHabitsPage() {
       } catch (error) {
         toast.error('not change today habit');
         console.log(error)
+      } finally {
+        setTogglingId(null);
       }
     } else {
       try {
@@ -65,8 +69,8 @@ export default function MyHabitsPage() {
         })
         if (res.data.success) {
           toast.success('chanj your habit')
-          getHabits();
-          refreshUser();
+          await getHabits();
+          await refreshUser();
         }
         else {
           toast.error('not change today habit')
@@ -74,6 +78,8 @@ export default function MyHabitsPage() {
       } catch (error) {
         toast.error('not change today habit');
         console.log(error)
+      } finally {
+        setTogglingId(null);
       }
     }
   }
@@ -92,7 +98,7 @@ export default function MyHabitsPage() {
       <MyHabitsHeader filter={filter} setFilter={setFilter} />
 
       {/* Habit List Table */}
-      <HabitsTable habits={filteredHabits} toggleHabit={toggleHabit} deleteHabit = {deleteHabit} />
+      <HabitsTable habits={filteredHabits} toggleHabit={toggleHabit} deleteHabit={deleteHabit} togglingId={togglingId} />
 
       {/* Bento-style Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

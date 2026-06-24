@@ -181,11 +181,27 @@ export const habitComplitRemove = async (req, res) => {
         await newHabit.save();
 
         const currentUser = req.user;
+
+        // Check if user has any other habits completed today
+        const allHabits = await habit.find({ userId: currentUser._id });
+        const completedTodayCount = allHabits.filter(h => h.completedDays.includes(today)).length;
+
+        if (completedTodayCount === 0 && currentUser.lastActiveDate === today) {
+            currentUser.activeStreak = Math.max(0, (currentUser.activeStreak || 0) - 1);
+            if (currentUser.longestStreak === currentUser.activeStreak + 1) {
+                currentUser.longestStreak = Math.max(0, currentUser.activeStreak);
+            }
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            currentUser.lastActiveDate = yesterday.toISOString().split("T")[0];
+        }
+
         if (currentUser.lastPerfectDate === today) {
             currentUser.perfectDays = Math.max(0, (currentUser.perfectDays || 0) - 1);
             currentUser.lastPerfectDate = null;
-            await currentUser.save();
         }
+
+        await currentUser.save();
 
         return res.status(200).json({
             success: true,

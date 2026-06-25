@@ -20,18 +20,18 @@ export default function AnalyticsPage() {
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
       {/* Header Section */}
-      <AnalyticsHeader timeframe={timeframe} setTimeframe={setTimeframe} />
+      <AnalyticsHeader timeframe={timeframe} setTimeframe={setTimeframe} user = {user}/>
 
       {/* Bento Grid Metrics */}
-      <AnalyticsBento />
+      <AnalyticsBento habits={habits} timeframe={timeframe} user={user} />
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
-          <CompletionTrends />
+          <CompletionTrends habits={habits} timeframe={timeframe} />
         </div>
         <div>
-          <StreakBreakdown />
+          <StreakBreakdown habits={habits} />
         </div>
       </div>
 
@@ -39,7 +39,7 @@ export default function AnalyticsPage() {
       <ActivityHeatmap habits={habits} user={user} />
 
       {/* Insights & Analysis */}
-      <SynergyInsights />
+      <SynergyInsights habits={habits} />
     </div>
   );
 }

@@ -1,32 +1,72 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
-export default function SynergyInsights() {
-  const stacks = [
-    {
-      icon1: 'fitness_center',
-      icon2: 'shower',
-      name: 'Exercise → Cold Shower',
-      desc: 'Stacked 98% of the time',
-      strength: 'Strong Stack'
-    },
-    {
-      icon1: 'menu_book',
-      icon2: 'self_improvement',
-      name: 'Reading → Meditation',
-      desc: 'Stacked 84% of the time',
-      strength: 'Solid Stack'
+const getCategoryIcon = (category) => {
+  const map = {
+    'Productivity': 'speed',
+    'Health': 'favorite',
+    'Fitness': 'directions_run',
+    'Study': 'school',
+    'Finance': 'payments',
+    'Personal': 'person',
+    'other': 'star'
+  };
+  return map[category] || 'star';
+};
+
+export default function SynergyInsights({ habits = [] }) {
+  const coCompletions = useMemo(() => {
+    const pairs = [];
+    for (let i = 0; i < habits.length; i++) {
+      for (let j = i + 1; j < habits.length; j++) {
+        const h1 = habits[i];
+        const h2 = habits[j];
+        
+        const days1 = h1.completedDays || [];
+        const days2 = h2.completedDays || [];
+        
+        const common = days1.filter(d => days2.includes(d)).length;
+        const totalUnique = new Set([...days1, ...days2]).size;
+        
+        if (totalUnique > 0 && common > 0) {
+          const pct = Math.round((common / totalUnique) * 100);
+          pairs.push({
+            icon1: getCategoryIcon(h1.habitCategory),
+            icon2: getCategoryIcon(h2.habitCategory),
+            name: `${h1.habitName} + ${h2.habitName}`,
+            desc: `Stacked on ${common} day${common > 1 ? 's' : ''} (${pct}%)`,
+            strength: pct >= 80 ? 'Strong Synergy' : pct >= 50 ? 'Solid Synergy' : 'Moderate Synergy'
+          });
+        }
+      }
     }
-  ];
+    return pairs.sort((a, b) => b.pct - a.pct).slice(0, 2);
+  }, [habits]);
+
+  const displayStacks = useMemo(() => {
+    if (coCompletions.length > 0) {
+      return coCompletions;
+    }
+    // Fallback static data if no co-completions exist yet
+    return [
+      {
+        icon1: 'speed',
+        icon2: 'directions_run',
+        name: 'Productivity + Fitness',
+        desc: 'Complete both health & work habits together',
+        strength: 'Setup Synergy'
+      }
+    ];
+  }, [coCompletions]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
       <div className="bg-primary-container/10 border border-primary/20 p-6 rounded-xl relative overflow-hidden flex flex-col justify-between">
         <div>
           <h4 className="text-sm font-bold text-primary uppercase tracking-wider mb-2">
-            Morning Routine is Key
+            Consistency Principle
           </h4>
           <p className="text-xs leading-relaxed text-on-surface-variant">
-            Our analysis shows that habits completed before 10:00 AM have a <span className="font-bold text-primary">92% higher completion rate</span> than those scheduled for the evening. Consider shifting "Reading" to an earlier slot to improve consistency.
+            Habits stacked together create strong mental chains. Try completing related habits back-to-back to lower mental resistance and accelerate habit formation.
           </p>
         </div>
         <span className="material-symbols-outlined absolute -right-6 -bottom-6 text-[120px] opacity-[0.05] text-primary pointer-events-none select-none" data-icon="lightbulb">
@@ -40,7 +80,7 @@ export default function SynergyInsights() {
         </h4>
         
         <div className="space-y-4">
-          {stacks.map((stack, idx) => (
+          {displayStacks.map((stack, idx) => (
             <div key={idx} className="flex items-center gap-4 border-b border-outline-variant/30 pb-3 last:border-0 last:pb-0">
               <div className="flex -space-x-2 shrink-0">
                 <div className="w-8 h-8 rounded-full bg-surface-container-highest/20 flex items-center justify-center border border-background text-primary">

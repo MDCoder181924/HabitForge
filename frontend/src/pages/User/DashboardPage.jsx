@@ -3,7 +3,6 @@ import DashboardHeader from '../../components/User/Dashboard/DashboardHeader';
 import MetricsBento from '../../components/User/Dashboard/MetricsBento';
 import ConsistencyHeatmap from '../../components/User/Dashboard/ConsistencyHeatmap';
 import DailySequence from '../../components/User/Dashboard/DailySequence';
-import SidebarInsights from '../../components/User/Dashboard/SidebarInsights';
 import { useHabit } from '../../context/HabitContext'
 import api from '../../api/axios';
 import toast from 'react-hot-toast'
@@ -78,16 +77,11 @@ export default function DashboardPage() {
       <MetricsBento habits={habits} completedCount={completedToday} totalCount={todayHabits} user={user}  />
 
       {/* 365-Day Consistency Heatmap */}
-      <ConsistencyHeatmap />
+      <ConsistencyHeatmap habits={habits} user={user} />
 
-      {/* Bottom Content Area: Habits List & Insights */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <div className="col-span-1 lg:col-span-8">
-          <DailySequence habits={activeHabits} toggleHabit={toggleHabit} togglingId={togglingId} />
-        </div>
-        <div className="col-span-1 lg:col-span-4">
-          <SidebarInsights />
-        </div>
+      {/* Bottom Content Area: Habits List */}
+      <div>
+        <DailySequence habits={activeHabits} toggleHabit={toggleHabit} togglingId={togglingId} />
       </div>
     </div>
   );

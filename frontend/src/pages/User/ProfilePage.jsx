@@ -17,9 +17,7 @@ export default function ProfilePage() {
     { id: '#H002-MEDI', timestamp: '2023-10-23 21:45:00', action: 'Neural Deficit Check', latency: '2.5s', status: 'SKIPPED', statusStyle: 'text-white/40' },
   ]);
 
-  const [matrixIntensities] = useState(() => 
-    Array.from({ length: 364 }, () => Math.random())
-  );
+
 
   const rotateKeys = () => {
     alert('Security keys rotated successfully. Authenticator cache cleared.');
@@ -37,7 +35,7 @@ export default function ProfilePage() {
       {/* Discipline Matrix and Security Audit */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         <div className="lg:col-span-3">
-          <DisciplineMatrix matrixIntensities={matrixIntensities} />
+          <DisciplineMatrix habits={habits} user={user} />
         </div>
         <div>
           <SecurityAudit sessionsCount={sessionsCount} rotateKeys={rotateKeys} />

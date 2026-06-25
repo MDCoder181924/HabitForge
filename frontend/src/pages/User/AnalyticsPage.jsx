@@ -1,17 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AnalyticsHeader from '../../components/User/Analytics/AnalyticsHeader';
 import AnalyticsBento from '../../components/User/Analytics/AnalyticsBento';
 import CompletionTrends from '../../components/User/Analytics/CompletionTrends';
 import StreakBreakdown from '../../components/User/Analytics/StreakBreakdown';
 import ActivityHeatmap from '../../components/User/Analytics/ActivityHeatmap';
 import SynergyInsights from '../../components/User/Analytics/SynergyInsights';
+import {useHabit} from '../../context/HabitContext'
+import {useUser} from '../../context/UserContext'
 
 export default function AnalyticsPage() {
   const [timeframe, setTimeframe] = useState('7 Days');
+  const {habits , getHabits} = useHabit();
+  const {user} = useUser();
 
-  const [intensities] = useState(() => 
-    Array.from({ length: 364 }, () => Math.floor(Math.random() * 5))
-  );
+  useEffect(()=>{
+    getHabits();
+  },[]);
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
@@ -32,7 +36,7 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Activity Heatmap */}
-      <ActivityHeatmap intensities={intensities} />
+      <ActivityHeatmap habits={habits} user={user} />
 
       {/* Insights & Analysis */}
       <SynergyInsights />

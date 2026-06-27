@@ -42,6 +42,10 @@ const habitSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    lastReminderSentDate: {
+        type: String,
+        default: null
+    },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

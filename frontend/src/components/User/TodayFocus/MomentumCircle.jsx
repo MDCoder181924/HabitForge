@@ -11,7 +11,7 @@ export default function MomentumCircle({ completedCount, totalCount, percentage 
       <div className="relative w-32 h-32 flex items-center justify-center shrink-0">
         <svg className="w-full h-full -rotate-90">
           <circle 
-            className="text-white/5" 
+            className="text-outline-variant dark:text-white/10" 
             cx="64" 
             cy="64" 
             fill="transparent" 
@@ -49,7 +49,7 @@ export default function MomentumCircle({ completedCount, totalCount, percentage 
             <div 
               key={i} 
               className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
-                i < completedCount ? 'bg-primary shadow-[0_0_8px_rgba(75,226,119,0.4)]' : 'bg-white/5'
+                i < completedCount ? 'bg-primary shadow-[0_0_8px_rgba(75,226,119,0.4)]' : 'bg-outline/30 dark:bg-white/10'
               }`}
             />
           ))}

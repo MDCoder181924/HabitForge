@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route , Navigate } from "react-router-dom";
 import Home from "../pages/Home"
 import LoginPage from "../pages/Auth/LoginPage";
 import RegisterPage from "../pages/Auth/RegisterPage";
@@ -12,15 +12,28 @@ import ProfilePage from "../pages/User/ProfilePage";
 import SettingsPage from "../pages/User/SettingsPage";
 import CreateHabitPage from "../pages/User/CreateHabitPage";
 import EditHabitPage from "../pages/User/EditHabitPage";
+import { Children } from "react";
+import { useUser } from "../context/UserContext";
+
+const GuestRouter = ({ children })=>{
+    const {user , loading} = useUser();
+    if(loading) return null;
+    return user ? <Navigate to ="/dashboard" replace/> : children;
+}
+const ProtectedRoute = ({ children }) => {
+    const { user, loading } = useUser();
+    if (loading) return null;
+    return user ? children : <Navigate to="/login" replace />;
+};
 
 const AppRoutes = () => {
     return (
         <>
             <Routes>
-                <Route path='/' element={<Home />} />
-                <Route path='/login' element={<LoginPage />} />
-                <Route path='/register' element={<RegisterPage />} />
-                <Route element={<Layout />}>
+                <Route path='/' element={<GuestRouter> <Home /> </GuestRouter>} />
+                <Route path='/login' element={<GuestRouter> <LoginPage /> </GuestRouter> } />
+                <Route path='/register' element={<GuestRouter> <RegisterPage /> </GuestRouter>} />
+                <Route element={ <ProtectedRoute> <Layout /> </ProtectedRoute>}>
                     <Route path='/dashboard' element={<DashboardPage />} />
                     <Route path='/habits' element={<MyHabitsPage />} />
                     <Route path='/today' element={<TodayFocusPage />} />

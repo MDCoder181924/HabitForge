@@ -62,7 +62,7 @@ export default function HabitsTable({ habits, toggleHabit ,  deleteHabit, toggli
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
       {habits.map((habit) => {
 
         const startDate = new Date(habit.createdAt);
@@ -77,7 +77,7 @@ export default function HabitsTable({ habits, toggleHabit ,  deleteHabit, toggli
         return (
           <div
             key={habit._id}
-            className="glass-panel p-6 rounded-xl flex flex-col justify-between group relative overflow-hidden transition-all duration-300 tech-corners"
+            className="glass-panel p-3 sm:p-6 rounded-xl flex flex-col justify-between group relative overflow-hidden transition-all duration-300 tech-corners"
           >
             {/* Tech glowing corners */}
             <div className="tech-corner-tl" style={{ borderColor: habit.habitColorTheme || '#4be277' }}></div>
@@ -87,23 +87,23 @@ export default function HabitsTable({ habits, toggleHabit ,  deleteHabit, toggli
 
             <div>
               {/* Card Top Header */}
-              <div className="flex justify-between items-start mb-4">
-                <div className={`p-3 rounded-lg border ${theme.border} ${theme.bg} ${theme.text} transition-transform duration-300 group-hover:scale-110`}>
-                  <span className="material-symbols-outlined animate-pulse" data-icon={theme.icon}>{theme.icon}</span>
+              <div className="flex justify-between items-start mb-2 sm:mb-4">
+                <div className={`p-1.5 sm:p-3 rounded-lg border ${theme.border} ${theme.bg} ${theme.text} transition-transform duration-300 group-hover:scale-110`}>
+                  <span className="material-symbols-outlined animate-pulse text-sm sm:text-lg" data-icon={theme.icon}>{theme.icon}</span>
                 </div>
 
                 {/* Actions: Edit & Delete (always semi-visible, fully on hover) */}
                 {completedDays < totalGoalDays && (
-                <div className="flex gap-1 opacity-40 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="flex gap-1 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
                   <Link
                   to={`/edit-habit/${habit._id}`}
-                   className="p-1.5 hover:bg-surface-container-highest/50 rounded-lg text-on-surface-variant transition-colors cursor-pointer">
-                    <span className="material-symbols-outlined text-[16px]" data-icon="edit">edit</span>
+                   className="p-1 hover:bg-surface-container-highest/50 rounded-lg text-on-surface-variant transition-colors cursor-pointer">
+                    <span className="material-symbols-outlined text-[13px] sm:text-[16px]" data-icon="edit">edit</span>
                   </Link>
                   <button 
                   onClick={(e) => {deleteHabit(habit._id)}}
-                  className="p-1.5 hover:bg-tertiary/10 rounded-lg text-tertiary transition-colors cursor-pointer">
-                    <span className="material-symbols-outlined text-[16px]" data-icon="delete">delete</span>
+                  className="p-1 hover:bg-tertiary/10 rounded-lg text-tertiary transition-colors cursor-pointer">
+                    <span className="material-symbols-outlined text-[13px] sm:text-[16px]" data-icon="delete">delete</span>
                   </button>
                 </div>
                 )}
@@ -111,24 +111,24 @@ export default function HabitsTable({ habits, toggleHabit ,  deleteHabit, toggli
 
               {/* Title & Desc */}
               <div>
-                <span className={`text-[11px] font-bold uppercase tracking-wider mb-1 block ${theme.text} opacity-80`}>
+                <span className={`text-[9px] sm:text-[11px] font-bold uppercase tracking-wider mb-0.5 block ${theme.text} opacity-80`}>
                   {habit.habitCategory}
                 </span>
-                <h3 className="text-xl font-bold text-on-surface mb-1 group-hover:text-primary transition-colors duration-300">{habit.habitName}</h3>
-                <p className="text-xs text-on-surface-variant/70 mb-4 line-clamp-1">{habit.habitDescription}</p>
+                <h3 className="text-sm sm:text-xl font-bold text-on-surface mb-0.5 group-hover:text-primary transition-colors duration-300 line-clamp-1">{habit.habitName}</h3>
+                <p className="text-[10px] sm:text-xs text-on-surface-variant/70 mb-2 sm:mb-4 line-clamp-1">{habit.habitDescription}</p>
               </div>
 
               {/* Goal Track Progress Details */}
-              <div className="mb-4 border-t border-outline-variant/10 pt-4">
-                <div className="flex justify-between items-center text-xs font-semibold mb-2">
-                  <span className="text-on-surface-variant/80">Goal Progress</span>
-                  <span className="font-bold" style={{ color: habit.habitColorTheme || '#4be277' }}>
-                    {completedDays} of {totalGoalDays} Days ({completionPercentage}%)
+              <div className="mb-2 sm:mb-4 border-t border-outline-variant/10 pt-2 sm:pt-4">
+                <div className="flex justify-between items-center text-[10px] sm:text-xs font-semibold mb-1.5">
+                  <span className="text-on-surface-variant/80">Progress</span>
+                  <span className="font-bold text-[9px] sm:text-xs" style={{ color: habit.habitColorTheme || '#4be277' }}>
+                    {completedDays}/{totalGoalDays} d ({completionPercentage}%)
                   </span>
                 </div>
 
                 {/* Glowing Progress Bar */}
-                <div className="w-full bg-surface-container-highest/40 rounded-full h-1.5 mb-4 relative overflow-hidden">
+                <div className="w-full bg-surface-container-highest/40 rounded-full h-1 mb-2 sm:mb-4 relative overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-500 ease-out"
                     style={{
@@ -142,18 +142,18 @@ export default function HabitsTable({ habits, toggleHabit ,  deleteHabit, toggli
             </div>
 
             {/* Today's Check-in Action */}
-            <div className="mb-4">
+            <div className="mb-2 sm:mb-4">
               {completedDays >= totalGoalDays ? (
                 <div
-                  className="w-full py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 text-xs font-bold bg-primary/10 border border-primary/20 text-primary"
+                  className="w-full py-1.5 sm:py-2.5 px-2 sm:px-4 rounded-lg flex items-center justify-center gap-1 sm:gap-2 text-[10px] sm:text-xs font-bold bg-primary/10 border border-primary/20 text-primary"
                   style={{
                     borderColor: `${habit.habitColorTheme || '#4be277'}30`,
                     color: habit.habitColorTheme || '#4be277',
                     backgroundColor: `${habit.habitColorTheme || '#4be277'}10`
                   }}
                 >
-                  <span className="material-symbols-outlined text-[16px] font-bold" data-icon="emoji_events">emoji_events</span>
-                  Goal Achieved!
+                  <span className="material-symbols-outlined text-[13px] sm:text-[16px] font-bold" data-icon="emoji_events">emoji_events</span>
+                  Achieved!
                 </div>
               ) : (
                 <button
@@ -162,7 +162,7 @@ export default function HabitsTable({ habits, toggleHabit ,  deleteHabit, toggli
                     !togglingId && toggleHabit(habit._id);
                   }}
                   disabled={togglingId === habit._id}
-                  className={`w-full py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 text-xs font-bold transition-all duration-300 cursor-pointer shadow-sm ${
+                  className={`w-full py-1.5 sm:py-2.5 px-2 sm:px-4 rounded-lg flex items-center justify-center gap-1 sm:gap-2 text-[10px] sm:text-xs font-bold transition-all duration-300 cursor-pointer shadow-sm ${
                     togglingId === habit._id
                       ? 'bg-outline-variant/30 text-on-surface-variant opacity-50 cursor-not-allowed border border-outline-variant/20'
                       : habit.habitCompletedToday
@@ -177,18 +177,18 @@ export default function HabitsTable({ habits, toggleHabit ,  deleteHabit, toggli
                 >
                   {togglingId === habit._id ? (
                     <>
-                      <span className="material-symbols-outlined text-[16px] font-bold animate-spin" data-icon="sync">sync</span>
-                      Updating...
+                      <span className="material-symbols-outlined text-[13px] sm:text-[16px] font-bold animate-spin" data-icon="sync">sync</span>
+                      ...
                     </>
                   ) : habit.habitCompletedToday ? (
                     <>
-                      <span className="material-symbols-outlined text-[16px] font-bold text-black" data-icon="task_alt">task_alt</span>
-                      Completed for Today
+                      <span className="material-symbols-outlined text-[13px] sm:text-[16px] font-bold text-black" data-icon="task_alt">task_alt</span>
+                      Done
                     </>
                   ) : (
                     <>
-                      <span className="material-symbols-outlined text-[16px] text-on-surface-variant/70 animate-pulse" data-icon="radio_button_unchecked">radio_button_unchecked</span>
-                      Mark Today Completed
+                      <span className="material-symbols-outlined text-[13px] sm:text-[16px] text-on-surface-variant/70 animate-pulse" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+                      Done Today?
                     </>
                   )}
                 </button>
@@ -196,20 +196,20 @@ export default function HabitsTable({ habits, toggleHabit ,  deleteHabit, toggli
             </div>
 
             {/* Card Footer */}
-            <div className="flex items-center justify-between border-t border-outline-variant/20 pt-3 mt-auto">
-              <div className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[16px] text-[#f59e0b] animate-bounce" data-icon="local_fire_department">
+            <div className="flex items-center justify-between border-t border-outline-variant/20 pt-2 sm:pt-3 mt-auto">
+              <div className="flex items-center gap-1">
+                <span className="material-symbols-outlined text-[13px] sm:text-[16px] text-[#f59e0b]" data-icon="local_fire_department">
                   local_fire_department
                 </span>
                 <div>
-                  <p className="text-[9px] font-semibold uppercase tracking-wider text-on-surface-variant/60">Current Streak</p>
-                  <p className="text-sm font-bold text-on-surface">{completedDays || 0} Days</p>
+                  <p className="text-[7px] sm:text-[9px] font-semibold uppercase tracking-wider text-on-surface-variant/60">Streak</p>
+                  <p className="text-[10px] sm:text-sm font-bold text-on-surface">{completedDays || 0}d</p>
                 </div>
               </div>
 
               <div className="text-right">
-                <p className="text-[9px] font-semibold uppercase tracking-wider text-on-surface-variant/60">Missed Days</p>
-                <p className="text-xs font-bold text-red-500 dark:text-red-400">{missedDays} Days</p>
+                <p className="text-[7px] sm:text-[9px] font-semibold uppercase tracking-wider text-on-surface-variant/60">Missed</p>
+                <p className="text-[10px] sm:text-xs font-bold text-red-500 dark:text-red-400">{missedDays}d</p>
               </div>
             </div>
           </div>
@@ -219,12 +219,12 @@ export default function HabitsTable({ habits, toggleHabit ,  deleteHabit, toggli
       {/* Empty State / Add New Placeholder */}
       <Link
         to="/create-habit"
-        className="border-2 border-dashed border-outline-variant/60 rounded-xl p-6 flex flex-col items-center justify-center text-on-surface-variant hover:border-primary/50 hover:text-primary transition-all group min-h-[250px] cursor-pointer tech-corners"
+        className="border-2 border-dashed border-outline-variant/60 rounded-xl p-3 sm:p-6 flex flex-col items-center justify-center text-on-surface-variant hover:border-primary/50 hover:text-primary transition-all group min-h-[150px] sm:min-h-[250px] cursor-pointer tech-corners"
       >
-        <div className="p-4 rounded-full bg-surface-container mb-4 group-hover:bg-primary/10 transition-colors">
-          <span className="material-symbols-outlined text-[32px]" data-icon="add_task">add_task</span>
+        <div className="p-2 sm:p-4 rounded-full bg-surface-container mb-2 sm:mb-4 group-hover:bg-primary/10 transition-colors">
+          <span className="material-symbols-outlined text-[24px] sm:text-[32px]" data-icon="add_task">add_task</span>
         </div>
-        <p className="text-sm font-semibold">Create a new discipline</p>
+        <p className="text-[10px] sm:text-sm font-semibold">New discipline</p>
       </Link>
     </div>
   );

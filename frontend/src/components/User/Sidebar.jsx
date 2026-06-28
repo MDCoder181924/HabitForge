@@ -42,7 +42,7 @@ export default function Sidebar({ isOpen, onClose }) {
   };
 
   return (
-    <aside className={`fixed md:static inset-y-0 left-0 w-64 shrink-0 bg-surface-container-lowest/50 backdrop-blur-xl border-r border-outline-variant h-screen flex flex-col py-8 z-50 transform transition-transform duration-300 md:translate-x-0 ${
+    <aside className={`fixed md:static inset-y-0 left-0 w-64 shrink-0 bg-surface-container-lowest border-r border-outline-variant h-screen flex flex-col py-8 z-50 transform transition-transform duration-300 md:translate-x-0 ${
       isOpen ? 'translate-x-0' : '-translate-x-full'
     }`}>
       {/* Brand Logo */}

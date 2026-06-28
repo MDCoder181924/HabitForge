@@ -61,9 +61,9 @@ export default function AnalyticsBento({ habits = [], timeframe = '7 Days', user
   }, [habits, timeframe, user]);
 
   return (
-    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+    <section className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-12">
       {/* KPI 1: Total Checkins */}
-      <div className="glass-panel inner-glow rounded-xl p-6 flex flex-col justify-between min-h-[140px]">
+      <div className="glass-panel inner-glow rounded-xl p-4 sm:p-6 flex flex-col justify-between min-h-[140px]">
         <div className="flex justify-between items-center text-on-surface-variant/70">
           <span className="text-[10px] uppercase tracking-wider font-bold">Total Checkins</span>
           <span className="material-symbols-outlined text-[20px]" data-icon="done_all">done_all</span>
@@ -75,7 +75,7 @@ export default function AnalyticsBento({ habits = [], timeframe = '7 Days', user
       </div>
 
       {/* KPI 2: Completion Rate */}
-      <div className="glass-panel inner-glow rounded-xl p-6 flex flex-col justify-between min-h-[140px]">
+      <div className="glass-panel inner-glow rounded-xl p-4 sm:p-6 flex flex-col justify-between min-h-[140px]">
         <div className="flex justify-between items-center text-on-surface-variant/70">
           <span className="text-[10px] uppercase tracking-wider font-bold">Completion Rate</span>
           <span className="material-symbols-outlined text-[20px]" data-icon="percent">percent</span>
@@ -87,7 +87,7 @@ export default function AnalyticsBento({ habits = [], timeframe = '7 Days', user
       </div>
 
       {/* KPI 3: Longest Streak */}
-      <div className="glass-panel inner-glow rounded-xl p-6 flex flex-col justify-between min-h-[140px]">
+      <div className="glass-panel inner-glow rounded-xl p-4 sm:p-6 flex flex-col justify-between min-h-[140px]">
         <div className="flex justify-between items-center text-on-surface-variant/70">
           <span className="text-[10px] uppercase tracking-wider font-bold">Longest Streak</span>
           <span className="material-symbols-outlined text-[20px]" data-icon="local_fire_department">local_fire_department</span>
@@ -99,7 +99,7 @@ export default function AnalyticsBento({ habits = [], timeframe = '7 Days', user
       </div>
 
       {/* KPI 4: Consistency Score */}
-      <div className="glass-panel inner-glow rounded-xl p-6 flex flex-col justify-between min-h-[140px]">
+      <div className="glass-panel inner-glow rounded-xl p-4 sm:p-6 flex flex-col justify-between min-h-[140px]">
         <div className="flex justify-between items-center text-on-surface-variant/70">
           <span className="text-[10px] uppercase tracking-wider font-bold">Consistency Score</span>
           <span className="material-symbols-outlined text-[20px]" data-icon="bolt">bolt</span>

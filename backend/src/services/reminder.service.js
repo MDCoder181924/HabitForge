@@ -39,11 +39,13 @@ export const startHabitReminderJob = () => {
                     continue;
                 }
 
-                await sendHabitReminderEmail({
-                    to: currentUser.userEmail,
-                    userName: currentUser.userName,
-                    habit: h
-                });
+                if (currentUser.emailNotification !== false) {
+                    await sendHabitReminderEmail({
+                        to: currentUser.userEmail,
+                        userName: currentUser.userName,
+                        habit: h
+                    });
+                }
 
                 h.lastReminderSentDate = today;
                 await h.save();

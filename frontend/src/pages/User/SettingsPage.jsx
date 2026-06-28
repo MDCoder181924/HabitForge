@@ -2,13 +2,19 @@ import React, { useState } from 'react';
 import SettingsHeader from '../../components/User/Settings/SettingsHeader';
 import InterfaceSettings from '../../components/User/Settings/InterfaceSettings';
 import NotificationSettings from '../../components/User/Settings/NotificationSettings';
+import {useUser} from '../../context/UserContext';
+import api from '../../api/axios'
+import toast from 'react-hot-toast'
 
 export default function SettingsPage() {
+
+  const {user , refreshUser} = useUser();
+
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem('theme') === 'dark';
   });
   const [highDensity, setHighDensity] = useState(false);
-  const [desktopNotify, setDesktopNotify] = useState(true);
+  const [emailNotify, setEmailNotify] = useState(() => user?.emailNotification ?? true);
   const [emailDigest, setEmailDigest] = useState(true);
 
   const [morningHour, setMorningHour] = useState('08');
@@ -32,12 +38,26 @@ export default function SettingsPage() {
     }
   };
 
-  const saveSettings = () => {
+  const saveSettings = async () => {
     localStorage.setItem('theme', darkMode ? 'dark' : 'light');
-    setToastMessage('SYSTEM CONFIGURATION SAVED SUCCESSFULLY.');
-    setTimeout(() => {
-      setToastMessage('');
-    }, 3000);
+    try{
+      const res = await api.post("/user/setting" , {
+        userEmailNotification : emailNotify
+      })
+      if(res.data.success){
+        setToastMessage('SYSTEM CONFIGURATION SAVED SUCCESSFULLY.');
+        setTimeout(() => {
+          setToastMessage('');
+        }, 3000);
+        toast.success(res.data.message);
+      }else{
+        toast.error(res.data.message);
+        console.log(res.data.error);
+      }
+    }catch(error){
+      toast("setting is not save");
+      console.log(error);
+    }
   };
 
   const resetSettings = () => {
@@ -45,7 +65,7 @@ export default function SettingsPage() {
     document.documentElement.classList.add('dark');
     localStorage.setItem('theme', 'dark');
     setHighDensity(false);
-    setDesktopNotify(true);
+    setEmailNotify(true);
     setEmailDigest(true);
     setMorningHour('08');
     setMorningMinute('30');
@@ -82,8 +102,8 @@ export default function SettingsPage() {
 
         {/* Notifications Settings Card */}
         <NotificationSettings 
-          desktopNotify={desktopNotify}
-          setDesktopNotify={setDesktopNotify}
+          emailNotify={emailNotify}
+          setEmailNotify={setEmailNotify}
           emailDigest={emailDigest}
           setEmailDigest={setEmailDigest}
           morningHour={morningHour}

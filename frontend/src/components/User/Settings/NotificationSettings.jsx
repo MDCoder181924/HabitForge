@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function NotificationSettings({
-  desktopNotify, setDesktopNotify,
+  emailNotify, setEmailNotify,
   emailDigest, setEmailDigest,
   morningHour, setMorningHour,
   morningMinute, setMorningMinute,
@@ -21,14 +21,14 @@ export default function NotificationSettings({
         {/* Toggle Desktop Reminders */}
         <div className="flex items-center justify-between gap-4">
           <div>
-            <h4 className="text-sm font-bold text-on-surface">Desktop Reminders</h4>
-            <p className="text-xs text-on-surface-variant">Receive high-priority systematic alerts for scheduled habits.</p>
+            <h4 className="text-sm font-bold text-on-surface">Email Notifications</h4>
+            <p className="text-xs text-on-surface-variant">Receive email reminders for your scheduled habits.</p>
           </div>
           <label className="relative inline-flex items-center cursor-pointer shrink-0">
             <input 
               type="checkbox" 
-              checked={desktopNotify} 
-              onChange={(e) => setDesktopNotify(e.target.checked)}
+              checked={emailNotify} 
+              onChange={(e) => setEmailNotify(e.target.checked)}
               className="sr-only peer"
             />
             <div className="w-12 h-6 bg-outline-variant/30 rounded-full peer peer-checked:after:translate-x-6 after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-outline after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary peer-checked:after:bg-on-primary" />

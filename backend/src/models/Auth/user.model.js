@@ -43,6 +43,10 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    emailNotification:{
+        type:Boolean,
+        default:true
+    },
     lastActiveDate: {
         type: String,
         default: null

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function MyHabitsHeader({ filter, setFilter }) {
+export default function MyHabitsHeader({ filter, setFilter , search , setSearch}) {
   const categories = ['All', 'Active', 'Archived'];
 
   return (
@@ -26,6 +26,8 @@ export default function MyHabitsHeader({ filter, setFilter }) {
         <div className="relative w-full md:w-96">
           <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/50" data-icon="search">search</span>
           <input 
+          value={search}
+          onChange={(e)=>setSearch(e.target.value)}
             className="w-full bg-surface-container border border-outline-variant rounded-xl py-3 pl-12 pr-4 text-sm text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all" 
             placeholder="Search your discipline..." 
             type="text"

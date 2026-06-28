@@ -36,6 +36,52 @@ export const userSetting = async (req , res) =>{
     }
 }
 
+export const resetHabitData = async (req, res) => {
+    try {
+        const userId = req.user._id;
+
+        if (!userId) {
+            return res.status(400).json({
+                success: false,
+                message: "not find your account"
+            })
+        }
+
+        const existingUser = await user.findOne({ _id: userId });
+
+        if (!existingUser) {
+            return res.status(400).json({
+                success: false,
+                message: "user not find"
+            })
+        }
+
+        await habit.deleteMany({ userId });
+
+        existingUser.perfectDays = 0;
+        existingUser.lastPerfectDate = null;
+        existingUser.activeStreak = 0;
+        existingUser.longestStreak = 0;
+        existingUser.lastActiveDate = null;
+        existingUser.executionHistory = [];
+
+        await existingUser.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "habit data reset successfully",
+            user: existingUser
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "habit data not reset",
+            error: error.message
+        })
+    }
+}
+
 export const parmanetDeleteAccount = async (req , res) =>{
     try{
         const userId  = req.user._id;

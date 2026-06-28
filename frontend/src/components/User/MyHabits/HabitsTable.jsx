@@ -115,7 +115,7 @@ export default function HabitsTable({ habits, toggleHabit ,  deleteHabit, toggli
                   {habit.habitCategory}
                 </span>
                 <h3 className="text-xl font-bold text-on-surface mb-1 group-hover:text-primary transition-colors duration-300">{habit.habitName}</h3>
-                <p className="text-xs text-on-surface-variant/70 mb-4 line-clamp-1">{habit.habitDiscription}</p>
+                <p className="text-xs text-on-surface-variant/70 mb-4 line-clamp-1">{habit.habitDescription}</p>
               </div>
 
               {/* Goal Track Progress Details */}

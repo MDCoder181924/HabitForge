@@ -1,14 +1,51 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../../context/UserContext';
+import { useHabit } from '../../../context/HabitContext';
 import api from '../../../api/axios';
 import toast from 'react-hot-toast';
 
 export default function DangerZoneSettings() {
-  const { setUser } = useUser();
+  const { setUser, refreshUser } = useUser();
+  const { setHabits } = useHabit();
   const navigate = useNavigate();
+  const [isResetModalOpen, setIsResetModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [resetConfirmText, setResetConfirmText] = useState('');
   const [confirmText, setConfirmText] = useState('');
+
+  const closeResetModal = () => {
+    setIsResetModalOpen(false);
+    setResetConfirmText('');
+  };
+
+  const handleResetHabitData = async () => {
+    if (resetConfirmText !== 'RESET') return;
+
+    toast.loading("RESETTING HABIT DATA...", { id: "reset-loading" });
+    try {
+      const res = await api.post('/user/reset-habit-data');
+      toast.dismiss("reset-loading");
+      if (res.data.success) {
+        toast.success(res.data.message);
+        setHabits([]);
+        if (res.data.user) {
+          setUser(res.data.user);
+        } else {
+          await refreshUser();
+        }
+        closeResetModal();
+        navigate('/create-habit');
+      } else {
+        toast.error(res.data.message);
+        console.log(res.data.error);
+      }
+    } catch (e) {
+      toast.dismiss("reset-loading");
+      console.log("Reset habit data failed: ", e);
+      toast.error("Failed to reset habit data. Please try again.");
+    }
+  };
 
   const handleDeleteAccount = async () => {
     if (confirmText !== 'DELETE') return;
@@ -46,6 +83,22 @@ export default function DangerZoneSettings() {
         <div className="p-6 space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
+              <h4 className="text-sm font-bold text-on-surface">Reset Habit Data</h4>
+              <p className="text-xs text-on-surface-variant">Keep your account, but delete every habit and restart your progress from zero.</p>
+            </div>
+            <button
+              onClick={() => setIsResetModalOpen(true)}
+              className="px-5 py-2.5 bg-amber-500/10 text-amber-500 hover:bg-amber-500 hover:text-white border border-amber-500/30 rounded-xl text-xs font-mono font-bold tracking-wider uppercase active:scale-95 transition-all flex items-center justify-center gap-1.5 shrink-0"
+            >
+              <span className="material-symbols-outlined text-base">restart_alt</span>
+              Reset Data
+            </button>
+          </div>
+
+          <div className="h-px bg-red-500/10" />
+
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
               <h4 className="text-sm font-bold text-on-surface">Delete Account Permanently</h4>
               <p className="text-xs text-on-surface-variant">Once you delete your account, there is no going back. Please be certain.</p>
             </div>
@@ -59,6 +112,56 @@ export default function DangerZoneSettings() {
           </div>
         </div>
       </section>
+
+      {/* Reset Confirmation Modal */}
+      {isResetModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4 animate-fade-in">
+          <div className="glass-panel inner-glow max-w-md w-full p-6 rounded-2xl border border-amber-500/20 shadow-2xl relative space-y-6 text-center animate-scale-up">
+            <div className="mx-auto w-16 h-16 bg-amber-500/10 rounded-full flex items-center justify-center border border-amber-500/30 text-amber-500">
+              <span className="material-symbols-outlined text-3xl">restart_alt</span>
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="text-lg font-bold text-on-surface font-display tracking-wide uppercase">
+                Reset Habit Data?
+              </h3>
+              <p className="text-xs text-on-surface-variant leading-relaxed">
+                Your account will stay active, but all habits, completed days, active streak, longest streak, and perfect days will be erased.
+              </p>
+            </div>
+
+            <div className="space-y-2 text-left">
+              <label className="text-[10px] font-bold text-on-surface-variant/80 uppercase tracking-wider block">
+                Type <span className="text-amber-500">RESET</span> to confirm
+              </label>
+              <input
+                type="text"
+                value={resetConfirmText}
+                onChange={(e) => setResetConfirmText(e.target.value)}
+                placeholder="RESET"
+                className="w-full bg-surface-container-lowest/80 border border-outline-variant rounded-xl px-4 py-2.5 text-sm text-center font-bold tracking-widest text-amber-500 placeholder-outline focus:outline-none focus:ring-1 focus:ring-amber-500/50"
+              />
+            </div>
+
+            <div className="flex items-center gap-3 pt-2">
+              <button
+                onClick={closeResetModal}
+                className="flex-1 px-4 py-2.5 font-mono text-[10px] tracking-widest uppercase border border-outline-variant/30 text-on-surface-variant hover:text-on-surface hover:border-outline-variant rounded-xl transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleResetHabitData}
+                disabled={resetConfirmText !== "RESET"}
+                className="flex-1 px-4 py-2.5 bg-amber-600 hover:bg-amber-500 disabled:bg-amber-950/20 disabled:text-on-surface-variant/40 disabled:border-transparent text-white font-bold rounded-xl text-[10px] font-mono tracking-widest uppercase active:scale-95 transition-all flex items-center justify-center gap-1.5 border border-amber-500/30"
+              >
+                <span className="material-symbols-outlined text-sm">restart_alt</span>
+                Confirm Reset
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Delete Confirmation Modal */}
       {isDeleteModalOpen && (

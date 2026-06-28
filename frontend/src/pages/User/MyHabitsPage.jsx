@@ -14,6 +14,7 @@ export default function MyHabitsPage() {
   const { refreshUser } = useUser();
 
   const [filter, setFilter] = useState('All');
+  const [search, setSearch] = useState('')
   const [togglingId, setTogglingId] = useState(null);
 
   useEffect(() => {
@@ -23,12 +24,12 @@ export default function MyHabitsPage() {
 
   const deleteHabit = async (id) => {
     try {
-      const res = await api.post('/habit/delete' ,{
-        habitId : id
+      const res = await api.post('/habit/delete', {
+        habitId: id
       })
-      if(res.data.success){
+      if (res.data.success) {
         toast.success(res.data.message);
-      }else{
+      } else {
         toast.error(res.data.message);
       }
     } catch (error) {
@@ -87,15 +88,21 @@ export default function MyHabitsPage() {
 
   const filteredHabits = habits.filter(h => {
     const isCompleted = (h.completedDays?.length || 0) >= (h.habitGoalDuration || 21);
-    if (filter === 'Active') return !isCompleted;
-    if (filter === 'Archived') return isCompleted;
-    return true;
+    if (filter === 'Active' && isCompleted) return false;
+    if (filter === 'Archived' && !isCompleted) return false;
+    const searchText = search.toLowerCase().trim();
+    if(!searchText) return true;
+    return (
+      h.habitName?.toLowerCase().includes(searchText)||
+      h.habitCategory?.toLowerCase().includes(searchText)||
+      h.habitDescription?.toLowerCase().includes(searchText)
+    )
   });
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
       {/* Title & Actions */}
-      <MyHabitsHeader filter={filter} setFilter={setFilter} />
+      <MyHabitsHeader filter={filter} setFilter={setFilter} search={search} setSearch={setSearch} />
 
       {/* Habit List Table */}
       <HabitsTable habits={filteredHabits} toggleHabit={toggleHabit} deleteHabit={deleteHabit} togglingId={togglingId} />

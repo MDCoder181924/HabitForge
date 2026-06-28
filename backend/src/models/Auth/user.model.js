@@ -50,7 +50,42 @@ const userSchema = new mongoose.Schema({
     lastActiveDate: {
         type: String,
         default: null
-    }
+    },
+    executionHistory: [{
+        logId: {
+            type: String,
+            required: true
+        },
+        habitId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "habit"
+        },
+        habitName: {
+            type: String,
+            required: true
+        },
+        habitCategory: {
+            type: String,
+            default: "-"
+        },
+        action: {
+            type: String,
+            enum: ["COMPLETED", "UNCOMPLETED"],
+            required: true
+        },
+        actionDate: {
+            type: String,
+            required: true
+        },
+        actionTime: {
+            type: String,
+            required: true
+        },
+        actionAt: {
+            type: Date,
+            default: Date.now
+        }
+    }]
 },{timestamps:true});
 
 const user = mongoose.model("user" , userSchema);

@@ -1,5 +1,41 @@
 import habit from '../../models/User/habit.model.js'
 
+const getActivityStamp = () => {
+    const now = new Date();
+    const formatterOptions = { timeZone: 'Asia/Kolkata' };
+
+    return {
+        now,
+        actionDate: now.toLocaleDateString('en-CA', formatterOptions),
+        actionTime: now.toLocaleTimeString('en-IN', {
+            ...formatterOptions,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        })
+    }
+}
+
+const addExecutionLog = (currentUser, selectedHabit, action) => {
+    const { now, actionDate, actionTime } = getActivityStamp();
+    const logPrefix = action === "COMPLETED" ? "CMP" : "UNC";
+
+    currentUser.executionHistory = [
+        {
+            logId: `#${logPrefix}-${now.getTime().toString(36).toUpperCase()}`,
+            habitId: selectedHabit._id,
+            habitName: selectedHabit.habitName,
+            habitCategory: selectedHabit.habitCategory || "-",
+            action,
+            actionDate,
+            actionTime,
+            actionAt: now
+        },
+        ...(currentUser.executionHistory || [])
+    ].slice(0, 100);
+}
+
 export const habitCreat = async (req, res) => {
     try {
         const { habitName, habitDescription, habitCategory, habitGoalDuration, habitReminderTime, habitColorTheme, habitEnableReminder } = req.body;
@@ -137,6 +173,8 @@ export const habitComplit = async (req, res) => {
             currentUser.lastPerfectDate = today;
         }
 
+        addExecutionLog(currentUser, newHabit, "COMPLETED");
+
         await currentUser.save();
 
         return res.status(200).json({
@@ -201,6 +239,8 @@ export const habitComplitRemove = async (req, res) => {
             currentUser.lastPerfectDate = null;
         }
 
+        addExecutionLog(currentUser, newHabit, "UNCOMPLETED");
+
         await currentUser.save();
 
         return res.status(200).json({
@@ -227,14 +267,14 @@ export const habitDelet = async (req, res) => {
             })
         }
 
-        const newHabit =await habit.findOne({_id : habitId});
+        const newHabit =await habit.findOne({_id : habitId, userId: req.user._id});
         if(!newHabit){
             return res.status(400).json({
                 success:false,
                 message:"not find your habit"
             })
         }
-        await habit.deleteOne({_id:habitId});
+        await habit.deleteOne({_id:habitId, userId: req.user._id});
         return res.status(200).json({
             success:true,
             message:"habit is deleted"

@@ -26,14 +26,6 @@ export default function Header({ onMenuClick }) {
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="relative group hidden sm:block">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
-            <input 
-              className="bg-surface-container border border-outline-variant rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all w-64 text-on-surface placeholder:text-on-surface-variant/40" 
-              placeholder="Search habits..." 
-              type="text"
-            />
-          </div>
           <div className="flex items-center gap-3 ml-4 border-l border-outline-variant pl-4">
             <div className="text-right hidden sm:block">
               <p className="text-sm font-bold text-on-surface">{FullName}</p>

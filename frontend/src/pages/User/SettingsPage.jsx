@@ -2,28 +2,19 @@ import React, { useState } from 'react';
 import SettingsHeader from '../../components/User/Settings/SettingsHeader';
 import InterfaceSettings from '../../components/User/Settings/InterfaceSettings';
 import NotificationSettings from '../../components/User/Settings/NotificationSettings';
-import {useUser} from '../../context/UserContext';
-import api from '../../api/axios'
-import toast from 'react-hot-toast'
+import DangerZoneSettings from '../../components/User/Settings/DangerZoneSettings';
+import { useUser } from '../../context/UserContext';
+import api from '../../api/axios';
+import toast from 'react-hot-toast';
 
 export default function SettingsPage() {
-
-  const {user , refreshUser} = useUser();
+  const { user, refreshUser } = useUser();
 
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem('theme') === 'dark';
   });
   const [highDensity, setHighDensity] = useState(false);
   const [emailNotify, setEmailNotify] = useState(() => user?.emailNotification ?? true);
-  const [emailDigest, setEmailDigest] = useState(true);
-
-  const [morningHour, setMorningHour] = useState('08');
-  const [morningMinute, setMorningMinute] = useState('30');
-  const [morningPeriod, setMorningPeriod] = useState('AM');
-
-  const [eveningHour, setEveningHour] = useState('09');
-  const [eveningMinute, setEveningMinute] = useState('00');
-  const [eveningPeriod, setEveningPeriod] = useState('PM');
 
   const [toastMessage, setToastMessage] = useState('');
 
@@ -40,21 +31,21 @@ export default function SettingsPage() {
 
   const saveSettings = async () => {
     localStorage.setItem('theme', darkMode ? 'dark' : 'light');
-    try{
-      const res = await api.post("/user/setting" , {
-        userEmailNotification : emailNotify
-      })
-      if(res.data.success){
+    try {
+      const res = await api.post("/user/setting", {
+        userEmailNotification: emailNotify
+      });
+      if (res.data.success) {
         setToastMessage('SYSTEM CONFIGURATION SAVED SUCCESSFULLY.');
         setTimeout(() => {
           setToastMessage('');
         }, 3000);
         toast.success(res.data.message);
-      }else{
+      } else {
         toast.error(res.data.message);
         console.log(res.data.error);
       }
-    }catch(error){
+    } catch (error) {
       toast("setting is not save");
       console.log(error);
     }
@@ -66,13 +57,6 @@ export default function SettingsPage() {
     localStorage.setItem('theme', 'dark');
     setHighDensity(false);
     setEmailNotify(true);
-    setEmailDigest(true);
-    setMorningHour('08');
-    setMorningMinute('30');
-    setMorningPeriod('AM');
-    setEveningHour('09');
-    setEveningMinute('00');
-    setEveningPeriod('PM');
     setToastMessage('PREFERENCES RESET TO SYSTEM DEFAULT.');
     setTimeout(() => {
       setToastMessage('');
@@ -104,21 +88,10 @@ export default function SettingsPage() {
         <NotificationSettings 
           emailNotify={emailNotify}
           setEmailNotify={setEmailNotify}
-          emailDigest={emailDigest}
-          setEmailDigest={setEmailDigest}
-          morningHour={morningHour}
-          setMorningHour={setMorningHour}
-          morningMinute={morningMinute}
-          setMorningMinute={setMorningMinute}
-          morningPeriod={morningPeriod}
-          setMorningPeriod={setMorningPeriod}
-          eveningHour={eveningHour}
-          setEveningHour={setEveningHour}
-          eveningMinute={eveningMinute}
-          setEveningMinute={setEveningMinute}
-          eveningPeriod={eveningPeriod}
-          setEveningPeriod={setEveningPeriod}
         />
+
+        {/* Danger Zone Settings Card */}
+        <DangerZoneSettings />
 
         {/* Save Actions */}
         <div className="flex items-center justify-end gap-4 pt-4">

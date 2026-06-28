@@ -2,10 +2,12 @@ import React from 'react';
 import { Link, useLocation , useNavigate} from 'react-router-dom';
 import api from '../../api/axios'
 import toast from 'react-hot-toast';
+import { useUser } from '../../context/UserContext';
 
 export default function Sidebar({ isOpen, onClose }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const { setUser } = useUser();
 
   const menuItems = [
     { name: 'Dashboard', path: '/dashboard', icon: 'dashboard' },
@@ -23,12 +25,13 @@ export default function Sidebar({ isOpen, onClose }) {
     }
   };
 
-  const handleLogout = async () => {
+  const handleLogout = async (e) => {
     e.preventDefault();
     try{
       const res = await api.post ('/auth/logout');
       if(res.data.success){
         toast.success("Logout successfully")
+        setUser(null);
         navigate('/')
       }else{
         toast(res.data.message)

@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../api/axios.js'
+import { useUser } from '../../context/UserContext.jsx';
 
 export default function Login() {
   const navigate = useNavigate();
+  const { refreshUser } = useUser();
 
   const [userEmail , setUserEmail] = useState('');
   const [userPassword , setUserPassword] = useState('');
@@ -39,6 +41,7 @@ export default function Login() {
         userPassword
       })
       if(res.data.success){
+        await refreshUser();
         toast.success("Login successfully")
         navigate('/dashboard')
       }else{

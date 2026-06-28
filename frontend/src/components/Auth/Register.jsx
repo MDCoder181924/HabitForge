@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../api/axios'
+import { useUser } from '../../context/UserContext.jsx';
 
 export default function Register() {
   const navigate = useNavigate();
+  const { refreshUser } = useUser();
 
   const [userName , setUserName] = useState("");
   const [userEmail , setUserEmail] = useState("");
@@ -37,6 +39,7 @@ export default function Register() {
         userPassword
       })
       if(res.data.success){
+        await refreshUser();
         toast.success("Ragister successfully")
         navigate('/dashboard');
       }

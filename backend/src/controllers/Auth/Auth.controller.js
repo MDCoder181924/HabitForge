@@ -140,9 +140,15 @@ export const userLogout = async (req, res) => {
 
         const existingUser = await user.findOne({ refreshToken: RefreshToken });
 
+        const cookieOptions = {
+            httpOnly: true,
+            secure: isProduction,
+            sameSite: validSameSite
+        };
+
         if (!existingUser) {
-            res.clearCookie("accessToken");
-            res.clearCookie("refreshToken");
+            res.clearCookie("accessToken", cookieOptions);
+            res.clearCookie("refreshToken", cookieOptions);
             return res.status(200).json({
                 success: true,
                 message: "User is not loogged in"
@@ -152,8 +158,8 @@ export const userLogout = async (req, res) => {
         existingUser.refreshToken = null;
         await existingUser.save();
 
-        res.clearCookie("accessToken");
-        res.clearCookie("refreshToken");
+        res.clearCookie("accessToken", cookieOptions);
+        res.clearCookie("refreshToken", cookieOptions);
 
         return res.status(200).json({
             success: true,

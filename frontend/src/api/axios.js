@@ -22,7 +22,9 @@ api.interceptors.response.use(
                 return api(originalRequest);
             } catch (refreshError) {
                 console.error("Session expired. Please login again.", refreshError);
-                window.location.href = '/login';
+                if (!originalRequest.url.includes('/user/profile')) {
+                    window.location.href = '/login';
+                }
                 return Promise.reject(refreshError);
             }
         }

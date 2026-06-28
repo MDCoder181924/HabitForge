@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../api/axios.js'
 import { useUser } from '../../context/UserContext.jsx';
+import { useGoogleLogin } from '@react-oauth/google';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -52,6 +53,29 @@ export default function Login() {
       toast.error("login failed")
     }
   };
+
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      try {
+        const res = await api.post('/auth/google-login', {
+          token: tokenResponse.credential || tokenResponse.access_token,
+        });
+        if (res.data.success) {
+          await refreshUser();
+          toast.success("Google Login successfully");
+          navigate('/dashboard');
+        } else {
+          toast(res.data.message);
+        }
+      } catch (error) {
+        console.error("Google login error:", error);
+        toast.error("Google login failed");
+      }
+    },
+    onError: () => {
+      toast.error("Google Sign-In failed");
+    }
+  })
 
   return (
     <div className="flex items-center justify-center min-h-screen p-6 font-body-lg text-on-background bg-background relative overflow-hidden w-full">
@@ -146,6 +170,7 @@ export default function Login() {
             </div>
             
             <button 
+            onClick={()=>handleGoogleLogin()}
               className="w-full bg-surface-container-lowest border border-outline-variant text-on-surface font-body-lg text-body-lg py-3 rounded-lg hover:bg-surface-container-low active:scale-[0.98] transition-all flex items-center justify-center gap-3 cursor-pointer" 
               type="button"
             >

@@ -32,7 +32,7 @@ export default function HeroSection({ onLogin }) {
           </button>
           <button 
             onClick={onLogin}
-            className="bg-white/5 border border-white/10 text-on-surface px-8 py-3.5 rounded-xl font-bold text-base hover:bg-white/10 transition-all cursor-pointer"
+            className="bg-surface-container-low border border-outline-variant/40 text-on-surface px-8 py-3.5 rounded-xl font-bold text-base hover:bg-surface-container-high transition-all cursor-pointer"
           >
             Explore Demo
           </button>

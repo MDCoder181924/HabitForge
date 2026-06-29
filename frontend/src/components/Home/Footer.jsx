@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Footer() {
   return (
-    <footer className="w-full mt-auto border-t border-white/5 bg-background py-10 px-8">
+    <footer className="w-full mt-auto border-t border-outline-variant/20 bg-background py-10 px-8">
       <div className="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto w-full">
         <div className="mb-6 md:mb-0 text-center md:text-left">
           <span className="text-lg font-bold text-primary font-display">HabitForge</span>

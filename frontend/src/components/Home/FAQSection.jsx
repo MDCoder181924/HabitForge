@@ -30,11 +30,11 @@ export default function FAQSection() {
           return (
             <div 
               key={idx}
-              className="glass-card rounded-xl border border-white/5 overflow-hidden transition-all duration-300"
+              className="glass-card rounded-xl border border-outline-variant/20 overflow-hidden transition-all duration-300"
             >
               <button
                 onClick={() => setActiveFaq(isOpen ? null : idx)}
-                className="w-full p-5 flex justify-between items-center text-left hover:bg-white/2 cursor-pointer transition-colors"
+                className="w-full p-5 flex justify-between items-center text-left hover:bg-surface-container-high cursor-pointer transition-colors"
               >
                 <span className="font-bold text-sm sm:text-base text-on-surface">{faq.q}</span>
                 <span className={`material-symbols-outlined text-primary transition-transform duration-300 ${
@@ -45,7 +45,7 @@ export default function FAQSection() {
               </button>
               
               <div className={`transition-all duration-300 ease-in-out ${
-                isOpen ? 'max-h-40 border-t border-white/5 p-5' : 'max-h-0 opacity-0 overflow-hidden'
+                isOpen ? 'max-h-40 border-t border-outline-variant/20 p-5' : 'max-h-0 opacity-0 overflow-hidden'
               }`}>
                 <p className="text-xs sm:text-sm text-on-surface-variant leading-relaxed">
                   {faq.a}

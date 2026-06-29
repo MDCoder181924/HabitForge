@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Header({ onLogin }) {
   return (
-    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/5 w-full">
+    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-outline-variant/20 w-full">
       <nav className="flex justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
         <div className="flex items-center gap-12">
           <a className="text-xl font-bold text-primary font-display flex items-center gap-2" href="#">

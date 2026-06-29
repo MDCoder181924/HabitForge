@@ -2,11 +2,11 @@ import React from 'react';
 
 export default function CreatorNote() {
   return (
-    <section className="py-24 bg-surface-lowest/40 border-y border-white/5" id="creators-note">
+    <section className="py-24 bg-surface-container-lowest border-y border-outline-variant/20" id="creators-note">
       <div className="max-w-3xl mx-auto px-8 space-y-6 text-left relative">
         
         {/* Glowing quote decorative symbol */}
-        <span className="absolute -left-4 -top-8 text-9xl font-serif text-primary/5 pointer-events-none">“</span>
+        <span className="absolute -left-4 -top-8 text-9xl font-serif text-primary/10 pointer-events-none">“</span>
         
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/10 border border-secondary/20">
           <span className="font-mono text-[9px] font-bold text-secondary tracking-widest uppercase">
@@ -30,7 +30,7 @@ export default function CreatorNote() {
           </p>
         </div>
         
-        <div className="flex items-center gap-3 pt-4 border-t border-white/5">
+        <div className="flex items-center gap-3 pt-4 border-t border-outline-variant/20">
           <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold font-mono text-sm border border-primary/30">
             DR
           </div>
